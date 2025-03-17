@@ -1,0 +1,58 @@
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "type": "module",
+  "homepage": "https://www.cleverminer.org/doc/index.html",
+  "scripts": {
+    "build:linux": "electron-builder --linux deb",
+    "app:dir": "electron-builder --dir",
+    "app:dist": "electron-builder",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "npm run build && electron ./dist/main.js",
+    "dev-app": "wait-on http://localhost:3000 && electron ./dist/main.js",
+    "dev": "concurrently \"npm run watch\" \"cd ../backend && python main.py\" \"cd ../frontend && npm start\" \"wait-on http://localhost:3000 && electron ./dist/main.js\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "Miriam Zednickova",
+    "email": "your.email@example.com"
+  },
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "wait-on": "^8.0.2"
+  },
+  "devDependencies": {
+    "electron": "^34.3.0",
+    "electron-is-dev": "^3.0.1",
+    "@types/electron-is-dev": "^0.3.0",
+    "@types/node": "^22.13.8",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.8.2"
+  },
+  "build": {
+    "appId": "your.id",
+    "productName": "YourApp",
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "category": "Utility",
+      "maintainer": "Miriam Zednickova"
+    }
+  }
+}
