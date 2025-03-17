@@ -12,7 +12,7 @@
     "watch": "tsc -w",
     "start": "npm run build && electron ./dist/main.js",
     "dev-app": "wait-on http://localhost:3000 && electron ./dist/main.js",
-    "dev": "concurrently \"npm run watch\" \"cd ../backend && python main.py\" \"cd ../frontend && npm start\" \"wait-on http://localhost:3000 && electron ./dist/main.js\""
+    "dev": "concurrently \"npm run watch\" \"cd ../backend && python3 main.py\" \"cd ../frontend && npm start\" \"wait-on http://localhost:3000 && electron ./dist/main.js\""
   },
   "keywords": [],
   "author": {
