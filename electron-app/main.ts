@@ -1,5 +1,3 @@
-can you simplify this code so that it tries to start BE and FE?
-
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { spawn, ChildProcess } from 'child_process';
