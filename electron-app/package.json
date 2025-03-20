@@ -1,14 +1,19 @@
 {
-  "name": "electron-app",
+  "name": "cleverminer-app",
   "version": "1.0.0",
+  "author": "Miriam Zednickova <mitcamit@gmail.com>",
+  "homepage": "https://www.cleverminer.org",
   "main": "./dist/main.js",
   "scripts": {
     "start:be": "cd ../backend && python3 main.py",
     "start:fe": "cd ../frontend && npm start",
     "build:fe": "cd ../frontend && npm run build",
-    "start:electron-app": "tsc -p ./tsconfig.json && electron .",
-    "dev": "concurrently \"npm run start:fe\" \"wait-on http://localhost:3000 && npm run start:electron-app\"",
-    "package": "npm run build:fe && tsc -p ./tsconfig.json && electron-builder"
+    "dev:electron": "tsc -p ./tsconfig.json && electron .",
+    "dev:react" : "concurrently \"npm run start:be\" \"npm run start:fe\"",
+    "package:linux": " tsc -p ./tsconfig.json && npm run build:fe && electron-builder --linux --x64",
+    "package:win": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --win --x64",
+    "package:mac": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --mac --x64",
+    "builder": "electron-builder"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
@@ -18,14 +23,26 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.example.myapp",
+    "productName": "Cleverminer App",
+    "appId": "com.clm.app",
     "files": [
-      "./main.ts",
+      "./dist/main.js",
       "../frontend/dist/**/*",
       "../backend/**/*"
     ],
     "directories": {
       "output": "dist"
+    },
+    "linux": {
+      "target": "deb",
+      "maintainer": "Miriam Zednickova",
+      "category": "Utility",
+      "desktop": {
+        "Name": "Cleverminer App",
+        "Comment": "The app for cleverminer package.",
+        "Type": "Application",
+        "Terminal": "false"
+      }
     }
   }
 }

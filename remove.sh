@@ -1,2 +1,2 @@
-sudo apt remove electron-app
-#DEBUG=electron:* electron-app
+sudo apt remove cleverminer-app
+#DEBUG=electron:* cleverminer-app
