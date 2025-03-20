@@ -1,58 +1,31 @@
 {
   "name": "electron-app",
   "version": "1.0.0",
-  "main": "dist/main.js",
-  "type": "module",
-  "homepage": "https://www.cleverminer.org/doc/index.html",
+  "main": "./dist/main.js",
   "scripts": {
-    "build:linux": "electron-builder --linux deb",
-    "app:dir": "electron-builder --dir",
-    "app:dist": "electron-builder",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "start": "npm run build && electron ./dist/main.js",
-    "dev-app": "wait-on http://localhost:3000 && electron ./dist/main.js",
-    "dev": "concurrently \"npm run watch\" \"cd ../backend && python3 main.py\" \"cd ../frontend && npm start\" \"wait-on http://localhost:3000 && electron ./dist/main.js\""
-  },
-  "keywords": [],
-  "author": {
-    "name": "Miriam Zednickova",
-    "email": "your.email@example.com"
-  },
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "concurrently": "^9.1.2",
-    "cross-env": "^7.0.3",
-    "wait-on": "^8.0.2"
+    "start:be": "cd ../backend && python3 main.py",
+    "start:fe": "cd ../frontend && npm start",
+    "build:fe": "cd ../frontend && npm run build",
+    "start:electron-app": "tsc -p ./tsconfig.json && electron .",
+    "dev": "concurrently \"npm run start:fe\" \"wait-on http://localhost:3000 && npm run start:electron-app\"",
+    "package": "npm run build:fe && tsc -p ./tsconfig.json && electron-builder"
   },
   "devDependencies": {
-    "electron": "^34.3.0",
-    "electron-is-dev": "^3.0.1",
-    "@types/electron-is-dev": "^0.3.0",
-    "@types/node": "^22.13.8",
-    "electron-builder": "^25.1.8",
-    "typescript": "^5.8.2"
+    "concurrently": "^8.2.2",
+    "electron": "^28.2.2",
+    "electron-builder": "^24.9.1",
+    "typescript": "^5.3.3",
+    "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "your.id",
-    "productName": "YourApp",
+    "appId": "com.example.myapp",
     "files": [
-      "dist/**/*",
-      "node_modules/**/*"
+      "./main.ts",
+      "../frontend/dist/**/*",
+      "../backend/**/*"
     ],
     "directories": {
       "output": "dist"
-    },
-    "mac": {
-      "category": "your.app.category.type"
-    },
-    "linux": {
-      "target": [
-        "deb"
-      ],
-      "category": "Utility",
-      "maintainer": "Miriam Zednickova"
     }
   }
 }

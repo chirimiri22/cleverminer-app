@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
-    "sourceMap": true
+    "skipLibCheck": true
   },
-  "include": [
-    "*.ts"
-  ]
+  "include": ["main.ts"],
 }
