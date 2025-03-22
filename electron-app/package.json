@@ -13,12 +13,13 @@
     "package:linux": " tsc -p ./tsconfig.json && npm run build:fe && electron-builder --linux --x64",
     "package:win": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --win --x64",
     "package:mac": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --mac --x64",
-    "builder": "electron-builder"
+    "transpile": "tsc -p ./tsconfig.json",
+    "builder": "electron-builder --linux --dir"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "electron": "^28.2.2",
-    "electron-builder": "^24.9.1",
+    "electron": "^35.0.3",
+    "electron-builder": "^25.1.8",
     "typescript": "^5.3.3",
     "wait-on": "^7.2.0"
   },
@@ -26,12 +27,14 @@
     "productName": "Cleverminer App",
     "appId": "com.clm.app",
     "files": [
-      "./dist/main.js",
-      "../frontend/dist/**/*",
-      "../backend/**/*"
+      "./dist/main.js"
+    ],
+    "extraFiles": [
+      {"from": "../frontend/build", "to": "resources/frontend/build"},
+      {"from": "../backend/main.py", "to": "resources/backend/main.py"}
     ],
     "directories": {
-      "output": "dist"
+      "output": "release"
     },
     "linux": {
       "target": "deb",
