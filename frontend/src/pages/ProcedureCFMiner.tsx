@@ -1,14 +1,16 @@
-import {Download, PlayArrow} from "@mui/icons-material";
+import {BarChart, Download, PlayArrow} from "@mui/icons-material";
 import {
     Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper,
     Select, Stack, Switch, TextField, Typography
 } from "@mui/material";
 import {AttributeCard} from "../components/AttributeCard";
+import {PageContainer} from "../layout/PageContainer";
+import {PageHeading} from "../components/PageHeading";
 
 export const ProcedureCFMiner = () => {
     return (
-        <Stack>
-            <Typography variant="h4" gutterBottom>📊 CF-Miner</Typography>
+        <PageContainer>
+            <PageHeading title={"CF Miner"} icon={<BarChart fontSize={"large"}/>} />
 
             {/* Observe */}
             <Paper variant="outlined" sx={{p: 2, mb: 4}}>
@@ -112,6 +114,7 @@ export const ProcedureCFMiner = () => {
                     <Button variant="outlined" startIcon={<Download/>}>All in ZIP</Button>
                 </Box>
             </Paper>
-        </Stack>
+
+        </PageContainer>
     );
 }

@@ -7,6 +7,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import {ROUTES} from "../constants/routes";
 import {CLEVERMINER_DOCS_URL} from "../constants/constants";
 import {MenuItem, MenuItemType} from "./MenuItem";
+import {Colors} from "../styles/colors";
 
 
 type GroupType = {
@@ -22,8 +23,9 @@ const menuGroups: GroupType[] = [
     },
     {
         items: [
-            {name: 'CFMiner', icon: <BarChartIcon/>, path: ROUTES.CF_MINER},
-            {name: '4ftMiner', icon: <SwapHorizIcon/>, path: ROUTES["4FT_MINER"]},
+            // todo: put names into constants
+            {name: 'CF Miner', icon: <BarChartIcon/>, path: ROUTES.CF_MINER},
+            {name: '4ft Miner', icon: <SwapHorizIcon/>, path: ROUTES["4FT_MINER"]},
         ],
     },
     {
@@ -40,7 +42,7 @@ export const SidebarMenu = () => {
 
     return (
 
-        <Stack sx={{minWidth: 300, borderRight: '1px solid #ddd', bgcolor: '#f5f5f5'}}>
+        <Stack sx={{minWidth: 300, borderRight: `1px solid ${Colors.border}`, bgcolor: Colors.sidebar}}>
             {menuGroups.map((group, index) => (
                 <>
                     <List key={index}>

@@ -6,7 +6,7 @@ import {DatasetDetail} from "./pages/DatasetDetail";
 import {AppContainer} from "./layout/AppContainer";
 import {ROUTES} from "./constants/routes";
 import {Datasets} from "./pages/Datasets";
-import {Procedure4ftMIner} from "./pages/Procedure4ftMIner";
+import {Procedure4ftMiner} from "./pages/Procedure4ftMiner";
 
 export const App = () => {
     return (
@@ -22,7 +22,7 @@ const WrappedRoutes = () => {
         <AppContainer>
             <Routes>
                 <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner/>}/>
-                <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMIner/>}/>
+                <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMiner/>}/>
                 <Route path={ROUTES.DATASETS} element={<Datasets/>}/>
                 <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail/>}/>
                 <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage/>}/>
