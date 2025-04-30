@@ -2,10 +2,11 @@ import {Route, Routes} from "react-router-dom";
 import {Home} from "./pages/Home";
 import {ProcedureCFMiner} from "./pages/ProcedureCFMiner";
 import {NotFoundPage} from "./pages/NotFoundPage";
-import {Datasets} from "./pages/Datasets";
 import {DatasetDetail} from "./pages/DatasetDetail";
-import {AppContainer} from "./components/AppContainer";
+import {AppContainer} from "./layout/AppContainer";
 import {ROUTES} from "./constants/routes";
+import {Datasets} from "./pages/Datasets";
+import {Procedure4ftMIner} from "./pages/Procedure4ftMIner";
 
 export const App = () => {
     return (
@@ -21,7 +22,8 @@ const WrappedRoutes = () => {
         <AppContainer>
             <Routes>
                 <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner/>}/>
-                <Route path={ROUTES["4FT_MINER"]} element={<ProcedureCFMiner/>}/>
+                <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMIner/>}/>
+                <Route path={ROUTES.DATASETS} element={<Datasets/>}/>
                 <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail/>}/>
                 <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage/>}/>
             </Routes>

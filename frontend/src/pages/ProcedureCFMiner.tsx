@@ -1,13 +1,13 @@
 import {Download, PlayArrow} from "@mui/icons-material";
 import {
-    Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper,
-    Select, Switch, TextField, Typography
+    Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper,
+    Select, Stack, Switch, TextField, Typography
 } from "@mui/material";
 import {AttributeCard} from "../components/AttributeCard";
 
 export const ProcedureCFMiner = () => {
     return (
-        <Container maxWidth="lg" sx={{py: 4}}>
+        <Stack>
             <Typography variant="h4" gutterBottom>📊 CF-Miner</Typography>
 
             {/* Observe */}
@@ -112,6 +112,6 @@ export const ProcedureCFMiner = () => {
                     <Button variant="outlined" startIcon={<Download/>}>All in ZIP</Button>
                 </Box>
             </Paper>
-        </Container>
+        </Stack>
     );
 }
