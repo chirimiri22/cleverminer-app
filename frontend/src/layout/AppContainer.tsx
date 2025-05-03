@@ -17,7 +17,10 @@ export const AppContainer = ({children}: Props) => {
             {/* Main content area with sidebar and page content */}
             <Stack direction="row" sx={{flexGrow: 1}}>
                 <SidebarMenu/>
-                <Stack flexGrow={1}>{children}</Stack>
+                    <Stack flexGrow={1}  sx={{
+                        maxWidth: '100%',
+                        overflowX: 'hidden',
+                    }}>{children}</Stack>
             </Stack>
 
             {/* Footer */}

@@ -6,8 +6,7 @@ type Props = {
 }
 
 export const PageContainer = ({children}: Props) => {
-    return <Stack flexGrow={1} pl={4} my={4} gap={2}>
+    return <Stack flexGrow={1} pl={4} my={4} gap={2} >
         {children}
-
     </Stack>
 }

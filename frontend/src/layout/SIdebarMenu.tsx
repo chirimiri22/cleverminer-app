@@ -44,8 +44,8 @@ export const SidebarMenu = () => {
 
         <Stack sx={{minWidth: 300, borderRight: `1px solid ${Colors.border}`, bgcolor: Colors.sidebar}}>
             {menuGroups.map((group, index) => (
-                <>
-                    <List key={index}>
+                <Stack direction={"row"} key={index}>
+                    <List >
                         {group.items.map((item, idx) => (
                             <MenuItem
                                 key={idx}
@@ -57,7 +57,7 @@ export const SidebarMenu = () => {
                         ))}
                     </List>
                     {index < menuGroups.length - 1 && <Divider/>}
-                </>
+                </Stack>
             ))}
         </Stack>
 

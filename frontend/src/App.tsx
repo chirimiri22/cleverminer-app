@@ -7,6 +7,26 @@ import {AppContainer} from "./layout/AppContainer";
 import {ROUTES} from "./constants/routes";
 import {Datasets} from "./pages/Datasets";
 import {Procedure4ftMiner} from "./pages/Procedure4ftMiner";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
 
 export const App = () => {
     return (
