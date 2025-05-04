@@ -1,3 +1,1 @@
-export const SideSettings = () => {
-
-}
+export const SideSettings = () => {};

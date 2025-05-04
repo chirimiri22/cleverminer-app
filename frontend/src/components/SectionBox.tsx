@@ -1,3 +1,3 @@
 export const SectionBox = () => {
-  return "SectionBox"
-}
+  return "SectionBox";
+};

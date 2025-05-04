@@ -1,4 +1,3 @@
 export const PreprocessAttrbuteCard = () => {
-    return undefined
-
-}
+  return undefined;
+};

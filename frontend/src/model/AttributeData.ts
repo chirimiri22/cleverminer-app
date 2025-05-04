@@ -1,6 +1,6 @@
-import { Category } from "./Category"
+import { Category } from "./Category";
 
 export type AttributeData = {
-    title: string
-    categories: Category[]
-}
+  title: string;
+  categories: Category[];
+};

@@ -1,12 +1,14 @@
-import {ReactNode} from "react";
-import {Stack} from "@mui/material";
+import { ReactNode } from "react";
+import { Stack } from "@mui/material";
 
 type Props = {
-    children: ReactNode;
-}
+  children: ReactNode;
+};
 
-export const PageContainer = ({children}: Props) => {
-    return <Stack flexGrow={1} pl={4} my={4} gap={2} >
-        {children}
+export const PageContainer = ({ children }: Props) => {
+  return (
+    <Stack flexGrow={1} pl={4} my={4} gap={2}>
+      {children}
     </Stack>
-}
+  );
+};

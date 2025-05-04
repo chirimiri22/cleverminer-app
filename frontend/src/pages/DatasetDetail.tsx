@@ -1,3 +1,3 @@
-import {Stack} from "@mui/material";
+import { Stack } from "@mui/material";
 
-export const DatasetDetail = () => <Stack>DatasetDetail</Stack>
+export const DatasetDetail = () => <Stack>DatasetDetail</Stack>;

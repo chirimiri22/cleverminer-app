@@ -1,4 +1,4 @@
 export type Category = {
-    label: string
-    count: number
-}
+  label: string;
+  count: number;
+};

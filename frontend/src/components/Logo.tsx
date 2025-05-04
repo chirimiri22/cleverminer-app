@@ -1,7 +1,5 @@
-import {ReactComponent as CleverMinerLogo} from '../clm-logo.svg'
+import { ReactComponent as CleverMinerLogo } from "../clm-logo.svg";
 
 export const Logo = () => {
-
-    return <CleverMinerLogo width={40} height={40}/>
-
+  return <CleverMinerLogo width={40} height={40} />;
 };

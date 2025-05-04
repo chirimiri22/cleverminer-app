@@ -1,5 +1,5 @@
-import { Category } from "../model/Category"
+import { Category } from "../model/Category";
 
 export const getCategoriesCountsArray = (categories: Category[]) => {
-    return categories.map((category) => category.count)
-}
+  return categories.map((category) => category.count);
+};
