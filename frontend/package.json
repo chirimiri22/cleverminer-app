@@ -28,14 +28,18 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "eslint": "^8.57.1"
+
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,css,md}\""
+    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,css,md}\"",
+    "lint": "eslint \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,ts,jsx,tsx}\" --fix"
   },
   "eslintConfig": {
     "extends": [
