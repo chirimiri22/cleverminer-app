@@ -18,4 +18,6 @@ export const Colors = {
   // Custom
   sidebar: "#fafafa",
   header: "#f0f0f0",
+  white: "#ffffff",
+  black: "#000000",
 };

@@ -12,127 +12,138 @@ import {
   TextField,
   Typography,
   Stack,
+  ToggleButton,
+  Slider,
+  SelectChangeEvent,
 } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
-import { AttributeData } from "../model/AttributeData";
+import { SectionBox } from "../components/SectionBox";
+import { mockDataset } from "../model/Dataset";
+import { Colors } from "../styles/colors";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { NumberInput } from "../components/Input/NumberInput";
+import { SelectInput } from "../components/Input/SelectInput";
+import { RangeSliderInput } from "../components/Input/RangeSliderInput";
+import { InetrvalRange } from "../model/InetrvalRange";
+import { BooleanInput } from "../components/Input/BooleanInput";
+import { CFQuantifier } from "../constants/enums/CFQuantifier";
 
-const mockData: AttributeData[] = [
-  {
-    title: "City",
-    categories: [
-      { label: "New York", count: 150 },
-      { label: "Los Angeles", count: 100 },
-      { label: "Chicago", count: 200 },
-      { label: "Houston", count: 50 },
-      { label: "Phoenix", count: 80 },
-      { label: "Philadelphia", count: 60 },
-      { label: "San Antonio", count: 40 },
-      { label: "San Diego", count: 30 },
-      { label: "Dallas", count: 20 },
-      { label: "San Jose", count: 10 },
-      { label: "Austin", count: 50 },
-      { label: "Fort Worth", count: 30 },
-      { label: "Jacksonville", count: 20 },
-      { label: "Columbus", count: 78 },
-      { label: "Charlotte", count: 145 },
-      { label: "San Francisco", count: 10 },
-      { label: "Indianapolis", count: 15 },
-      { label: "Seattle", count: 100 },
-      { label: "Denver", count: 100 },
-      { label: "Washington", count: 10 },
-    ],
-  },
-  {
-    title: "Age",
-    categories: [
-      { label: "10-18", count: 150 },
-      { label: "18-25", count: 100 },
-      { label: "26-35", count: 200 },
-      { label: "36-45", count: 50 },
-      { label: "46-55", count: 80 },
-      { label: "56-65", count: 60 },
-      { label: "65+", count: 40 },
-    ],
-  },
-  {
-    title: "Income",
-    categories: [
-      { label: "<$20k", count: 150 },
-      { label: "$20k-$50k", count: 100 },
-      { label: "$50k-$100k", count: 200 },
-      { label: ">$100k", count: 50 },
-    ],
-  },
-  {
-    title: "Gender",
-    categories: [
-      { label: "male", count: 100 },
-      { label: "female", count: 200 },
-    ],
-  },
-];
+type QuantifierValues = {
+  [key in CFQuantifier]: number | undefined;
+};
+
+type QuantifierProps = {
+  onChange: (quantifier: CFQuantifier, value?: number) => void;
+  quantifier?: CFQuantifier;
+};
+
+type QuantifierState = {
+  quantifier?: CFQuantifier;
+  value?: number;
+};
+const QuantifierRow = ({ onChange, quantifier }: QuantifierProps) => {
+  const form = useForm<QuantifierState>({
+    defaultValues: {
+      quantifier: undefined,
+      value: undefined,
+    },
+  });
+
+  const state = form.watch();
+
+  const handleBlur = () => {
+    if (state.quantifier) {
+      onChange(state.quantifier, state.value ? state.value : undefined);
+    }
+  };
+
+  return (
+    <Stack direction="row" sx={{ gap: 2 }}>
+      <SelectInput
+        label={"Quantifier"}
+        form={form}
+        name={"quantifier"}
+        onBlur={handleBlur}
+        options={Object.values(CFQuantifier).map((q, i) => ({ label: q, value: q }))}
+      />
+
+      <NumberInput label={"Value"} form={form} name={"value"} onBlur={handleBlur} min={0} />
+    </Stack>
+  );
+};
+
+export const ConditionSettings = () => {
+  const [data, setData] = useState<QuantifierValues>({
+    Base: undefined,
+    Max: undefined,
+    Min: undefined,
+    RelBase: undefined,
+    RelMax: undefined,
+    RelMax_leq: undefined,
+    RelMin: undefined,
+    RelMin_leq: undefined,
+    S_Any_Down: undefined,
+    S_Any_Up: undefined,
+    S_Down: undefined,
+    S_Up: undefined,
+  });
+
+  const form = useForm<{ range: InetrvalRange; conjunction: boolean }>();
+  const state = form.watch();
+  useEffect(() => {
+    console.log(state);
+  }, [data, state]);
+
+  return (
+    <Stack gap={2}>
+      <Stack gap={1}>
+        <Typography variant="subtitle1" fontWeight={"bold"}>
+          Settings
+        </Typography>
+        <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} />
+        <RangeSliderInput max={5} form={form} name={"range"} />
+      </Stack>
+
+      <Stack gap={1}>
+        <Typography variant="subtitle1" fontWeight={"bold"}>
+          Quantifiers
+        </Typography>
+        <QuantifierRow
+          onChange={(quantifier, value) => {
+            setData((prev) => ({
+              ...prev,
+              [quantifier]: value,
+            }));
+          }}
+        />
+      </Stack>
+    </Stack>
+  );
+};
 
 export const ProcedureCFMiner = () => {
   return (
     <PageContainer>
       <PageHeading title={"CF Miner"} icon={<BarChart fontSize={"large"} />} />
 
-      {/* Observe */}
-      <Paper variant="outlined" sx={{ p: 2, mb: 4 }}>
-        <Typography variant="h6" fontWeight={"bold"}>
-          🔍 Observe
-        </Typography>
-        <Stack direction={"row"} sx={{ gap: 2, mt: 2, overflowX: "auto" }}>
-          {mockData.map((data, index) => (
+      {/* todo: use mui icons*/}
+      <SectionBox title={"🔍 Observe"}>
+        <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
+          {mockDataset.data.map((data, index) => (
             <ObserveAtrributeCard key={index} attributeData={data} />
           ))}
         </Stack>
-      </Paper>
+      </SectionBox>
 
       {/* Condition Section */}
-      <Paper variant="outlined" sx={{ p: 2, mb: 4 }}>
-        <Typography variant="h6">🛠️ Condition</Typography>
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center", mt: 2 }}>
-          <Box>
-            <Typography variant="body2">Settings</Typography>
-            <Switch defaultChecked />
-            <Typography variant="body2">Quantifiers</Typography>
-            <TextField label="Q1" size="small" sx={{ my: 0.5 }} />
-            <TextField label="Q2" size="small" />
-          </Box>
-
-          <FormControl size="small">
-            <InputLabel>Attribute</InputLabel>
-            <Select label="Attribute" value="City">
-              <MenuItem value="City">City</MenuItem>
-              <MenuItem value="Age">Age</MenuItem>
-            </Select>
-          </FormControl>
-
-          <TextField label="Min" size="small" type="number" />
-          <TextField label="Max" size="small" type="number" />
-
-          <Typography>AND</Typography>
-
-          <FormControl size="small">
-            <InputLabel>Attribute</InputLabel>
-            <Select label="Attribute" value="Age">
-              <MenuItem value="City">City</MenuItem>
-              <MenuItem value="Age">Age</MenuItem>
-            </Select>
-          </FormControl>
-
-          <TextField label="Min" size="small" type="number" />
-          <TextField label="Max" size="small" type="number" />
-
-          <Typography>=&gt;</Typography>
-          <TextField label="Target: Income" size="small" />
-        </Box>
-      </Paper>
+      <SectionBox title={"🛠️ Condition"} leftSection={<ConditionSettings />} minHeight={300}>
+        CARDS
+      </SectionBox>
 
       {/* Results */}
       <Paper variant="outlined" sx={{ p: 2, mb: 4 }}>

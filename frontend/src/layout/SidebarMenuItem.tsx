@@ -7,7 +7,7 @@ import { browserNavigate } from "../helpers/browserNavigate";
 type Props = MenuItemType & { selected: boolean };
 
 // Reusable Menu Item Component
-export const MenuItem = ({ name, icon, path, selected }: Props) => {
+export const SidebarMenuItem = ({ name, icon, path, selected }: Props) => {
   const navigate = useNavigate();
 
   return (
