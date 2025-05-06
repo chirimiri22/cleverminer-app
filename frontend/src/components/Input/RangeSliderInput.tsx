@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Slider } from "@mui/material";
 import { FormProps } from "../../model/FormProps";
 import { FieldValues, PathValue } from "react-hook-form";
-import { InetrvalRange } from "../../model/InetrvalRange";
+import { IntervalRange } from "../../model/IntervalRange";
 
-type Props<TFormValues extends FieldValues> = FormProps<TFormValues, InetrvalRange> & {
+type Props<TFormValues extends FieldValues> = FormProps<TFormValues, IntervalRange> & {
   max: number;
   onChange?: () => void;
 };

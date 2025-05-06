@@ -1,4 +1,4 @@
-export type InetrvalRange = {
+export type IntervalRange = {
   start: number;
   end: number;
 };
