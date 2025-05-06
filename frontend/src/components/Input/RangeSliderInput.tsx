@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Slider } from "@mui/material";
+import { Slider, Stack } from "@mui/material";
 import { FormProps } from "../../model/FormProps";
 import { FieldValues, PathValue } from "react-hook-form";
 import { IntervalRange } from "../../model/IntervalRange";
@@ -34,17 +34,20 @@ export const RangeSliderInput = <TFormValues extends FieldValues>({
   };
 
   return (
-    <Slider
-      title={label}
-      min={0}
-      max={max}
-      step={1}
-      marks={Array.from({ length: max + 1 }, (_, i) => ({
-        value: i,
-        label: i,
-      }))}
-      value={value}
-      onChange={handleChange}
-    />
+    <Stack  width={"90%"}>
+      <Slider
+        title={label}
+        disableSwap
+        min={0}
+        max={max}
+        step={1}
+        marks={Array.from({ length: max + 1 }, (_, i) => ({
+          value: i,
+          label: i,
+        }))}
+        value={value}
+        onChange={handleChange}
+      />
+    </Stack>
   );
 };

@@ -31,7 +31,15 @@ export const SectionBox = ({ title, children, leftSection, minHeight }: Props) =
               {leftSection}
             </Stack>
           )}
-          <Stack p={2}>{children}</Stack>
+          <Stack
+            p={2}
+            sx={{
+              overflow: "hidden",
+              overflowX: "auto",
+            }}
+          >
+            {children}
+          </Stack>
         </Stack>
       </Paper>
     </Stack>
