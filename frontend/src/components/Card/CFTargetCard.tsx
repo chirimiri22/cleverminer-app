@@ -4,6 +4,7 @@ import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CFProcedure } from "../../model/CFProcedure";
 import { CFConditionAttributes } from "../../model/CFConditionAttributes";
+import { Colors } from "../../styles/colors";
 
 type Props = {
   form: UseFormReturn<CFConditionAttributes>;
@@ -12,10 +13,13 @@ type Props = {
 
 export const CFTargetCard = ({ form, attributeOptions }: Props) => {
   return (
-    <Card variant="outlined" sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
+    <Card
+      variant="outlined"
+      sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content", borderColor: Colors.success }}
+    >
       <CardHeader
         sx={{
-          pb: 1,
+          pb: 2,
         }}
         title={
           <SelectInput
