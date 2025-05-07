@@ -6,7 +6,11 @@ import { BooleanInput } from "./Input/BooleanInput";
 import { RangeSliderInput } from "./Input/RangeSliderInput";
 import { CFQuantifiersSection } from "./CFQuantifiersSection";
 
-export const CFConditionSettings = () => {
+type Props = {
+  max: number;
+}
+
+export const CFConditionSettings = ({max} : Props) => {
   const form = useForm<CFProcedure>({
     defaultValues: {
       quantifiers: [{ quantifier: CFQuantifier.Base, value: undefined }],
@@ -20,7 +24,7 @@ export const CFConditionSettings = () => {
       </Typography>
       <Stack gap={1}  alignItems={"center"}>
         <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} />
-        <RangeSliderInput max={5} form={form} name={"range"} />
+        <RangeSliderInput max={max} form={form} name={"range"} />
       </Stack>
 
       <Typography variant="subtitle1" fontWeight={"bold"}>

@@ -26,7 +26,11 @@ export const ProcedureCFMiner = () => {
       </SectionBox>
 
       {/* Condition Section */}
-      <SectionBox title={"🛠️ Condition"} leftSection={<CFConditionSettings />} minHeight={300}>
+      <SectionBox
+        title={"🛠️ Condition"}
+        leftSection={<CFConditionSettings max={mockDataset.data.length - 1} />}
+        minHeight={300}
+      >
         <ConditionBuilder attributeData={mockDataset.data} />
       </SectionBox>
 

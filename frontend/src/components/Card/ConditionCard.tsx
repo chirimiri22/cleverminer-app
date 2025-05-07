@@ -17,37 +17,24 @@ import { RangeSliderInput } from "../Input/RangeSliderInput";
 import { AttributeData } from "../../model/AttributeData";
 import { SelectInput, SelectOption } from "../Input/SelectInput";
 import { CFConditionAttributes } from "../../model/CFConditionAttributes";
-import React, { useState } from "react";
-import { Check, Edit, GetAppRounded } from "@mui/icons-material";
-import { Colors } from "../../styles/colors";
-
-enum TypeOptions {
-  Lcut = "lcut",
-  Rcut = "rcut",
-  Seq = "seq",
-  Subset = "subset",
-  Oneof = "one",
-}
+import React from "react";
+import { TypeOptions } from "../../constants/enums/TypeOptions";
 
 type ConditionCardProps = {
   form: UseFormReturn<CFConditionAttributes>;
   index: number;
   attributeData: AttributeData[];
+  attributeOptions: SelectOption[];
 };
 
-export function ConditionCard({ form, index, attributeData }: ConditionCardProps) {
-  const options: SelectOption[] = attributeData.map((x) => ({
-    label: x.title,
-    value: x.title,
-  }));
-
+export const ConditionCard = ({ form, index, attributeData, attributeOptions }: ConditionCardProps) => {
   const typeOptions: SelectOption[] = Object.values(TypeOptions).map((opt) => ({
     label: opt,
     value: opt,
   }));
 
   const currentCardData = form.watch(`conditionAttributes.${index}`);
-
+  const categoriesCount = attributeData.find((x) => x.title === currentCardData.attribute)?.categories.length ?? 1;
   return (
     <Card variant="outlined" sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
       <CardHeader
@@ -58,7 +45,7 @@ export function ConditionCard({ form, index, attributeData }: ConditionCardProps
           <SelectInput
             name={`conditionAttributes.${index}.attribute`}
             form={form}
-            options={options}
+            options={attributeOptions}
             label={"Attribute"}
             size={"medium"}
           />
@@ -67,8 +54,15 @@ export function ConditionCard({ form, index, attributeData }: ConditionCardProps
       <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, pt: 1 }}>
         <SelectInput name={`conditionAttributes.${index}.type`} form={form} options={typeOptions} label={"Type"} />
 
-        <RangeSliderInput form={form} name={`conditionAttributes.${index}.range`} max={5} label={"hele"} />
+        <RangeSliderInput
+          form={form}
+          name={`conditionAttributes.${index}.range`}
+          max={categoriesCount}
+          label={"Range"}
+
+          hideLabels={categoriesCount > 10}
+        />
       </CardContent>
     </Card>
   );
-}
+};
