@@ -10,14 +10,16 @@ import {
   CardHeader,
   IconButton,
   Collapse,
+  Divider,
 } from "@mui/material";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { RangeSliderInput } from "../Input/RangeSliderInput";
 import { AttributeData } from "../../model/AttributeData";
 import { SelectInput, SelectOption } from "../Input/SelectInput";
 import { CFConditionAttributes } from "../../model/CFConditionAttributes";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Check, Edit, GetAppRounded } from "@mui/icons-material";
+import { Colors } from "../../styles/colors";
 
 enum TypeOptions {
   Lcut = "lcut",
@@ -45,48 +47,27 @@ export function ConditionCard({ form, index, attributeData }: ConditionCardProps
   }));
 
   const currentCardData = form.watch(`conditionAttributes.${index}`);
-  const [editAttributeMode, setEditAttributeMode] = useState(!currentCardData.attribute);
-
-  const handleToggleAttributeSelect = () => {
-    setEditAttributeMode((prev) => !prev);
-  };
 
   return (
     <Card variant="outlined" sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
       <CardHeader
+        sx={{
+          pb: 1,
+        }}
         title={
-          <Stack>
-            <Stack direction="row" alignItems="center" spacing={1} gap={1}>
-              {editAttributeMode && (
-                <>
-                  <SelectInput
-                    name={`conditionAttributes.${index}.attribute`}
-                    form={form}
-                    options={options}
-                    label={"Attribute"}
-                  />
-                  <IconButton onClick={() => setEditAttributeMode(false)} size="small">
-                    <Check fontSize={"small"} />
-                  </IconButton>
-                </>
-              )}
-              {!editAttributeMode && (
-                <>
-                  {currentCardData.attribute}
-
-                  <IconButton onClick={() => setEditAttributeMode(true)} size="small">
-                    <Edit fontSize={"small"} />
-                  </IconButton>
-                </>
-              )}
-            </Stack>
-          </Stack>
+          <SelectInput
+            name={`conditionAttributes.${index}.attribute`}
+            form={form}
+            options={options}
+            label={"Attribute"}
+            size={"medium"}
+          />
         }
       />
-      <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2, pt: 1 }}>
+      <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, pt: 1 }}>
         <SelectInput name={`conditionAttributes.${index}.type`} form={form} options={typeOptions} label={"Type"} />
 
-        <RangeSliderInput form={form} name={`conditionAttributes.${index}.range`} max={5} />
+        <RangeSliderInput form={form} name={`conditionAttributes.${index}.range`} max={5} label={"hele"} />
       </CardContent>
     </Card>
   );
