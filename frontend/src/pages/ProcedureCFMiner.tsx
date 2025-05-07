@@ -31,7 +31,7 @@ export const ProcedureCFMiner = () => {
         leftSection={<CFConditionSettings max={mockDataset.data.length - 1} />}
         minHeight={300}
       >
-        <ConditionBuilder attributeData={mockDataset.data} />
+        <ConditionBuilder attributeData={mockDataset.data} conjunction={true} />
       </SectionBox>
 
       {/* Results */}

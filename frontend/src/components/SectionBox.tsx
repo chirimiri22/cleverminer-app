@@ -24,8 +24,8 @@ export const SectionBox = ({ title, children, leftSection, minHeight }: Props) =
                 borderBottomLeftRadius: 3,
                 borderTopLeftRadius: 3,
                 backgroundColor: Colors.background,
-                minWidth: 250,
-                maxWidth: 300,
+                minWidth: 200,
+                maxWidth: 220,
               }}
             >
               {leftSection}
@@ -36,6 +36,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight }: Props) =
             sx={{
               overflow: "hidden",
               overflowX: "auto",
+
             }}
           >
             {children}

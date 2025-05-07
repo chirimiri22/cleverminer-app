@@ -11,6 +11,8 @@ import {
   IconButton,
   Collapse,
   Divider,
+  CardActions,
+  Button,
 } from "@mui/material";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { RangeSliderInput } from "../Input/RangeSliderInput";
@@ -25,9 +27,10 @@ type ConditionCardProps = {
   index: number;
   attributeData: AttributeData[];
   attributeOptions: SelectOption[];
+  onRemove: (index: number) => void;
 };
 
-export const ConditionCard = ({ form, index, attributeData, attributeOptions }: ConditionCardProps) => {
+export const ConditionCard = ({ form, index, attributeData, attributeOptions, onRemove }: ConditionCardProps) => {
   const typeOptions: SelectOption[] = Object.values(TypeOptions).map((opt) => ({
     label: opt,
     value: opt,
@@ -59,10 +62,18 @@ export const ConditionCard = ({ form, index, attributeData, attributeOptions }: 
           name={`conditionAttributes.${index}.range`}
           max={categoriesCount}
           label={"Range"}
-
           hideLabels={categoriesCount > 10}
         />
       </CardContent>
+      <CardActions>
+        <Button
+          color={"error"}
+          onClick={() => onRemove(index)}
+          disabled={form.watch("conditionAttributes").length === 1}
+        >
+          Remove
+        </Button>
+      </CardActions>
     </Card>
   );
 };

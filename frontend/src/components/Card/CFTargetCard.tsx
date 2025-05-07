@@ -1,13 +1,32 @@
-import { Stack, Typography, TextField } from "@mui/material";
+import { Stack, Typography, TextField, Card, CardHeader, CardContent, CardActions } from "@mui/material";
+import { SelectInput, SelectOption } from "../Input/SelectInput";
+import React from "react";
+import { UseFormReturn } from "react-hook-form";
+import { CFProcedure } from "../../model/CFProcedure";
+import { CFConditionAttributes } from "../../model/CFConditionAttributes";
 
-export const CFTargetCard = () => {
+type Props = {
+  form: UseFormReturn<CFConditionAttributes>;
+  attributeOptions: SelectOption[];
+};
+
+export const CFTargetCard = ({ form, attributeOptions }: Props) => {
   return (
-    <Stack spacing={1.5} border={2} borderColor="green" borderRadius={2} p={2} minWidth={220}>
-      <Typography variant="subtitle2">Target value</Typography>
-      <Typography fontWeight="bold" color="orange">
-        Attribute: Income
-      </Typography>
-      <TextField fullWidth />
-    </Stack>
+    <Card variant="outlined" sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
+      <CardHeader
+        sx={{
+          pb: 1,
+        }}
+        title={
+          <SelectInput
+            name={`targetAttribute`}
+            form={form}
+            options={attributeOptions}
+            label={"Target Attribute"}
+            size={"medium"}
+          />
+        }
+      />
+    </Card>
   );
 };
