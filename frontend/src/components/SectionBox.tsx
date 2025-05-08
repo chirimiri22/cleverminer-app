@@ -36,7 +36,6 @@ export const SectionBox = ({ title, children, leftSection, minHeight }: Props) =
             sx={{
               overflow: "hidden",
               overflowX: "auto",
-
             }}
           >
             {children}

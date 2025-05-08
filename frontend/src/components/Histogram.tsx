@@ -6,23 +6,27 @@ import React, { useEffect, useRef } from "react";
 import { Chart as ChartJS, ChartOptions } from "chart.js";
 import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
 import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";
+import { Stack, SxProps } from "@mui/material";
+import { Category } from "../model/Category";
 
 type Props = {
-  attibuteData: AttributeData;
-  mode: "simple" | "complex"; // todo: make enum of it - simple is for cards
+  categories: Category[];
+  title?: string;
+  mode?: "simple" | "complex"; // todo: make enum of it - simple is for cards
   color?: string;
+  sx?: SxProps;
 };
 
-export const Histogram = ({ attibuteData, mode = "simple", color }: Props) => {
+export const Histogram = ({ categories, mode = "simple", title, color, sx }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
 
   // Sample data for the histogram
   const data = {
-    labels: getCategoriesLabelsArray(attibuteData.categories), // Bin ranges
+    labels: getCategoriesLabelsArray(categories), // Bin ranges
     datasets: [
       {
-        label: attibuteData.title,
-        data: getCategoriesCountsArray(attibuteData.categories), // Frequency in each bin
+        label: title,
+        data: getCategoriesCountsArray(categories), // Frequency in each bin
         backgroundColor: color ?? "rgba(75, 192, 192, 0.6)",
       },
     ],
@@ -78,12 +82,13 @@ export const Histogram = ({ attibuteData, mode = "simple", color }: Props) => {
 
   return (
     // <div style={{width: '200px', margin: '0 auto'}}>
-    <Bar
-      // ref={chartRef}
 
-      data={data}
-      options={options}
-    />
-    // </div>
+      <Bar
+        // ref={chartRef}
+
+        data={data}
+        options={options}
+      />
+
   );
 };

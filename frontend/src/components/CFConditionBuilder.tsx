@@ -80,7 +80,7 @@ export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
   };
 
   return (
-    <Stack>
+    <Stack flexGrow={1}>
       {/* Left side: Conditions */}
 
       <BootstrapTooltip title={"Change view "}>
@@ -96,7 +96,6 @@ export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
           }}
         >
           <ArrowCircleRight
-            // color={"info"}
             sx={{
               transform: horizontal ? "rotate(90deg)" : undefined,
             }}
@@ -104,15 +103,17 @@ export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
         </IconButton>
       </BootstrapTooltip>
 
-      <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center" sx={{}}>
+      <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center" flexGrow={1}>
         <Stack
           direction="row"
+          flexGrow={1}
           gap={2}
           alignItems="center"
           flexWrap={!horizontal ? "wrap" : undefined}
           justifyContent={"space-around"}
           sx={{}}
         >
+          {/* todo: key prop*/}
           {fields.map((field, index) => (
             <>
               <ConditionCard

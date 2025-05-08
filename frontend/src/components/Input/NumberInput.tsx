@@ -1,20 +1,23 @@
 import { FieldValues, Controller } from "react-hook-form";
 import { Colors } from "../../styles/colors";
-import { TextField } from "@mui/material";
+import { SxProps, TextField } from "@mui/material";
 import { FormProps } from "../../model/FormProps";
 
 type Props<TFormValues extends FieldValues, TValue> = FormProps<TFormValues, TValue> & {
   onBlur?: () => void;
   min?: number;
   max?: number;
+  sx?: SxProps;
 };
 
 export const NumberInput = <TFormValues extends FieldValues, TValue>({
   form,
   name,
   onBlur,
+  label,
   min,
   max,
+  sx,
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -29,7 +32,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
         <TextField
           {...field}
           id="quantifier-value"
-          label="Value"
+          label={label}
           type="number"
           size="small"
           variant={"filled"}
@@ -38,6 +41,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
             "& .MuiInputBase-root": {
               backgroundColor: Colors.white,
             },
+            ...sx,
           }}
           value={field.value ?? ""} // ✅ avoid undefined
           onChange={(e) => {

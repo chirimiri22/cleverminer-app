@@ -1,8 +1,7 @@
-import { Stack, Typography, TextField, Card, CardHeader, CardContent, CardActions } from "@mui/material";
+import { Card, CardHeader } from "@mui/material";
 import { SelectInput, SelectOption } from "../Input/SelectInput";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CFProcedure } from "../../model/CFProcedure";
 import { CFConditionAttributes } from "../../model/CFConditionAttributes";
 import { Colors } from "../../styles/colors";
 

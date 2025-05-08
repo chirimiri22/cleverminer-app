@@ -32,7 +32,7 @@ const HistogramTab = ({ attributeData, active }: TabProps) => {
   return (
     <TabWrapper active={active}>
       {" "}
-      <Histogram attibuteData={attributeData} mode={"simple"} />
+      <Histogram categories={attributeData.categories} mode={"simple"} />
     </TabWrapper>
   );
 };
