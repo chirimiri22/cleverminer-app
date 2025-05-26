@@ -7,19 +7,19 @@ import { AttributeData } from "../model/AttributeData";
 import { CFConditionAttributes } from "../model/CFConditionAttributes";
 import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Colors } from "../styles/colors";
-import { useState } from "react";
-import { BootstrapTooltip } from "./BootstrapTooltip";
+
 
 type Props = {
   attributeData: AttributeData[];
   conjunction: boolean;
+  horizontal?: boolean;
 };
 
 const getFirstUnusedAttribute = (attributeData: AttributeData[], usedAttributes: string[]) => {
   return attributeData.find((x) => !usedAttributes.includes(x.title));
 };
 
-export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
+export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Props) => {
   const form = useForm<CFConditionAttributes>({
     defaultValues: {
       conditionAttributes: [
@@ -41,7 +41,7 @@ export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
     name: "conditionAttributes",
   });
 
-  const [horizontal, setHorizontal] = useState(true);
+  // const [horizontal, setHorizontal] = useState(true);
 
   const conditionAttributes = form.watch("conditionAttributes").map((x) => x.attribute);
   const targetAttribute = form.watch("targetAttribute");
@@ -80,77 +80,53 @@ export const ConditionBuilder = ({ attributeData, conjunction }: Props) => {
   };
 
   return (
-    <Stack flexGrow={1}>
-      {/* Left side: Conditions */}
+    <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center" flexGrow={1}>
+      <Stack
+        direction="row"
+        flexGrow={1}
+        gap={2}
+        alignItems="center"
+        flexWrap={!horizontal ? "wrap" : undefined}
+        justifyContent={"space-around"}
+        sx={{}}
+      >
+        {/* todo: key prop*/}
+        {fields.map((field, index) => (
+          <Stack direction={"row"} gap={1} alignItems={"center"} key={field.id}>
+            <ConditionCard
 
-      <BootstrapTooltip title={"Change view "}>
-        {/* todo: move this to right upper corner*/}
-        <IconButton
-          onClick={() => setHorizontal(!horizontal)}
-          sx={{
-            position: "sticky",
-            top: 0,
-            left: 0,
-            height: 30,
-            width: 30,
-          }}
-        >
-          <ArrowCircleRight
-            sx={{
-              transform: horizontal ? "rotate(90deg)" : undefined,
-            }}
-          />
-        </IconButton>
-      </BootstrapTooltip>
-
-      <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center" flexGrow={1}>
-        <Stack
-          direction="row"
-          flexGrow={1}
-          gap={2}
-          alignItems="center"
-          flexWrap={!horizontal ? "wrap" : undefined}
-          justifyContent={"space-around"}
-          sx={{}}
-        >
-          {/* todo: key prop*/}
-          {fields.map((field, index) => (
-            <>
-              <ConditionCard
-                key={field.id}
-                index={index}
-                attributeData={attributeData}
-                form={form}
-                attributeOptions={unusedAttributeOptions}
-                onRemove={removeCondition}
-              />
-              {fields.length - 1 > index && (
-                <Typography mx={1} fontSize={"small"} color={Colors.textSecondary}>
-                  {conjunction ? "AND" : "OR"}
-                </Typography>
-              )}
-            </>
-          ))}
-          {usedAttributes.length < attributeData.length && (
-            <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
-              <Add fontSize={"large"} />
-            </IconButton>
-          )}
-        </Stack>
-
-        {/* Arrow */}
-        <ArrowCircleRight
-          sx={{
-            height: 50,
-            width: 50,
-            transform: horizontal ? undefined : "rotate(90deg)",
-          }}
-          color={"success"}
-        />
-
-        {/* Right side: Target */}
-        <CFTargetCard form={form} attributeOptions={unusedAttributeOptions} />
+              index={index}
+              attributeData={attributeData}
+              form={form}
+              attributeOptions={unusedAttributeOptions}
+              onRemove={removeCondition}
+            />
+            {fields.length - 1 > index && (
+              <Typography fontSize={"small"} color={Colors.textSecondary}>
+                {conjunction ? "AND" : "OR"}
+              </Typography>
+            )}
+          </Stack>
+        ))}
+        {usedAttributes.length < attributeData.length && (
+          <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
+            <Add fontSize={"large"} />
+          </IconButton>
+        )}
       </Stack>
+
+      {/* Arrow */}
+      <ArrowCircleRight
+        sx={{
+          height: 50,
+          width: 50,
+          transform: horizontal ? undefined : "rotate(90deg)",
+        }}
+        color={"success"}
+      />
+
+      {/* Right side: Target */}
+      <CFTargetCard form={form} attributeOptions={unusedAttributeOptions} />
     </Stack>
   );
 };

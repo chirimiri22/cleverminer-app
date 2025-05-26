@@ -1,5 +1,6 @@
 import { AttributeData } from "./AttributeData";
 import { Category } from "./Category";
+import { CFQuantifier } from "../constants/enums/CFQuantifier";
 
 export type Dataset = {
   data: AttributeData[];
@@ -92,10 +93,13 @@ type CFResutls = {
   conjunction: boolean;
 };
 
-type CFRule = {
+export type CFRule = {
   // column
   attributes: ResultAtrribute[];
   histogramData: Category[];
+  quantifiers: {
+    [K in keyof typeof CFQuantifier]?: number;
+  }
 };
 
 export type ResultAtrribute = {
@@ -124,6 +128,12 @@ export const mockResults: CFResutls = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
+      quantifiers: {
+        [CFQuantifier.Base]: 100,
+        [CFQuantifier.RelBase]: 0.8,
+        [CFQuantifier.RelMax]: 0.7,
+        [CFQuantifier.RelMin_leq]: 0.9,
+      }
     },
     {
       attributes: [{ title: "Income", selectedCategories: ["Rich", "Middle Class"] }],
@@ -139,6 +149,12 @@ export const mockResults: CFResutls = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
+      quantifiers: {
+        [CFQuantifier.Base]: 100,
+        [CFQuantifier.RelBase]: 0.8,
+        [CFQuantifier.RelMax]: 0.7,
+        [CFQuantifier.RelMin_leq]: 0.9,
+      }
     },
     {
       attributes: [
@@ -157,6 +173,12 @@ export const mockResults: CFResutls = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
+      quantifiers: {
+        [CFQuantifier.Base]: 100,
+        [CFQuantifier.RelBase]: 0.8,
+        [CFQuantifier.RelMax]: 0.7,
+        [CFQuantifier.RelMin_leq]: 0.9,
+      }
     },
   ],
   targetAttribute: "City",

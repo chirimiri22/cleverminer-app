@@ -1,4 +1,4 @@
-import { Paper, Stack, SxProps, Typography } from "@mui/material";
+import { Button, Paper, Stack, SxProps, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import { Colors } from "../styles/colors";
 
@@ -7,16 +7,17 @@ type Props = {
   children?: ReactNode;
   leftSection?: ReactNode;
   minHeight?: number;
+  rightUpperTools?: ReactNode;
 };
 
-export const SectionBox = ({ title, children, leftSection, minHeight }: Props) => {
+export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools }: Props) => {
   return (
     <Stack>
       <Typography variant="h6" fontWeight={"bold"} mb={1}>
         {title}
       </Typography>
       <Paper variant="outlined" sx={{ minHeight: minHeight }}>
-        <Stack direction={"row"} flexGrow={1} height={"100%"}>
+        <Stack direction={"row"} flexGrow={1} height={"100%"} position={"relative"}>
           {leftSection && (
             <Stack
               sx={{
@@ -31,6 +32,8 @@ export const SectionBox = ({ title, children, leftSection, minHeight }: Props) =
               {leftSection}
             </Stack>
           )}
+          <Stack sx={{ position: "absolute", top: 0, right: 0, p: 1 }}>{rightUpperTools}</Stack>
+
           <Stack
             p={2}
             sx={{
