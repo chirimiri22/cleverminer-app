@@ -1,4 +1,4 @@
-import { ArrowCircleRight, Settings } from "@mui/icons-material";
+import { ArrowCircleRight, Settings, Terminal } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { mockDataset, mockResults } from "../model/Dataset";
@@ -10,7 +10,42 @@ import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
+import { BootstrapTooltip } from "./BootstrapTooltip";
 
+const outputText = `
+Cleverminer version 1.2.1.
+        Starting data preparation ...
+        Automatically reordering numeric categories ...
+        Automatically reordering numeric categories ...done
+        Encoding columns into bit-form...
+        Encoding columns into bit-form...done
+        Data preparation finished.
+        Will go for  CFMiner
+        Starting to mine rules.
+        100%|####################################################|Elapsed Time: 0:00:00
+        Done. Total verifications : 8, rules 1, times: prep 0.01sec, processing 0.02sec
+
+        CleverMiner task processing summary:
+
+        Task type : CFMiner
+        Number of verifications : 8
+        Number of rules : 1
+        Total time needed : 00h 00m 00s
+        Time of data preparation : 00h 00m 00s
+        Time of rule mining : 00h 00m 00s
+
+        List of rules:
+        RULEID BASE  S_UP  S_DOWN Condition
+        1 10571     1     1 Speed_limit(40 50 60) & Vehicle_Type(Motorcycle over 500cc)
+        2  8803     1     1 Speed_limit(50 60) & Vehicle_Type(Motorcycle over 500cc)
+        3  1143     1     1 Speed_limit(50 60) & Vehicle_Type(Pedal cycle)
+        4 10690     1     1 Speed_limit(50 60 70) & Vehicle_Type(Motorcycle over 500cc)
+        5  1198     1     1 Speed_limit(50 60 70) & Vehicle_Type(Pedal cycle)
+        6  7694     1     1 Speed_limit(60) & Vehicle_Type(Motorcycle over 500cc)
+        7   996     1     1 Speed_limit(60) & Vehicle_Type(Pedal cycle)
+        8  9581     1     1 Speed_limit(60 70) & Vehicle_Type(Motorcycle over 500cc)
+        9  1051     1     1 Speed_limit(60 70) & Vehicle_Type(Pedal cycle)
+`;
 
 export type CFQuantifierDisplay = {
   [K in keyof typeof CFQuantifier]: boolean;
@@ -33,12 +68,21 @@ export const CFResultSection = () => {
     setAnchorEl(null);
   };
 
+  const [logOpen, setLogOpen] = useState(false);
+
   return (
     <SectionBox
+      stretch={true}
       title={"📊 Results"}
       rightUpperTools={
-        <>
-          <IconButton size={"small"} onClick={handleClick}>
+        <Stack direction={"row"} gap={1} alignItems={"center"}>
+          <BootstrapTooltip title={"See logs from the process"} placement={"left"}>
+            <IconButton size={"small"} sx={{ color: Colors.white }} onClick={() => setLogOpen(!logOpen)}>
+              <Terminal fontSize={"small"} />
+            </IconButton>
+          </BootstrapTooltip>
+
+          <IconButton size={"small"} sx={{ color: Colors.white }} onClick={handleClick}>
             <Settings fontSize={"small"} />
           </IconButton>
           <Popover
@@ -69,7 +113,7 @@ export const CFResultSection = () => {
               ))}
             </Box>
           </Popover>
-        </>
+        </Stack>
       }
       leftSection={
         <Stack alignItems={"center"} justifyContent={"end"} flexGrow={1} gap={3} pb={5}>
@@ -78,33 +122,53 @@ export const CFResultSection = () => {
         </Stack>
       }
     >
-      {/*  todo : align*/}
-      <Stack direction={"row"} gap={2} mt={1}>
-        {mockResults.rules.map((rule, ruleIndex) => (
-          <Stack key={ruleIndex} alignItems={"center"} flexGrow={1} maxWidth={250} justifyContent={"space-between"}>
-            <ResultRuleAttributes attributes={rule.attributes} conjunction={mockResults.conjunction} />
+      {logOpen && (
+        <Stack bgcolor={Colors.black} height={"100%"} width={"100%"} flexGrow={1}>
+          {/* todo: newline wrapping doesnt work*/}
+          <Typography
+            variant="body2"
+            component="pre"
+            sx={{
+              color: Colors.white,
+              p: 2,
+              fontFamily: "monospace",
+              whiteSpace: "pre-wrap",
+              maxHeight: 350,
+              overflowY: "auto",
+            }}
+          >
+            {outputText}
+          </Typography>
+        </Stack>
+      )}
+      {!logOpen && (
+        <Stack direction={"row"} gap={2}>
+          {mockResults.rules.map((rule, ruleIndex) => (
+            <Stack key={ruleIndex} alignItems={"center"} flexGrow={1} maxWidth={250} justifyContent={"space-between"}>
+              <ResultRuleAttributes attributes={rule.attributes} conjunction={mockResults.conjunction} />
 
-            <Stack alignItems={"center"}>
-              {/* Arrow */}
-              <ArrowCircleRight
-                sx={{
-                  py: 0.5,
-                  height: 20,
-                  width: 20,
-                  transform: "rotate(90deg)",
-                }}
-                color={"success"}
-              />
-              <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
-                <CardContent>
-                  <Histogram categories={mockDataset.data[0].categories} color={Colors.textSecondary} />
-                </CardContent>
-              </Card>
-              <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex +1} />
+              <Stack alignItems={"center"}>
+                {/* Arrow */}
+                <ArrowCircleRight
+                  sx={{
+                    py: 0.5,
+                    height: 20,
+                    width: 20,
+                    transform: "rotate(90deg)",
+                  }}
+                  color={"success"}
+                />
+                <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
+                  <CardContent>
+                    <Histogram categories={mockDataset.data[0].categories} color={Colors.textSecondary} />
+                  </CardContent>
+                </Card>
+                <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />
+              </Stack>
             </Stack>
-          </Stack>
-        ))}
-      </Stack>
+          ))}
+        </Stack>
+      )}
     </SectionBox>
   );
 };

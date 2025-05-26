@@ -8,11 +8,12 @@ type Props = {
   leftSection?: ReactNode;
   minHeight?: number;
   rightUpperTools?: ReactNode;
+  stretch?: boolean;
 };
 
-export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools }: Props) => {
+export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools, stretch }: Props) => {
   return (
-    <Stack>
+    <Stack >
       <Typography variant="h6" fontWeight={"bold"} mb={1}>
         {title}
       </Typography>
@@ -32,13 +33,28 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
               {leftSection}
             </Stack>
           )}
-          <Stack sx={{ position: "absolute", top: 0, right: 0, p: 1 }}>{rightUpperTools}</Stack>
+          {rightUpperTools && (
+            <Stack
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                m: 1,
+                bgcolor: Colors.primary,
+                borderRadius: 5,
+              }}
+            >
+              {rightUpperTools}
+            </Stack>
+          )}
 
           <Stack
             p={2}
             sx={{
               overflow: "hidden",
               overflowX: "auto",
+              width: stretch ? "100%" : undefined,
+
             }}
           >
             {children}

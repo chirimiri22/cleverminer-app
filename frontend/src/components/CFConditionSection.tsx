@@ -6,6 +6,7 @@ import { useState } from "react";
 import { BootstrapTooltip } from "./BootstrapTooltip";
 import { IconButton } from "@mui/material";
 import { ArrowCircleRight } from "@mui/icons-material";
+import { Colors } from "../styles/colors";
 
 export const CFConditionSection = () => {
   const [horizontal, setHorizontal] = useState(true);
@@ -26,6 +27,7 @@ export const CFConditionSection = () => {
             <ArrowCircleRight
               sx={{
                 transform: horizontal ? "rotate(90deg)" : undefined,
+                color: Colors.white,
               }}
             />
           </IconButton>
