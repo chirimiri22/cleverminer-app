@@ -6,9 +6,11 @@ import { ROUTES } from "../constants/routes";
 import { menuGroups } from "../layout/SIdebarMenu";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { Footer } from "../layout/Footer";
+import { Logo } from "../components/Logo";
 
 const BigButton = ({ onClick, title, icon }: { onClick: () => void; title: string; icon: React.ReactNode }) => {
   return (
+    //  todo maybe add logo her
     <Stack gap={1} alignItems="center">
       {title}
       <Button
@@ -66,6 +68,7 @@ export const Home = () => {
         </Stack>
         {/* todo: add explanation of the 4 steps*/}
         <Stack>Cleverminer walks you through 4 easy steps to discover rules in your data!</Stack>
+
       </Stack>
       <Footer noBg />
     </Container>

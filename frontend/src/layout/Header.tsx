@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
 import { APP_NAME } from "../constants/constants";
 import { Logo } from "../components/Logo";
 import { Colors } from "../styles/colors";
@@ -10,11 +10,13 @@ export const Header = () => {
   return (
     <AppBar position="static" elevation={0} color={"default"} sx={{ borderBottom: `1px solid ${Colors.border}` }}>
       {/* TODO: make mouse change*/}
-      <Toolbar sx={{ gap: 2 }} onClick={() => navigate(ROUTES.HOME)}>
-        <Logo />
-        <Typography variant="h5" component="div">
-          {APP_NAME}
-        </Typography>
+      <Toolbar>
+        <Stack sx={{ gap: 2, cursor: "pointer", }} onClick={() => navigate(ROUTES.HOME)} alignItems="center" direction="row">
+          <Logo />
+          <Typography variant="h5" component="div">
+            {APP_NAME}
+          </Typography>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

@@ -84,7 +84,7 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
       <Stack
         direction="row"
         flexGrow={1}
-        gap={2}
+        gap={1}
         alignItems="center"
         flexWrap={!horizontal ? "wrap" : undefined}
         justifyContent={"space-around"}
