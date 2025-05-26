@@ -1,9 +1,12 @@
 import { Box, Link, Stack, Typography } from "@mui/material";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
-
-export const Footer = () => {
+import { Colors } from "../styles/colors";
+type Props = {
+  noBg?: boolean;
+}
+export const Footer = ({noBg = false} : Props) => {
   return (
-    <Stack sx={{ textAlign: "center", backgroundColor: "#f5f5f5" }}>
+    <Stack sx={{ textAlign: "center", backgroundColor: noBg ? undefined : Colors.background}}>
       <Typography variant="body2" color="textSecondary">
         Running on <Link href={CLEVERMINER_DOCS_URL}>Python CleverMiner package</Link>.
       </Typography>

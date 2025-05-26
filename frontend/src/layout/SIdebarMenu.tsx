@@ -14,7 +14,7 @@ type GroupType = {
 };
 
 // Menu Data
-const menuGroups: GroupType[] = [
+export const menuGroups: GroupType[] = [
   {
     items: [{ name: "Data & Preprocessing", icon: <StorageIcon />, path: ROUTES.DATASETS }],
   },
