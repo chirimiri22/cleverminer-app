@@ -11,6 +11,7 @@ import { useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
+import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 
 const outputText = `
 Cleverminer version 1.2.1.
@@ -51,6 +52,7 @@ export type CFQuantifierDisplay = {
   [K in keyof typeof CFQuantifier]: boolean;
 };
 
+//  todo: create comparator for 2 histograms - modalni okno
 export const CFResultSection = () => {
   const form = useForm<CFQuantifierDisplay>();
 
@@ -72,7 +74,7 @@ export const CFResultSection = () => {
 
   return (
     <SectionBox
-      title={"📊 Results"}
+      title={createSectionTitle(FOUR_STEPS.results)}
       rightUpperTools={
         <Stack direction={"row"} gap={1} alignItems={"center"}>
           <BootstrapTooltip title={"See logs from the process"} placement={"left"}>

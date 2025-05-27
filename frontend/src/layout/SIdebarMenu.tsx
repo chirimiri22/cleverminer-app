@@ -9,6 +9,7 @@ import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { SidebarMenuItem, MenuItemType } from "./SidebarMenuItem";
 import { Colors } from "../styles/colors";
 
+
 type GroupType = {
   items: MenuItemType[];
 };

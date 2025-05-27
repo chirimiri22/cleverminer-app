@@ -10,6 +10,7 @@ import { Colors } from "../styles/colors";
 import { useForm } from "react-hook-form";
 import { CFProcedure } from "../model/CFProcedure";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
+import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 
 export const CFConditionSection = () => {
   const [horizontal, setHorizontal] = useState(true);
@@ -24,7 +25,7 @@ export const CFConditionSection = () => {
   const conjunction = form.watch("conjunction");
   return (
     <SectionBox
-      title={"🛠️ Condition"}
+      title={createSectionTitle(FOUR_STEPS.condition)}
       leftSection={<CFConditionSettings form={form} max={mockDataset.data.length - 1} />}
       minHeight={300}
       rightUpperTools={

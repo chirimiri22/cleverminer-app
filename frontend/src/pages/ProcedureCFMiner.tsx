@@ -1,19 +1,14 @@
-import { ArrowCircleRight, BarChart, Download, PlayArrow, Settings } from "@mui/icons-material";
 import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Typography,
-  Stack,
-  Card,
-  CardHeader,
-  CardContent,
-  IconButton,
-} from "@mui/material";
+  ArrowCircleRight,
+  AutoGraph,
+  BarChart,
+  Construction,
+  Download,
+  PlayArrow,
+  QueryStats,
+  Settings,
+} from "@mui/icons-material";
+import { Box, Button, Paper, Typography, Stack } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
@@ -24,13 +19,53 @@ import { mockDataset, mockResults } from "../model/Dataset";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
+import { ReactNode } from "react";
+
+// todo: add to constants
+type Step = {
+  name: string;
+  icon: ReactNode;
+};
+
+export const FOUR_STEPS: {
+  observe: Step;
+  condition: Step;
+  results: Step;
+  exporting: Step;
+} = {
+  observe: {
+    name: "Observe",
+    icon: <QueryStats />,
+  },
+  condition: {
+    name: "Condition",
+    icon: <Construction />,
+  },
+  results: {
+    name: "Results",
+    icon: <AutoGraph />,
+  },
+  exporting: {
+    name: "Export",
+    icon: <Download />,
+  },
+};
+
+export const createSectionTitle = (step: Step) => {
+  return (
+    <Stack direction={"row"} sx={{ alignItems: "center", gap: 1 }}>
+      {step.icon}
+      <Typography variant="h6">{step.name}</Typography>
+    </Stack>
+  );
+};
 
 export const ProcedureCFMiner = () => {
   return (
     <PageContainer>
       <PageHeading title={"CF Miner"} icon={<BarChart fontSize={"large"} />} />
       {/* todo: use mui icons*/}
-      <SectionBox title={"🔍 Observe"}>
+      <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
           {mockDataset.data.map((data, index) => (
             <ObserveAtrributeCard key={index} attributeData={data} />
@@ -41,9 +76,9 @@ export const ProcedureCFMiner = () => {
       <CFConditionSection />
       <CFResultSection />
       {/* Export */}
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="h6">📤 Export</Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
+
+      <SectionBox title={createSectionTitle(FOUR_STEPS.exporting)}>
+        <Stack direction={"row"} gap={1} alignItems={"center"}>
           <Button variant="outlined" startIcon={<Download />}>
             Export PNGs
           </Button>
@@ -56,9 +91,9 @@ export const ProcedureCFMiner = () => {
           <Button variant="outlined" startIcon={<Download />}>
             All in ZIP
           </Button>
-        </Box>
-      </Paper>
-      ;
+        </Stack>
+
+      </SectionBox>
     </PageContainer>
   );
 };

@@ -7,6 +7,7 @@ import { menuGroups } from "../layout/SIdebarMenu";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { Footer } from "../layout/Footer";
 import { Logo } from "../components/Logo";
+import { createSectionTitle, FOUR_STEPS } from "./ProcedureCFMiner";
 
 const BigButton = ({ onClick, title, icon }: { onClick: () => void; title: string; icon: React.ReactNode }) => {
   return (
@@ -67,8 +68,16 @@ export const Home = () => {
             ))}
         </Stack>
         {/* todo: add explanation of the 4 steps*/}
-        <Stack>Cleverminer walks you through 4 easy steps to discover rules in your data!</Stack>
-
+        <Stack alignItems={"center"} gap={2} bgcolor={Colors.background} borderRadius={2} p={2}>
+          Cleverminer walks you through 4 easy steps to discover rules in your data!
+          <Stack>
+            {Object.values(FOUR_STEPS).map((item, index) => (
+              <Stack direction={"row"} gap={1} alignItems={"center"}>
+                {createSectionTitle(item)} - explanantion
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
       </Stack>
       <Footer noBg />
     </Container>
