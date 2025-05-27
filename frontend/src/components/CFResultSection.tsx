@@ -143,7 +143,14 @@ export const CFResultSection = () => {
       {!logOpen && (
         <Stack direction={"row"} gap={2}>
           {mockResults.rules.map((rule, ruleIndex) => (
-            <Stack key={ruleIndex} alignItems={"center"} flexGrow={1} maxWidth={250} justifyContent={"space-between"}>
+            <Stack
+              key={ruleIndex}
+              alignItems={"center"}
+              flexGrow={1}
+              maxWidth={250}
+              justifyContent={"space-between"}
+              pr={ruleIndex === mockResults.rules.length - 1 ? 4 : 0}
+            >
               <ResultRuleAttributes attributes={rule.attributes} conjunction={mockResults.conjunction} />
 
               <Stack alignItems={"center"}>
