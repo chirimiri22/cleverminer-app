@@ -8,7 +8,6 @@ type Props = {
   leftSection?: ReactNode;
   minHeight?: number;
   rightUpperTools?: ReactNode;
-
 };
 
 export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools }: Props) => {
@@ -42,6 +41,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
                 m: 1,
                 bgcolor: Colors.primary,
                 borderRadius: 5,
+                zIndex: 120,
               }}
             >
               {rightUpperTools}
@@ -49,7 +49,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
           )}
 
           <Stack
-            p={2}
+            p={4}
             sx={{
               overflow: "hidden",
               overflowX: "auto",

@@ -8,7 +8,6 @@ import { CFConditionAttributes } from "../model/CFConditionAttributes";
 import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Colors } from "../styles/colors";
 
-
 type Props = {
   attributeData: AttributeData[];
   conjunction: boolean;
@@ -80,17 +79,20 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
   };
 
   return (
-    <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center">
+    <Stack direction={horizontal ? "row" : "column"} gap={4} alignItems="center">
       <Stack
         direction="row"
-        gap={1}
+        gap={6}
         alignItems="center"
         flexWrap={!horizontal ? "wrap" : undefined}
         justifyContent={horizontal ? "flex-start" : "center"}
+        position={"relative"}
+        px={horizontal ? 0 : 5}
+        pr={horizontal ? 4 : 0}
+        pl={0}
       >
-        {/* todo: key prop*/}
         {fields.map((field, index) => (
-          <Stack direction={"row"} gap={1} alignItems={"center"} key={field.id}>
+          <Stack direction={"row"} alignItems={"center"} key={field.id} position={"relative"}>
             <ConditionCard
               index={index}
               attributeData={attributeData}
@@ -99,19 +101,29 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
               onRemove={removeCondition}
             />
             {fields.length - 1 > index && (
-              <Typography fontSize={"small"} color={Colors.textSecondary}>
-                {conjunction ? "AND" : "OR"}
-              </Typography>
+              <Stack
+                alignItems={"center"}
+                position={"absolute"}
+                top={"50%"}
+                right={-38}
+                width={"30px"}
+                sx={{ transform: "translateY(-50%)" }}
+              >
+                <Typography fontSize={"small"} color={Colors.textSecondary}>
+                  {conjunction ? "AND" : "OR"}
+                </Typography>
+              </Stack>
+            )}
+
+            {usedAttributes.length < attributeData.length && fields.length - 1 === index && (
+              <Stack alignItems={"center"} position={"absolute"} right={-55}>
+                <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
+                  <Add fontSize={"large"} />
+                </IconButton>
+              </Stack>
             )}
           </Stack>
         ))}
-        {usedAttributes.length < attributeData.length && (
-          <Stack alignItems={"center"}>
-            <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
-              <Add fontSize={"large"} />
-            </IconButton>
-          </Stack>
-        )}
       </Stack>
 
       {/* Arrow */}
@@ -125,7 +137,9 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
       />
 
       {/* Right side: Target */}
-      <CFTargetCard form={form} attributeOptions={unusedAttributeOptions} />
+      <Stack pr={horizontal ? 4 : 0}>
+        <CFTargetCard form={form} attributeOptions={unusedAttributeOptions} />
+      </Stack>
     </Stack>
   );
 };
