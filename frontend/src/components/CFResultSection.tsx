@@ -72,7 +72,6 @@ export const CFResultSection = () => {
 
   return (
     <SectionBox
-      stretch={true}
       title={"📊 Results"}
       rightUpperTools={
         <Stack direction={"row"} gap={1} alignItems={"center"}>

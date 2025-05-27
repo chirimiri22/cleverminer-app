@@ -80,21 +80,18 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
   };
 
   return (
-    <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center" flexGrow={1}>
+    <Stack direction={horizontal ? "row" : "column"} gap={4} mt={1} alignItems="center">
       <Stack
         direction="row"
-        flexGrow={1}
         gap={1}
         alignItems="center"
         flexWrap={!horizontal ? "wrap" : undefined}
-        justifyContent={"space-around"}
-        sx={{}}
+        justifyContent={horizontal ? "flex-start" : "center"}
       >
         {/* todo: key prop*/}
         {fields.map((field, index) => (
           <Stack direction={"row"} gap={1} alignItems={"center"} key={field.id}>
             <ConditionCard
-
               index={index}
               attributeData={attributeData}
               form={form}
@@ -109,9 +106,11 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Pro
           </Stack>
         ))}
         {usedAttributes.length < attributeData.length && (
-          <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
-            <Add fontSize={"large"} />
-          </IconButton>
+          <Stack alignItems={"center"}>
+            <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
+              <Add fontSize={"large"} />
+            </IconButton>
+          </Stack>
         )}
       </Stack>
 

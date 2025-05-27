@@ -7,13 +7,24 @@ import { BootstrapTooltip } from "./BootstrapTooltip";
 import { IconButton } from "@mui/material";
 import { ArrowCircleRight } from "@mui/icons-material";
 import { Colors } from "../styles/colors";
+import { useForm } from "react-hook-form";
+import { CFProcedure } from "../model/CFProcedure";
+import { CFQuantifier } from "../constants/enums/CFQuantifier";
 
 export const CFConditionSection = () => {
   const [horizontal, setHorizontal] = useState(true);
+
+  const form = useForm<CFProcedure>({
+    defaultValues: {
+      quantifiers: [{ quantifier: CFQuantifier.Base, value: undefined }],
+    },
+  });
+
+  const conjunction = form.watch("conjunction");
   return (
     <SectionBox
       title={"🛠️ Condition"}
-      leftSection={<CFConditionSettings max={mockDataset.data.length - 1} />}
+      leftSection={<CFConditionSettings form={form} max={mockDataset.data.length - 1} />}
       minHeight={300}
       rightUpperTools={
         <BootstrapTooltip title={"Change view "}>
@@ -34,7 +45,7 @@ export const CFConditionSection = () => {
         </BootstrapTooltip>
       }
     >
-      <ConditionBuilder attributeData={mockDataset.data} conjunction={true} horizontal={horizontal} />
+      <ConditionBuilder attributeData={mockDataset.data} conjunction={conjunction} horizontal={horizontal} />
     </SectionBox>
   );
 };
