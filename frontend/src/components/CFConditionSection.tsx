@@ -16,6 +16,7 @@ export const CFConditionSection = () => {
 
   const form = useForm<CFProcedure>({
     defaultValues: {
+      conjunction: true,
       quantifiers: [{ quantifier: CFQuantifier.Base, value: undefined }],
     },
   });
