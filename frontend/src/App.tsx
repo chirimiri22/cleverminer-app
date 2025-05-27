@@ -5,7 +5,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { DatasetDetail } from "./pages/DatasetDetail";
 import { AppContainer } from "./layout/AppContainer";
 import { ROUTES } from "./constants/routes";
-import { Datasets } from "./pages/Datasets";
+import { Dataset } from "./pages/Dataset";
 import { Procedure4ftMiner } from "./pages/Procedure4ftMiner";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 
@@ -27,7 +27,7 @@ const WrappedRoutes = () => {
       <Routes>
         <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner />} />
         <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMiner />} />
-        <Route path={ROUTES.DATASETS} element={<Datasets />} />
+        <Route path={ROUTES.DATASET} element={<Dataset />} />
         <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
       </Routes>

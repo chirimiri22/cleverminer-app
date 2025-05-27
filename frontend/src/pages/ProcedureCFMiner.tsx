@@ -20,6 +20,7 @@ import { mockDataset, mockResults } from "../model/Dataset";
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
 import { ReactNode } from "react";
+import { PageNames } from "../constants/pageNames";
 
 // todo: add to constants
 type Step = {
@@ -63,7 +64,7 @@ export const createSectionTitle = (step: Step) => {
 export const ProcedureCFMiner = () => {
   return (
     <PageContainer>
-      <PageHeading title={"CF Miner"} icon={<BarChart fontSize={"large"} />} />
+      <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
       {/* todo: use mui icons*/}
       <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
@@ -92,7 +93,6 @@ export const ProcedureCFMiner = () => {
             All in ZIP
           </Button>
         </Stack>
-
       </SectionBox>
     </PageContainer>
   );
