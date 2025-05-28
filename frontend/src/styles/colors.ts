@@ -20,4 +20,6 @@ export const Colors = {
   header: "#f0f0f0",
   white: "#ffffff",
   black: "#000000",
+
+  histogram: "rgba(75, 192, 192, 0.6)"
 };

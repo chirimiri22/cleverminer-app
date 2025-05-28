@@ -1,4 +1,6 @@
 import {
+  ArrowBack,
+  ArrowCircleLeft,
   ArrowCircleRight,
   AutoGraph,
   BarChart,
@@ -27,6 +29,7 @@ import { Histogram } from "../components/Histogram";
 import { Category } from "../model/Category";
 import { AttributeData } from "../model/AttributeData";
 import { Subtitle } from "../components/Subtitle";
+import { Colors } from "../styles/colors";
 
 // todo: add to constants
 type Step = {
@@ -89,19 +92,29 @@ export const Dataset = () => {
         }
       >
         <Stack direction="row" sx={{ gap: 2 }}>
-          <Stack width={"50%"} alignItems={"center"}>
+          <Stack width={"50%"} alignItems={"center"} gap={1}>
             <Subtitle title={"Uniqueness histogram"} />
             <Histogram
               mode="complex"
+              color={Colors.primary}
               categories={mockDataset.data.map((d) => ({ label: d.title, count: d.categories.length }))}
               onClick={(categoryName) =>
                 setCurrentAttributeName(mockDataset.data.find((c) => c.title === categoryName))
               }
             />
           </Stack>
-          <Stack width={"50%"} alignItems={"center"}>
-            <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
-            {currentAttributeName && <Histogram mode="complex" categories={currentAttributeName.categories} />}
+          <Stack width={"50%"} alignItems={"center"} justifyContent={"center"} textAlign={"center"} gap={1}>
+            {currentAttributeName ? (
+              <>
+                <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
+                <Histogram mode="complex" categories={currentAttributeName.categories} />
+              </>
+            ) : (
+              <>
+                Click on a columns of the histogram to the left.
+                <ArrowCircleLeft />
+              </>
+            )}
           </Stack>
         </Stack>
       </SectionBox>

@@ -8,6 +8,7 @@ import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
 import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";
 import { Stack, SxProps } from "@mui/material";
 import { Category } from "../model/Category";
+import { Colors } from "../styles/colors";
 
 type Props = {
   categories: Category[];
@@ -29,7 +30,7 @@ export const Histogram = ({ categories, mode = "simple", title, color, onClick }
       {
         label: title,
         data: getCategoriesCountsArray(categories), // Frequency in each bin
-        backgroundColor: color ?? "rgba(75, 192, 192, 0.6)",
+        backgroundColor: color ?? Colors.histogram,
       },
     ],
   };
