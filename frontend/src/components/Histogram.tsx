@@ -88,17 +88,17 @@ export const Histogram = ({ categories, mode = "simple", title, color, onClick }
   };
 
   // Cleanup chart instance on component unmount
-  // useEffect(() => {
-  //     return () => {
-  //         if (chartRef.current) {
-  //             chartRef.current.destroy(); // Destroy the chart instance
-  //         }
-  //     };
-  // }, []);
+  useEffect(() => {
+      return () => {
+          if (chartRef.current) {
+              chartRef.current.destroy(); // Destroy the chart instance
+          }
+      };
+  }, []);
 
   return (
     // <div style={{width: '200px', margin: '0 auto'}}>
 
-    <Bar ref={chartRef} data={data} options={options} onClick={handleClick} />
+    <Bar id={`bar-chart-${title || Math.random()}`} ref={chartRef} data={data} options={options} onClick={handleClick} />
   );
 };

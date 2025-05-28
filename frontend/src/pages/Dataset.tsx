@@ -4,6 +4,7 @@ import {
   ArrowCircleRight,
   AutoGraph,
   BarChart,
+  Check,
   Construction,
   Download,
   FilterAlt,
@@ -11,7 +12,7 @@ import {
   QueryStats,
   Settings,
 } from "@mui/icons-material";
-import { Box, Button, Paper, Typography, Stack } from "@mui/material";
+import { Box, Button, Paper, Typography, Stack, Divider } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
@@ -30,6 +31,8 @@ import { Category } from "../model/Category";
 import { AttributeData } from "../model/AttributeData";
 import { Subtitle } from "../components/Subtitle";
 import { Colors } from "../styles/colors";
+import { GeneralAttributeCard } from "../components/Card/GeneralAttributeCard";
+import { LineChart } from "../components/LineChart";
 
 // todo: add to constants
 type Step = {
@@ -71,6 +74,8 @@ const formatDate = (date: Date) => {
   return date.toLocaleDateString("cs-CZ");
 };
 
+const isGreaterThanTenPercent = (x: number, y: number): boolean => x > 0.1 * y;
+
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
   return (
@@ -111,7 +116,7 @@ export const Dataset = () => {
               </>
             ) : (
               <>
-                Click on a columns of the histogram to the left.
+                Click on a column of the histogram to the left.
                 <ArrowCircleLeft />
               </>
             )}
@@ -119,10 +124,40 @@ export const Dataset = () => {
         </Stack>
       </SectionBox>
 
+      {/* todo: right upper close all / open all*/}
+      {/* todo: indicator of readiness*/}
       <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
           {mockDataset.data.map((data, index) => (
-            <ObserveAtrributeCard key={index} attributeData={data} />
+            <GeneralAttributeCard title={data.title} dot={`${data.categories.length}`} dotTip={"Categories count"}>
+              {isGreaterThanTenPercent(data.categories.length, 100) && (
+                <Stack textAlign={"center"} gap={1}>
+                  Number of unique categories is large...
+                  <Button variant="outlined" size={"small"} startIcon={<Check />}>
+                    Keep data
+                  </Button>
+                  <Stack position={"relative"} my={1}>
+                    <Divider />
+                    <Typography
+                      fontSize={"small"}
+                      color={Colors.textSecondary}
+                      bgcolor={"white"}
+                      position={"absolute"}
+                      left={"50%"}
+                      top={-9}
+                      sx={{ transform: "translateX(-50%)" }}
+                    >
+                      OR
+                    </Typography>
+                  </Stack>
+                  Ordinal
+                  <LineChart categories={mockDataset.data[0].categories} />
+                  <Button variant={"contained"} size={"small"} startIcon={<PlayArrow />}>
+                    Convert
+                  </Button>
+                </Stack>
+              )}
+            </GeneralAttributeCard>
           ))}
         </Stack>
       </SectionBox>

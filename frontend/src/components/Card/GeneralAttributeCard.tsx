@@ -32,7 +32,7 @@ type Props = {
 
 export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled }: Props) => {
   // todo: implement disabled prop
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
 
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
