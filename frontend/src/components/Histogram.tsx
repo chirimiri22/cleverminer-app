@@ -15,10 +15,12 @@ type Props = {
   mode?: "simple" | "complex"; // todo: make enum of it - simple is for cards
   color?: string;
   sx?: SxProps;
+  onClick?: (categoryName?: string) => void;
 };
 
-export const Histogram = ({ categories, mode = "simple", title, color, sx }: Props) => {
+export const Histogram = ({ categories, mode = "simple", title, color, onClick }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
+  const isComplex = mode === "complex";
 
   // Sample data for the histogram
   const data = {
@@ -42,8 +44,8 @@ export const Histogram = ({ categories, mode = "simple", title, color, sx }: Pro
         // position: 'top',
       },
       title: {
-        display: false,
-        text: "Sample Histogram",
+        display: !!title,
+        text: title,
       },
       tooltip: {
         displayColors: false,
@@ -52,23 +54,36 @@ export const Histogram = ({ categories, mode = "simple", title, color, sx }: Pro
     },
     scales: {
       x: {
-        display: false,
+        display: isComplex,
         type: "category" as const, // Use 'as const' to ensure literal type
-        title: {
-          display: false,
-          text: "Value Bins",
-        },
       },
       y: {
-        display: false,
+        display: isComplex,
         type: "linear" as const, // Explicitly specify y-axis type
-        title: {
-          display: false,
-          // text: 'Frequency',
-        },
         beginAtZero: true,
       },
     },
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const chart = chartRef.current;
+
+    if (!chart) return;
+    console.log("chart is read");
+
+    // Get elements at event using the instance method
+    const elements = chart.getElementsAtEventForMode(event.nativeEvent, "nearest", { intersect: true }, true);
+
+    if (elements.length > 0) {
+      const { index } = elements[0];
+      const label = data.labels[index];
+      const value = data.datasets[0].data[index];
+      console.log(label, value);
+
+      onClick && onClick(label);
+
+      console.log("Clicked category:", label, "Value:", value);
+    }
   };
 
   // Cleanup chart instance on component unmount
@@ -83,12 +98,6 @@ export const Histogram = ({ categories, mode = "simple", title, color, sx }: Pro
   return (
     // <div style={{width: '200px', margin: '0 auto'}}>
 
-      <Bar
-        // ref={chartRef}
-
-        data={data}
-        options={options}
-      />
-
+    <Bar ref={chartRef} data={data} options={options} onClick={handleClick} />
   );
 };

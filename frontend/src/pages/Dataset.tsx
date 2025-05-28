@@ -20,10 +20,13 @@ import { mockDataset, mockResults } from "../model/Dataset";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { createSectionTitle } from "./ProcedureCFMiner";
 import { PageNames } from "../constants/pageNames";
 import { Histogram } from "../components/Histogram";
+import { Category } from "../model/Category";
+import { AttributeData } from "../model/AttributeData";
+import { Subtitle } from "../components/Subtitle";
 
 // todo: add to constants
 type Step = {
@@ -47,11 +50,9 @@ export const PREPROCESS_STEPS: {
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => {
   return (
-    <Stack direction="row" gap={1} justifyContent={"space-between"}>
-      <Typography variant="body1" fontWeight="bold">
-        {label}:
-      </Typography>
-      <Typography variant="body1">{value}</Typography>
+    <Stack direction="row" gap={1} justifyContent={"space-between"} alignItems={"center"}>
+      <Subtitle title={label} />
+      <Typography>{value}</Typography>
     </Stack>
   );
 };
@@ -68,6 +69,7 @@ const formatDate = (date: Date) => {
 };
 
 export const Dataset = () => {
+  const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
   return (
     <PageContainer>
       {/* todo: creat container for loading dataset*/}
@@ -87,14 +89,20 @@ export const Dataset = () => {
         }
       >
         <Stack direction="row" sx={{ gap: 2 }}>
-          <Stack width={"50%"}>
-            Uniqueness histogram
+          <Stack width={"50%"} alignItems={"center"}>
+            <Subtitle title={"Uniqueness histogram"} />
             <Histogram
               mode="complex"
               categories={mockDataset.data.map((d) => ({ label: d.title, count: d.categories.length }))}
+              onClick={(categoryName) =>
+                setCurrentAttributeName(mockDataset.data.find((c) => c.title === categoryName))
+              }
             />
           </Stack>
-          <Stack>pie chart</Stack>
+          <Stack width={"50%"} alignItems={"center"}>
+            <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
+            {currentAttributeName && <Histogram mode="complex" categories={currentAttributeName.categories} />}
+          </Stack>
         </Stack>
       </SectionBox>
 

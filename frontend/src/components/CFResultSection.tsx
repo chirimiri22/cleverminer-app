@@ -12,6 +12,7 @@ import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
+import { Subtitle } from "./Subtitle";
 
 const outputText = `
 Cleverminer version 1.2.1.
@@ -101,9 +102,7 @@ export const CFResultSection = () => {
             }}
           >
             <Box p={2} minWidth={200}>
-              <Typography variant="subtitle1" fontWeight={"bold"}>
-                Display Quantifiers
-              </Typography>
+              <Subtitle title={"Display Quantifiers"} />
               {Object.keys(CFQuantifier).map((key) => (
                 <BooleanInput
                   key={key}
