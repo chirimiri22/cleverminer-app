@@ -43,37 +43,35 @@ export const LineChart = ({
   const chartRef = useRef<ChartJS<"line"> | null>(null);
   const isComplex = mode === "complex";
 
+  const colors = [
+    Colors.warning, // Red
+    Colors.info, // Blue
+  ];
+
+  const getGroupColor = (ctx: any) => {
+    const index = ctx.dataIndex;
+    if (index === undefined) return "rgba(75, 192, 192, 0.2)"; // Fallback
+    const totalPoints = ctx.chart.data.datasets[ctx.datasetIndex].data.length;
+    let group: number;
+
+    if (groupingMode === Categorization.Equidistant) {
+      group = Math.floor(index / groupingCount); // Group every `groupingCount` points
+    } else {
+      group = Math.floor((index / totalPoints) * groupingCount); // Divide into `groupingCount` groups
+    }
+
+    return colors[group % colors.length];
+  };
+
   const data = {
     labels: categories.map((c) => c.label),
     datasets: [
       {
         label: title || "Data",
         data: categories.map((c) => c.count),
-
-        // backgroundColor: Colors.black, // transparent fill
         fill: true,
         tension: 0.3,
-        segment: {
-          borderColor: (ctx: any) => {
-            const index = ctx.p1DataIndex; // Index of the second point in the segment
-            const totalPoints = ctx.chart.data.datasets[ctx.datasetIndex].data.length;
-            let group: number = 1;
-
-            if (groupingMode === Categorization.Equidistant) {
-              group = Math.floor(index / groupingCount); // Group every `pointsPerGroup` points
-            }
-            if (groupingMode === Categorization.Equifrequent) {
-              // Equifrequent: Divide into `numberOfGroups` groups
-              group = Math.floor((index / totalPoints) * groupingCount);
-            }
-
-            const colors = [
-              Colors.warning,
-              Colors.info, // Purple
-            ];
-            return colors[group % colors.length]; // Cycle through colors
-          },
-        },
+        backgroundColor: getGroupColor,
       },
     ],
   };
