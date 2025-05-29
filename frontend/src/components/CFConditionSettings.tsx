@@ -16,7 +16,7 @@ export const CFConditionSettings = ({ max, form }: Props) => {
     <Stack gap={2}>
       <Subtitle title={"Settings"} />
       <Stack gap={1} alignItems={"center"}>
-        <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} />
+        <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} twoStates />
         <RangeSliderInput max={max} form={form} name={"range"} />
       </Stack>
 
