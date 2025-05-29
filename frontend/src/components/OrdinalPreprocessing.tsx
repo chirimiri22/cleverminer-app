@@ -5,8 +5,10 @@ import { LineChart } from "./LineChart";
 import { useForm } from "react-hook-form";
 import { SelectInput, SelectOption } from "./Input/SelectInput";
 import { NumberInput } from "./Input/NumberInput";
-import { CategorizationInput } from "./CategorizationInput";
 import { Subtitle } from "./Subtitle";
+import { BooleanInput } from "./Input/BooleanInput";
+import { Category } from "../model/Category";
+import { useEffect, useState } from "react";
 
 type Props = {
   data: AttributeData;
@@ -19,6 +21,7 @@ export enum Categorization {
 }
 
 type FormData = {
+  ordered: boolean;
   categoryCount: number;
   categorization: Categorization;
 };
@@ -26,6 +29,7 @@ type FormData = {
 export const OrdinalPreprocessing = ({ data }: Props) => {
   const form = useForm<FormData>({
     defaultValues: {
+      ordered: false,
       categoryCount: 5,
       categorization: Categorization.Equidistant,
     },
@@ -42,11 +46,23 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   const groupingCount = form.watch("categoryCount");
   console.log(groupingCount, groupingMode);
 
+  const [orderCategories, setOrderedCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const newArray = [...data.categories];
+    newArray.sort((a, b) => a.count - b.count);
+    setOrderedCategories(newArray);
+  }, [data.categories]);
+
+  const categories = form.watch("ordered") ? orderCategories : data.categories;
+
   return (
     <Stack gap={1} alignItems={"start"}>
-      <LineChart categories={data.categories} groupingCount={groupingCount} groupingMode={groupingMode} />
-      <Subtitle title={"Generate categories"} />
+      <Subtitle title={"Preview"} />
+      <LineChart categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
+      <Subtitle title={"Generate Categories"} />
       {/*todo ordinal categorization */}
+      <BooleanInput name={"ordered"} form={form} label2={"Order Values"} />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
           <SelectInput name={"categorization"} form={form} options={categorizationOptions} label={"Categorization"} />

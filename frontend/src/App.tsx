@@ -16,7 +16,7 @@ import {
   Tooltip,
   Legend,
   PointElement,
-  LineElement,
+  LineElement
 } from "chart.js";
 
 // Register Chart.js components

@@ -76,10 +76,6 @@ export const LineChart = ({
     ],
   };
 
-  type SegmentCtx = {
-    p0: { parsed: { y: number } };
-    p1: { parsed: { y: number } };
-  };
 
   // Todo: customize histograms accordingly to the mode
   const options = {
