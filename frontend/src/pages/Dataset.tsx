@@ -33,6 +33,8 @@ import { Subtitle } from "../components/Subtitle";
 import { Colors } from "../styles/colors";
 import { GeneralAttributeCard } from "../components/Card/GeneralAttributeCard";
 import { LineChart } from "../components/LineChart";
+import { CategorizationInput } from "../components/CategorizationInput";
+import { OrdinalPreprocessing } from "../components/OrdinalPreprocessing";
 
 // todo: add to constants
 type Step = {
@@ -86,7 +88,7 @@ export const Dataset = () => {
       <SectionBox
         title={createSectionTitle(PREPROCESS_STEPS.preview)}
         leftSection={
-          <Stack direction="column" gap={1}>
+          <Stack direction="column">
             <InfoRow label="File name" value={mockDataset.metadata.name} />
             <InfoRow label="Format" value={mockDataset.metadata.format} />
             <InfoRow label="Rows" value={`${mockDataset.metadata.rows} rows`} />
@@ -151,10 +153,8 @@ export const Dataset = () => {
                     </Typography>
                   </Stack>
                   Ordinal
-                  <LineChart categories={mockDataset.data[0].categories} />
-                  <Button variant={"contained"} size={"small"} startIcon={<PlayArrow />}>
-                    Convert
-                  </Button>
+                  <OrdinalPreprocessing data={data} />
+
                 </Stack>
               )}
             </GeneralAttributeCard>
