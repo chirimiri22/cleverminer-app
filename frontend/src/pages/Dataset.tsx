@@ -35,6 +35,8 @@ import { GeneralAttributeCard } from "../components/Card/GeneralAttributeCard";
 import { LineChart } from "../components/LineChart";
 import { CategorizationInput } from "../components/CategorizationInput";
 import { OrdinalPreprocessing } from "../components/OrdinalPreprocessing";
+import { BooleanInput } from "../components/Input/BooleanInput";
+import { NominalPreprocessing } from "../components/NominalPreprocessing";
 
 // todo: add to constants
 type Step = {
@@ -75,6 +77,8 @@ const formatSize = (bytes: number) => {
 const formatDate = (date: Date) => {
   return date.toLocaleDateString("cs-CZ");
 };
+
+
 
 const isGreaterThanTenPercent = (x: number, y: number): boolean => x > 0.1 * y;
 
@@ -152,8 +156,9 @@ export const Dataset = () => {
                       OR
                     </Typography>
                   </Stack>
-                  Ordinal
-                  <OrdinalPreprocessing data={data} />
+
+                  {/*<OrdinalPreprocessing data={data} />*/}
+                  <NominalPreprocessing data={data} />
 
                 </Stack>
               )}
