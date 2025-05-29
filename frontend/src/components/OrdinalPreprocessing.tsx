@@ -57,7 +57,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   const categories = form.watch("ordered") ? orderCategories : data.categories;
 
   return (
-    <Stack gap={1} alignItems={"start"}>
+    <Stack gap={1} alignItems={"start"} textAlign={"start"}>
       <Subtitle title={"Preview"} />
       <LineChart categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
       <Subtitle title={"Generate Categories"} />
