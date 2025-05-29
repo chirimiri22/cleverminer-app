@@ -50,7 +50,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   useEffect(() => {
     const newArray = [...data.categories];
-    newArray.sort((a, b) => a.count - b.count);
+    newArray.sort((a, b) => a.label.localeCompare(b.label));
     setOrderedCategories(newArray);
   }, [data.categories]);
 
@@ -62,7 +62,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       <LineChart categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
       <Subtitle title={"Generate Categories"} />
       {/*todo ordinal categorization */}
-      <BooleanInput name={"ordered"} form={form} label2={"Order Values"} />
+      <BooleanInput name={"ordered"} form={form} label2={"Order According To Labels"} />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
           <SelectInput name={"categorization"} form={form} options={categorizationOptions} label={"Categorization"} />
@@ -71,8 +71,6 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
           <NumberInput name={"categoryCount"} form={form} min={1} label={"Count"} />
         </Stack>
       </Stack>
-
-      {/*<CategorizationInput />*/}
 
       <Button
         variant={"contained"}
