@@ -1,66 +1,101 @@
 import { Bar } from "react-chartjs-2";
-import { AttributeData } from "../model/AttributeData";
-
 import React, { useEffect, useRef } from "react";
-
 import { Chart as ChartJS, ChartOptions } from "chart.js";
-import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
-import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";
-import { Stack, SxProps } from "@mui/material";
 import { Category } from "../model/Category";
 import { Colors } from "../styles/colors";
+import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
+import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";
+import { SxProps } from "@mui/material";
+import { Categorization } from "./OrdinalPreprocessing";
 
 type Props = {
   categories: Category[];
   title?: string;
-  mode?: "simple" | "complex"; // todo: make enum of it - simple is for cards
+  mode?: "simple" | "complex";
   color?: string;
   sx?: SxProps;
   onClick?: (categoryName?: string) => void;
-};
+} & (
+  | {
+      groupingMode: Categorization.Equidistant;
+      groupingCount: number;
+    }
+  | {
+      groupingMode: Categorization.Equifrequent;
+      groupingCount: number;
+    }
+  | {
+      groupingMode?: Categorization;
+      groupingCount?: number;
+    }
+);
 
-export const Histogram = ({ categories, mode = "simple", title, color, onClick }: Props) => {
+export const Histogram = ({
+  categories,
+  title,
+  mode = "simple",
+  color,
+  onClick,
+  groupingMode,
+  groupingCount = 1,
+}: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
   const isComplex = mode === "complex";
 
-  // Sample data for the histogram
+  const colors = [Colors.primary, Colors.warning, Colors.info, Colors.success, Colors.error];
+
+  const getGroupColor = (index: number) => {
+    const totalPoints = categories.length;
+    let group: number;
+
+    if (groupingMode === Categorization.Equidistant) {
+      group = Math.floor(index / groupingCount);
+    } else {
+      group = Math.floor((index / totalPoints) * groupingCount);
+    }
+
+    return colors[group % colors.length];
+  };
+
+  const backgroundColors = categories.map((_, index) => color ?? getGroupColor(index));
+
   const data = {
-    labels: getCategoriesLabelsArray(categories), // Bin ranges
+    labels: getCategoriesLabelsArray(categories),
     datasets: [
       {
         label: title,
-        data: getCategoriesCountsArray(categories), // Frequency in each bin
-        backgroundColor: color ?? Colors.histogram,
+        data: getCategoriesCountsArray(categories),
+        backgroundColor: backgroundColors,
       },
     ],
   };
 
-  // Todo: customize histograms accordingly to the mode
   const options: ChartOptions<"bar"> = {
     responsive: true,
     animation: false,
     plugins: {
       legend: {
         display: false,
-        // position: 'top',
       },
       title: {
         display: !!title,
         text: title,
       },
       tooltip: {
-        displayColors: false,
-        // position: "nearest"
+        displayColors: !!groupingMode,
+        callbacks: {
+          label: (context) => `${context.parsed.y}`,
+        },
       },
     },
     scales: {
       x: {
         display: isComplex,
-        type: "category" as const, // Use 'as const' to ensure literal type
+        type: "category" as const,
       },
       y: {
         display: isComplex,
-        type: "linear" as const, // Explicitly specify y-axis type
+        type: "linear" as const,
         beginAtZero: true,
       },
     },
@@ -68,37 +103,33 @@ export const Histogram = ({ categories, mode = "simple", title, color, onClick }
 
   const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const chart = chartRef.current;
-
     if (!chart) return;
-    console.log("chart is read");
 
-    // Get elements at event using the instance method
     const elements = chart.getElementsAtEventForMode(event.nativeEvent, "nearest", { intersect: true }, true);
 
     if (elements.length > 0) {
       const { index } = elements[0];
       const label = data.labels[index];
       const value = data.datasets[0].data[index];
-      console.log(label, value);
-
       onClick && onClick(label);
-
-      console.log("Clicked category:", label, "Value:", value);
     }
   };
 
-  // Cleanup chart instance on component unmount
-  useEffect(() => {
-      return () => {
-          if (chartRef.current) {
-              chartRef.current.destroy(); // Destroy the chart instance
-          }
-      };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (chartRef.current) {
+  //       chartRef.current.destroy();
+  //     }
+  //   };
+  // }, []);
 
   return (
-    // <div style={{width: '200px', margin: '0 auto'}}>
-
-    <Bar id={`bar-chart-${title || Math.random()}`} ref={chartRef} data={data} options={options} onClick={handleClick} />
+    <Bar
+      id={`bar-chart-${title || Math.random()}`}
+      ref={chartRef}
+      data={data}
+      options={options}
+      onClick={handleClick}
+    />
   );
 };

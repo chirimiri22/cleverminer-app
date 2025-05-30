@@ -9,6 +9,7 @@ import { Subtitle } from "./Subtitle";
 import { BooleanInput } from "./Input/BooleanInput";
 import { Category } from "../model/Category";
 import { useEffect, useState } from "react";
+import { Histogram } from "./Histogram";
 
 type Props = {
   data: AttributeData;
@@ -59,7 +60,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
       <Subtitle title={"Preview"} />
-      <LineChart categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
+      <Histogram categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
       <Subtitle title={"Generate Categories"} />
       {/*todo ordinal categorization */}
       <BooleanInput name={"ordered"} form={form} label2={"Order According To Labels"} />
