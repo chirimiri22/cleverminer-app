@@ -1,5 +1,5 @@
 import { CFConditionSettings } from "./CFConditionSettings";
-import { mockDataset } from "../model/DatasetProcessed";
+
 import { ConditionBuilder } from "./CFConditionBuilder";
 import { SectionBox } from "./SectionBox";
 import { useState } from "react";
@@ -11,9 +11,11 @@ import { useForm } from "react-hook-form";
 import { CFProcedure } from "../model/CFProcedure";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
+import { useAppContext } from "../context/AppContext";
 
 export const CFConditionSection = () => {
   const [horizontal, setHorizontal] = useState(true);
+  const { datasetProcessed } = useAppContext();
 
   const form = useForm<CFProcedure>({
     defaultValues: {
@@ -23,10 +25,12 @@ export const CFConditionSection = () => {
   });
 
   const conjunction = form.watch("conjunction");
+
+  if (!datasetProcessed) return <></>;
   return (
     <SectionBox
       title={createSectionTitle(FOUR_STEPS.condition)}
-      leftSection={<CFConditionSettings form={form} max={mockDataset.data.length - 1} />}
+      leftSection={<CFConditionSettings form={form} max={datasetProcessed.data.length - 1} />}
       minHeight={300}
       rightUpperTools={
         <BootstrapTooltip title={"Change view "}>
@@ -47,7 +51,7 @@ export const CFConditionSection = () => {
         </BootstrapTooltip>
       }
     >
-      <ConditionBuilder attributeData={mockDataset.data} conjunction={conjunction} horizontal={horizontal} />
+      <ConditionBuilder attributeData={datasetProcessed.data} conjunction={conjunction} horizontal={horizontal} />
     </SectionBox>
   );
 };

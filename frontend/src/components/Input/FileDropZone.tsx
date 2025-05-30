@@ -4,16 +4,19 @@ import { Colors } from "../../styles/colors";
 import { Description } from "@mui/icons-material";
 import { RemoveButton } from "../RemoveButton";
 import { useAppContext } from "../../context/AppContext";
+import { mockDataset } from "../../model/DatasetProcessed";
 
 const FileDropzone: React.FC = () => {
-  const { datafile, setDatafile } = useAppContext();
+  const { datafile, setDatafile, setDatasetProcessed } = useAppContext();
   const [droppedFiles, setDroppedFiles] = useState<File[]>(datafile ? [datafile] : []);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChangeFiles = (files: File[]) => {
-    files.length !== 0 ? setDatafile(files[0]) : setDatafile(null);
+    files.length !== 0 ? setDatafile(files[0]) : setDatafile(undefined);
     setDroppedFiles(files);
+    //   todo: here pokud je nastavený, tak tady poslat request na BE
+    setDatasetProcessed(mockDataset);
   };
 
   const isCSV = (file: File) => file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");

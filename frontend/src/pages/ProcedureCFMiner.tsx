@@ -15,13 +15,13 @@ import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
 import { SectionBox } from "../components/SectionBox";
-import { mockDataset, mockResults } from "../model/DatasetProcessed";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
 import { ReactNode } from "react";
 import { PageNames } from "../constants/pageNames";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
+import { useAppContext } from "../context/AppContext";
 
 // todo: add to constants
 type Step = {
@@ -63,13 +63,18 @@ export const createSectionTitle = (step: Step) => {
 };
 
 export const ProcedureCFMiner = () => {
+  const { datasetProcessed } = useAppContext();
+
+  // todo: make it nicer and navigate to dataset routes
+  if (!datasetProcessed) return <>Load data first</>;
+
   return (
     <PageContainer>
-      <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon}  />
+      <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
 
       <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-          {mockDataset.data.map((data, index) => (
+          {datasetProcessed.data.map((data, index) => (
             <ObserveAtrributeCard key={index} attributeData={data} />
           ))}
         </Stack>

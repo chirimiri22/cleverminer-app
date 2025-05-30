@@ -41,6 +41,7 @@ import { NominalPreprocessing } from "../components/NominalPreprocessing";
 import { useForm } from "react-hook-form";
 import FileDropzone from "../components/Input/FileDropZone";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
+import { useAppContext } from "../context/AppContext";
 
 // todo: add to constants
 type Step = {
@@ -94,6 +95,7 @@ type FormValues = {
 
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
+  const { datasetProcessed } = useAppContext();
   const form = useForm<FormValues>({
     defaultValues: {
       nominal: true,
@@ -119,98 +121,103 @@ export const Dataset = () => {
       <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)}>
         <FileDropzone />
       </SectionBox>
-      <SectionBox
-        title={createSectionTitle(PREPROCESS_STEPS.preview)}
-        leftSection={
-          <Stack justifyContent={"center"} flexGrow={1}>
-            <InfoRow label="File name" value={mockDataset.metadata.name} />
-            <InfoRow label="Format" value={mockDataset.metadata.format} />
-            <InfoRow label="Rows" value={`${mockDataset.metadata.rows} rows`} />
-            <InfoRow label="Columns" value={`${mockDataset.metadata.columns} columns`} />
-            <InfoRow label="Memory" value={formatSize(mockDataset.metadata.size)} />
-            <InfoRow label="Loaded" value={formatDate(mockDataset.metadata.date)} />
-          </Stack>
-        }
-      >
-        <Stack direction="row" sx={{ gap: 2 }}>
-          <Stack width={"50%"} alignItems={"center"} gap={1}>
-            <Subtitle title={"Uniqueness histogram"} />
-            <Histogram
-              mode="complex"
-              color={Colors.primary}
-              categories={mockDataset.data.map((d) => ({ label: d.title, count: d.categories.length }))}
-              onClick={(categoryName) =>
-                setCurrentAttributeName(mockDataset.data.find((c) => c.title === categoryName))
-              }
-            />
-          </Stack>
-          <Stack width={"50%"} alignItems={"center"} justifyContent={"center"} textAlign={"center"} gap={1}>
-            {currentAttributeName ? (
-              <>
-                <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
-                <Histogram mode="complex" categories={currentAttributeName.categories} />
-              </>
-            ) : (
-              <>
-                Click on a column of the histogram to the left.
-                <ArrowCircleLeft />
-              </>
-            )}
-          </Stack>
-        </Stack>
-      </SectionBox>
 
-      {/* todo: right upper close all / open all*/}
-      {/* todo: indicator of readiness*/}
-      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
-        <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-          {mockDataset.data.map((data, index) => {
-            const shouldBePreprocessed = isGreaterThanTenPercent(data.categories.length, 100);
-            return (
-              <GeneralAttributeCard
-                title={data.title}
-                dot={`${data.categories.length}`}
-                dotTip={"Categories count"}
-                ok={!shouldBePreprocessed}
-                warning={shouldBePreprocessed ? "Large number of categories" : undefined}
-              >
-                {shouldBePreprocessed && (
-                  <Stack textAlign={"center"} gap={1}>
-                    Number of unique categories is large...
-                    <Button variant="outlined" size={"small"} startIcon={<Check />}>
-                      Keep data
-                    </Button>
-                    <Stack position={"relative"} my={1}>
-                      <Divider />
-                      <Typography
-                        fontSize={"small"}
-                        color={Colors.textSecondary}
-                        bgcolor={"white"}
-                        position={"absolute"}
-                        left={"50%"}
-                        top={-9}
-                        sx={{ transform: "translateX(-50%)" }}
-                      >
-                        OR
-                      </Typography>
-                    </Stack>
-                    <Stack alignItems={"center"}>
-                      <BooleanInput
-                        name={"nominal"}
-                        form={form}
-                        label1={"Ordinal prep."}
-                        label2={"Nominal prep."}
-                        twoStates
-                      />
-                    </Stack>
-                    {isNominal ? <NominalPreprocessing data={data} /> : <OrdinalPreprocessing data={data} />}
-                  </Stack>
+      {datasetProcessed && (
+        <>
+          <SectionBox
+            title={createSectionTitle(PREPROCESS_STEPS.preview)}
+            leftSection={
+              <Stack justifyContent={"center"} flexGrow={1}>
+                <InfoRow label="File name" value={datasetProcessed.metadata.name} />
+                <InfoRow label="Format" value={datasetProcessed.metadata.format} />
+                <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows} rows`} />
+                <InfoRow label="Columns" value={`${datasetProcessed.metadata.columns} columns`} />
+                <InfoRow label="Memory" value={formatSize(datasetProcessed.metadata.size)} />
+                <InfoRow label="Loaded" value={formatDate(datasetProcessed.metadata.date)} />
+              </Stack>
+            }
+          >
+            <Stack direction="row" sx={{ gap: 2 }}>
+              <Stack width={"50%"} alignItems={"center"} gap={1}>
+                <Subtitle title={"Uniqueness histogram"} />
+                <Histogram
+                  mode="complex"
+                  color={Colors.primary}
+                  categories={datasetProcessed.data.map((d) => ({ label: d.title, count: d.categories.length }))}
+                  onClick={(categoryName) =>
+                    setCurrentAttributeName(datasetProcessed.data.find((c) => c.title === categoryName))
+                  }
+                />
+              </Stack>
+              <Stack width={"50%"} alignItems={"center"} justifyContent={"center"} textAlign={"center"} gap={1}>
+                {currentAttributeName ? (
+                  <>
+                    <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
+                    <Histogram mode="complex" categories={currentAttributeName.categories} />
+                  </>
+                ) : (
+                  <>
+                    Click on a column of the histogram to the left.
+                    <ArrowCircleLeft />
+                  </>
                 )}
-              </GeneralAttributeCard>
-            );
-          })}
-        </Stack>
-      </SectionBox>
+              </Stack>
+            </Stack>
+          </SectionBox>
+
+          {/* todo: right upper close all / open all*/}
+          {/* todo: indicator of readiness*/}
+          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
+            <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
+              {datasetProcessed.data.map((data, index) => {
+                const shouldBePreprocessed = isGreaterThanTenPercent(data.categories.length, 100);
+                return (
+                  <GeneralAttributeCard
+                    title={data.title}
+                    dot={`${data.categories.length}`}
+                    dotTip={"Categories count"}
+                    ok={!shouldBePreprocessed}
+                    warning={shouldBePreprocessed ? "Large number of categories" : undefined}
+                  >
+                    {shouldBePreprocessed && (
+                      <Stack textAlign={"center"} gap={1}>
+                        Number of unique categories is large...
+                        <Button variant="outlined" size={"small"} startIcon={<Check />}>
+                          Keep data
+                        </Button>
+                        <Stack position={"relative"} my={1}>
+                          <Divider />
+                          <Typography
+                            fontSize={"small"}
+                            color={Colors.textSecondary}
+                            bgcolor={"white"}
+                            position={"absolute"}
+                            left={"50%"}
+                            top={-9}
+                            sx={{ transform: "translateX(-50%)" }}
+                          >
+                            OR
+                          </Typography>
+                        </Stack>
+                        <Stack alignItems={"center"}>
+                          <BooleanInput
+                            name={"nominal"}
+                            form={form}
+                            label1={"Ordinal prep."}
+                            label2={"Nominal prep."}
+                            twoStates
+                          />
+                        </Stack>
+                        {isNominal ? <NominalPreprocessing data={data} /> : <OrdinalPreprocessing data={data} />}
+                      </Stack>
+                    )}
+                  </GeneralAttributeCard>
+                );
+              })}
+            </Stack>
+          </SectionBox>
+        </>
+      )}
     </PageContainer>
   );
 };
