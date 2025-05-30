@@ -1,10 +1,11 @@
-import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
+import { Box, Chip, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { SidebarMenuItem, MenuItemType } from "./SidebarMenuItem";
 import { Colors } from "../styles/colors";
 import { PageNames } from "../constants/pageNames";
+import { useAppContext } from "../context/AppContext";
 
 type GroupType = {
   items: MenuItemType[];
@@ -50,6 +51,7 @@ export const menuGroups: GroupType[] = [
 export const SidebarMenu = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { selectedDataset } = useAppContext();
 
   return (
     <Stack sx={{ minWidth: 300, borderRight: `1px solid ${Colors.border}`, bgcolor: Colors.sidebar }}>
@@ -57,13 +59,21 @@ export const SidebarMenu = () => {
         <Stack direction={"row"} key={index}>
           <List sx={{ flexGrow: 1 }}>
             {group.items.map((item, idx) => (
-              <SidebarMenuItem
-                key={idx}
-                name={item.name}
-                icon={item.icon}
-                path={item.path}
-                selected={currentPath === item.path}
-              />
+              <Stack alignItems={"center"} key={idx} gap={1}>
+                <SidebarMenuItem
+                  // key={idx}
+                  name={item.name}
+                  icon={item.icon}
+                  path={item.path}
+                  selected={currentPath === item.path}
+                  note={
+                    item.name === PageNames.dataPreprocessing.name &&
+                    selectedDataset && (
+                      <Chip label={` ${selectedDataset?.name}`} variant={"outlined"} size={"small"} color={"primary"} />
+                    )
+                  }
+                />
+              </Stack>
             ))}
           </List>
           {index < menuGroups.length - 1 && <Divider />}

@@ -13,6 +13,7 @@ export const Header = () => {
       <Toolbar>
         <Stack
           sx={{ gap: 2, cursor: "pointer" }}
+          // todo prevent leaving
           onClick={() => navigate(ROUTES.HOME)}
           alignItems="center"
           direction="row"

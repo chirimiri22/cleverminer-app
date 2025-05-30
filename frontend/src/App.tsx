@@ -19,6 +19,8 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { AppProvider } from "./context/AppContext";
 
 // Register Chart.js components
 ChartJS.register(
@@ -44,14 +46,16 @@ export const App = () => {
 
 const WrappedRoutes = () => {
   return (
-    <AppContainer>
-      <Routes>
-        <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner />} />
-        <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMiner />} />
-        <Route path={ROUTES.DATASET} element={<Dataset />} />
-        <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail />} />
-        <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
-      </Routes>
-    </AppContainer>
+    <AppProvider>
+      <AppContainer>
+        <Routes>
+          <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner />} />
+          <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMiner />} />
+          <Route path={ROUTES.DATASET} element={<Dataset />} />
+          <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail />} />
+          <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
+        </Routes>
+      </AppContainer>
+    </AppProvider>
   );
 };

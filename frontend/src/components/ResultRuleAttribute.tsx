@@ -1,4 +1,4 @@
-import { ResultAtrribute } from "../model/Dataset";
+import { ResultAtrribute } from "../model/DatasetProcessed";
 import { Card, CardHeader, Stack, Typography } from "@mui/material";
 import { Colors } from "../styles/colors";
 

@@ -13,14 +13,14 @@ import {
   Settings,
   Upload,
 } from "@mui/icons-material";
-import { Box, Button, Paper, Typography, Stack, Divider } from "@mui/material";
+import { Box, Button, Paper, Typography, Stack, Divider, IconButton } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
 import { SectionBox } from "../components/SectionBox";
-import { mockDataset, mockResults } from "../model/Dataset";
+import { mockDataset, mockResults } from "../model/DatasetProcessed";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
@@ -40,6 +40,7 @@ import { BooleanInput } from "../components/Input/BooleanInput";
 import { NominalPreprocessing } from "../components/NominalPreprocessing";
 import { useForm } from "react-hook-form";
 import FileDropzone from "../components/Input/FileDropZone";
+import { BootstrapTooltip } from "../components/BootstrapTooltip";
 
 // todo: add to constants
 type Step = {
@@ -104,7 +105,17 @@ export const Dataset = () => {
     <PageContainer>
       {/* todo: creat container for loading dataset*/}
       {/* todo create constants for page names and icons not only menu items*/}
-      <PageHeading title={PageNames.dataPreprocessing.name} icon={PageNames.dataPreprocessing.largeIcon} />
+      <PageHeading
+        title={PageNames.dataPreprocessing.name}
+        icon={PageNames.dataPreprocessing.largeIcon}
+        action={
+          <BootstrapTooltip title={"Download current dataset"} placement={"left"}>
+            <IconButton size={"large"}>
+              <Download fontSize={"large"} />
+            </IconButton>
+          </BootstrapTooltip>
+        }
+      />
       <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)}>
         <FileDropzone />
       </SectionBox>
@@ -153,42 +164,51 @@ export const Dataset = () => {
       {/* todo: indicator of readiness*/}
       <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-          {mockDataset.data.map((data, index) => (
-            <GeneralAttributeCard title={data.title} dot={`${data.categories.length}`} dotTip={"Categories count"}>
-              {isGreaterThanTenPercent(data.categories.length, 100) && (
-                <Stack textAlign={"center"} gap={1}>
-                  Number of unique categories is large...
-                  <Button variant="outlined" size={"small"} startIcon={<Check />}>
-                    Keep data
-                  </Button>
-                  <Stack position={"relative"} my={1}>
-                    <Divider />
-                    <Typography
-                      fontSize={"small"}
-                      color={Colors.textSecondary}
-                      bgcolor={"white"}
-                      position={"absolute"}
-                      left={"50%"}
-                      top={-9}
-                      sx={{ transform: "translateX(-50%)" }}
-                    >
-                      OR
-                    </Typography>
+          {mockDataset.data.map((data, index) => {
+            const shouldBePreprocessed = isGreaterThanTenPercent(data.categories.length, 100);
+            return (
+              <GeneralAttributeCard
+                title={data.title}
+                dot={`${data.categories.length}`}
+                dotTip={"Categories count"}
+                ok={!shouldBePreprocessed}
+                warning={shouldBePreprocessed ? "Large number of categories" : undefined}
+              >
+                {shouldBePreprocessed && (
+                  <Stack textAlign={"center"} gap={1}>
+                    Number of unique categories is large...
+                    <Button variant="outlined" size={"small"} startIcon={<Check />}>
+                      Keep data
+                    </Button>
+                    <Stack position={"relative"} my={1}>
+                      <Divider />
+                      <Typography
+                        fontSize={"small"}
+                        color={Colors.textSecondary}
+                        bgcolor={"white"}
+                        position={"absolute"}
+                        left={"50%"}
+                        top={-9}
+                        sx={{ transform: "translateX(-50%)" }}
+                      >
+                        OR
+                      </Typography>
+                    </Stack>
+                    <Stack alignItems={"center"}>
+                      <BooleanInput
+                        name={"nominal"}
+                        form={form}
+                        label1={"Ordinal prep."}
+                        label2={"Nominal prep."}
+                        twoStates
+                      />
+                    </Stack>
+                    {isNominal ? <NominalPreprocessing data={data} /> : <OrdinalPreprocessing data={data} />}
                   </Stack>
-                  <Stack alignItems={"center"}>
-                    <BooleanInput
-                      name={"nominal"}
-                      form={form}
-                      label1={"Ordinal prep."}
-                      label2={"Nominal prep."}
-                      twoStates
-                    />
-                  </Stack>
-                  {isNominal ? <NominalPreprocessing data={data} /> : <OrdinalPreprocessing data={data} />}
-                </Stack>
-              )}
-            </GeneralAttributeCard>
-          ))}
+                )}
+              </GeneralAttributeCard>
+            );
+          })}
         </Stack>
       </SectionBox>
     </PageContainer>

@@ -2,7 +2,7 @@ import { AttributeData } from "./AttributeData";
 import { Category } from "./Category";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
 
-export type Dataset = {
+export type DatasetProcessed = {
   data: AttributeData[];
   metadata: Metadata;
 };
@@ -14,7 +14,7 @@ type Metadata = {
   rows: number;
   columns: number;
   date: Date;
-  datasets: Dataset[];
+  // datasets: Dataset[];
   hiddenAttributes?: string[];
 };
 
@@ -74,7 +74,7 @@ const mockData: AttributeData[] = [
   },
 ];
 
-export const mockDataset: Dataset = {
+export const mockDataset: DatasetProcessed = {
   data: mockData,
   metadata: {
     name: "Sample Dataset",
@@ -83,7 +83,6 @@ export const mockDataset: Dataset = {
     rows: 10000,
     columns: 5,
     date: new Date(),
-    datasets: [],
   },
 };
 

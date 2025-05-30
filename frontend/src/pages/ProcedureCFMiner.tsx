@@ -8,19 +8,20 @@ import {
   QueryStats,
   Settings,
 } from "@mui/icons-material";
-import { Box, Button, Paper, Typography, Stack } from "@mui/material";
+import { Box, Button, Paper, Typography, Stack, IconButton } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
 import { SectionBox } from "../components/SectionBox";
-import { mockDataset, mockResults } from "../model/Dataset";
+import { mockDataset, mockResults } from "../model/DatasetProcessed";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
 import { ReactNode } from "react";
 import { PageNames } from "../constants/pageNames";
+import { BootstrapTooltip } from "../components/BootstrapTooltip";
 
 // todo: add to constants
 type Step = {
@@ -64,8 +65,8 @@ export const createSectionTitle = (step: Step) => {
 export const ProcedureCFMiner = () => {
   return (
     <PageContainer>
-      <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
-      {/* todo: use mui icons*/}
+      <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon}  />
+
       <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
         <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
           {mockDataset.data.map((data, index) => (

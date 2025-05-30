@@ -30,10 +30,10 @@ export const NominalPreprocessing = ({ data }: Props) => {
     defaultValues: {
       rows: [
         {
-          label: "cat_name1",
-          selectedOptions: [data.categories[0]],
+          label: "",
+          selectedOptions: [],
         },
-      ], // Default first row
+      ],
     },
   });
 
@@ -79,7 +79,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
               />
             </Stack>
           ))}
-          <Button variant="text" onClick={() => append({ selectedOptions: [], label: `cat_name${fields.length + 1}` })}>
+          <Button variant="text" onClick={() => append({ selectedOptions: [], label: "" })}>
             Add Row
           </Button>
         </Stack>

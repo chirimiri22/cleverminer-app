@@ -1,5 +1,5 @@
 import { CFConditionSettings } from "./CFConditionSettings";
-import { mockDataset } from "../model/Dataset";
+import { mockDataset } from "../model/DatasetProcessed";
 import { ConditionBuilder } from "./CFConditionBuilder";
 import { SectionBox } from "./SectionBox";
 import { useState } from "react";

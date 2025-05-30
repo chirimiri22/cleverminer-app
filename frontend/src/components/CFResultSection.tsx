@@ -1,7 +1,7 @@
 import { ArrowCircleRight, Settings, Terminal } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { mockDataset, mockResults } from "../model/Dataset";
+import { mockDataset, mockResults } from "../model/DatasetProcessed";
 import { Colors } from "../styles/colors";
 import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";

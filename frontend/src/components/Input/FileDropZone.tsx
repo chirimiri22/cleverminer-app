@@ -1,13 +1,20 @@
 import React, { useState, useCallback } from "react";
-import { Box, Typography, Button, List, ListItem, ListItemText, Stack } from "@mui/material";
+import { Box, Typography, Button, List, ListItem, ListItemText, Stack, LinearProgress } from "@mui/material";
 import { Colors } from "../../styles/colors";
 import { Description } from "@mui/icons-material";
 import { RemoveButton } from "../RemoveButton";
+import { useAppContext } from "../../context/AppContext";
 
 const FileDropzone: React.FC = () => {
-  const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
+  const { selectedDataset, setSelectedDataset } = useAppContext();
+  const [droppedFiles, setDroppedFiles] = useState<File[]>(selectedDataset ? [selectedDataset] : []);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleChangeFiles = (files: File[]) => {
+    files.length !== 0 ? setSelectedDataset(files[0]) : setSelectedDataset(null);
+    setDroppedFiles(files);
+  };
 
   const isCSV = (file: File) => file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");
 
@@ -56,7 +63,7 @@ const FileDropzone: React.FC = () => {
               {Math.round(file.size / 1024)} KB
             </Typography>
           </Stack>
-          <RemoveButton onRemove={() => setDroppedFiles([])} />
+          <RemoveButton onRemove={() => handleChangeFiles([])} />
         </Stack>
       </Box>
     );
@@ -75,7 +82,7 @@ const FileDropzone: React.FC = () => {
       return;
     }
 
-    setDroppedFiles(csvFiles);
+    handleChangeFiles(csvFiles);
   }, []);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -99,7 +106,7 @@ const FileDropzone: React.FC = () => {
         return;
       }
 
-      setDroppedFiles(csvFiles);
+      handleChangeFiles(csvFiles);
     }
   };
 
@@ -108,6 +115,7 @@ const FileDropzone: React.FC = () => {
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
+      position={"relative"}
       sx={{
         borderRadius: 2,
         p: 4,
@@ -157,6 +165,7 @@ const FileDropzone: React.FC = () => {
           </Stack>
         </Stack>
       )}
+      <LinearProgress sx={{ position: "absolute", bottom: -10, right: 0, width: "100%" }} />
     </Box>
   );
 };
