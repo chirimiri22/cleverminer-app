@@ -45,7 +45,6 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   const groupingMode = form.watch("categorization");
   const groupingCount = form.watch("categoryCount");
-  console.log(groupingCount, groupingMode);
 
   const [orderCategories, setOrderedCategories] = useState<Category[]>([]);
 

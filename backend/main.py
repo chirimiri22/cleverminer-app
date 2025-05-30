@@ -1,41 +1,84 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List, Optional
 import uvicorn
+import pandas as pd
+from datetime import datetime
+import io
+import os
 
 # Create FastAPI instance
-app = FastAPI(title="Simple API")
+app = FastAPI(title="CleverMiner API")
 
-# Add CORS middleware to allow requests from frontend
+# CORS settings
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=["*"],  # Update in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Define data model for the POST request
-class UserData(BaseModel):
+# # Data models for POST request (already present)
+# class UserData(BaseModel):
+#     name: str
+#     message: str
+
+# Data models for dataset response
+class Category(BaseModel):
+    label: str
+    count: int
+
+class AttributeData(BaseModel):
+    title: str
+    categories: List[Category]
+
+class Metadata(BaseModel):
     name: str
-    message: str
+    format: str
+    size: int
+    rows: int
+    columns: int
+    date: datetime
+    hiddenAttributes: Optional[List[str]] = None
 
-# Create POST endpoint
-@app.post("/api/submit")
-async def submit_data(data: UserData):
+class DatasetProcessed(BaseModel):
+    data: List[AttributeData]
+    metadata: Metadata
+
+# Submit endpoint (already present)
+
+@app.post("/api/upload", response_model=DatasetProcessed)
+async def upload_csv(file: UploadFile = File(...)):
     try:
-        # In a real app, you might save to database here
-        print(f"Received data: {data}")
+        # Read uploaded file
+        contents = await file.read()
+        df = pd.read_csv(io.BytesIO(contents))
 
-        # Return success response
-        return {
-            "status": "success",
-            "message": f"Hello, {data.name}! Your message was received.",
-            "data": data.dict()
-        }
+        # Metadata
+        metadata = Metadata(
+            name=file.filename,
+            format='csv',
+            size=len(contents),
+            rows=len(df),
+            columns=len(df.columns),
+            date=datetime.now(),
+            hiddenAttributes=[]  # Add logic to determine if needed
+        )
+
+        # Process columns
+        data = []
+        for column in df.columns:
+            value_counts = df[column].astype(str).value_counts().to_dict()
+            categories = [Category(label=k, count=v) for k, v in value_counts.items()]
+            data.append(AttributeData(title=column, categories=categories))
+
+        return DatasetProcessed(data=data, metadata=metadata)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# Run server
 if __name__ == "__main__":
-    # Run the server
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -13,7 +13,7 @@ import {
   Settings,
   Upload,
 } from "@mui/icons-material";
-import { Box, Button, Paper, Typography, Stack, Divider, IconButton } from "@mui/material";
+import { Box, Button, Paper, Typography, Stack, Divider, IconButton, LinearProgress } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
@@ -24,7 +24,7 @@ import { mockDataset, mockResults } from "../model/DatasetProcessed";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { createSectionTitle } from "./ProcedureCFMiner";
 import { PageNames } from "../constants/pageNames";
 import { Histogram } from "../components/Histogram";
@@ -84,8 +84,9 @@ const formatSize = (bytes: number) => {
 };
 
 // Function to format date to string
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString("cs-CZ");
+const formatDate = (isoString: string) => {
+  const date = new Date(isoString);
+  return date.toLocaleString();
 };
 const isGreaterThanTenPercent = (x: number, y: number): boolean => x > 0.1 * y;
 
@@ -96,6 +97,8 @@ type FormValues = {
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
   const { datasetProcessed } = useAppContext();
+
+  const [loading, setLoading] = useState(false);
   const form = useForm<FormValues>({
     defaultValues: {
       nominal: true,
@@ -120,6 +123,7 @@ export const Dataset = () => {
       />
       <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)}>
         <FileDropzone />
+
       </SectionBox>
 
       {datasetProcessed && (

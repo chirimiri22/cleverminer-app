@@ -5,18 +5,24 @@ import { Description } from "@mui/icons-material";
 import { RemoveButton } from "../RemoveButton";
 import { useAppContext } from "../../context/AppContext";
 import { mockDataset } from "../../model/DatasetProcessed";
+import { uploadCsv } from "../../apiCalls/uploadCsv";
 
 const FileDropzone: React.FC = () => {
   const { datafile, setDatafile, setDatasetProcessed } = useAppContext();
   const [droppedFiles, setDroppedFiles] = useState<File[]>(datafile ? [datafile] : []);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleChangeFiles = (files: File[]) => {
+  const handleChangeFiles = async (files: File[]) => {
     files.length !== 0 ? setDatafile(files[0]) : setDatafile(undefined);
     setDroppedFiles(files);
     //   todo: here pokud je nastavený, tak tady poslat request na BE
-    setDatasetProcessed(mockDataset);
+    setLoading(true);
+    const res = await uploadCsv(files[0]);
+    setLoading(false);
+    // console.log(res);
+    setDatasetProcessed(res);
   };
 
   const isCSV = (file: File) => file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");
@@ -168,7 +174,7 @@ const FileDropzone: React.FC = () => {
           </Stack>
         </Stack>
       )}
-      <LinearProgress sx={{ position: "absolute", bottom: -10, right: 0, width: "100%" }} />
+      {loading && <LinearProgress sx={{ position: "absolute", bottom: 0, right: 0, width: "100%" }} />}
     </Box>
   );
 };

@@ -13,8 +13,7 @@ type Metadata = {
   size: number;
   rows: number;
   columns: number;
-  date: Date;
-  // datasets: Dataset[];
+  date: string;
   hiddenAttributes?: string[];
 };
 
@@ -82,7 +81,7 @@ export const mockDataset: DatasetProcessed = {
     size: 1024,
     rows: 10000,
     columns: 5,
-    date: new Date(),
+    date: new Date().toDateString(),
   },
 };
 
