@@ -167,7 +167,7 @@ export const CFResultSection = () => {
                 />
                 <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
                   <CardContent>
-                    <Histogram categories={mockDataset.data[0].categories} color={Colors.textSecondary} />
+                    <Histogram categories={mockDataset.data[0].categories} color={Colors.textSecondary} datalabels />
                   </CardContent>
                 </Card>
                 <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />

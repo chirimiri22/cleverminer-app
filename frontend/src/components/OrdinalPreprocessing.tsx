@@ -60,7 +60,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
       <Subtitle title={"Preview"} />
-      <Histogram categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} />
+      <Histogram categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} datalabels />
       <Subtitle title={"Generate Categories"} />
       {/*todo ordinal categorization */}
       <BooleanInput name={"ordered"} form={form} label2={"Order According To Labels"} />

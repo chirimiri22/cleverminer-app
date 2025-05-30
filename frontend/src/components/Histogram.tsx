@@ -1,12 +1,14 @@
 import { Bar } from "react-chartjs-2";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ChartOptions } from "chart.js";
 import { Category } from "../model/Category";
 import { Colors } from "../styles/colors";
 import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
 import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";
-import { SxProps } from "@mui/material";
+import { IconButton, Stack, SxProps } from "@mui/material";
 import { Categorization } from "./OrdinalPreprocessing";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { BootstrapTooltip } from "./BootstrapTooltip";
 
 type Props = {
   categories: Category[];
@@ -15,6 +17,7 @@ type Props = {
   color?: string;
   sx?: SxProps;
   onClick?: (categoryName?: string) => void;
+  datalabels?: boolean;
 } & (
   | {
       groupingMode: Categorization.Equidistant;
@@ -38,11 +41,23 @@ export const Histogram = ({
   onClick,
   groupingMode,
   groupingCount = 1,
+  datalabels,
 }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
   const isComplex = mode === "complex";
 
-  const colors = [Colors.primary, Colors.warning, Colors.info, Colors.success, Colors.error];
+  const getLighterColor = (color: string, shouldBeLighter: boolean) => {
+    return shouldBeLighter ? color + "70" : color; // Add transparency to the color
+  };
+  const [showLabels, setShowLabels] = useState(false);
+
+  const colors = [
+    getLighterColor(Colors.primary, showLabels),
+    getLighterColor(Colors.warning, showLabels),
+    getLighterColor(Colors.info, showLabels),
+    getLighterColor(Colors.success, showLabels),
+    getLighterColor(Colors.error, showLabels),
+  ];
 
   const getGroupColor = (index: number) => {
     const totalPoints = categories.length;
@@ -57,10 +72,13 @@ export const Histogram = ({
     return colors[group % colors.length];
   };
 
-  const backgroundColors = categories.map((_, index) => color ?? getGroupColor(index));
+  const backgroundColors = categories.map((_, index) =>
+    color ? getLighterColor(color, showLabels) : getGroupColor(index)
+  );
 
   const data = {
     labels: getCategoriesLabelsArray(categories),
+
     datasets: [
       {
         label: title,
@@ -73,6 +91,7 @@ export const Histogram = ({
   const options: ChartOptions<"bar"> = {
     responsive: true,
     animation: false,
+
     plugins: {
       legend: {
         display: false,
@@ -82,9 +101,26 @@ export const Histogram = ({
         text: title,
       },
       tooltip: {
+        enabled: !showLabels,
         displayColors: !!groupingMode,
         callbacks: {
           label: (context) => `${context.parsed.y}`,
+        },
+      },
+      datalabels: {
+        display: !!datalabels && showLabels,
+        color: Colors.black, // label text color (adjust to your bar colors)
+        // backgroundColor: Colors.white,
+        anchor: "start", // position relative to the bar
+        align: "end",
+        rotation: 90, // rotate 90 degrees
+        font: {
+          weight: "bold",
+          size: categories.length > 15 ? 8 : 12, // adjust size based on number of categories
+        },
+        formatter: (value: any, context: any) => {
+          // This will show the label inside the bar; customize as needed
+          return context.chart.data.labels[context.dataIndex];
         },
       },
     },
@@ -124,12 +160,25 @@ export const Histogram = ({
   // }, []);
 
   return (
-    <Bar
-      id={`bar-chart-${title || Math.random()}`}
-      ref={chartRef}
-      data={data}
-      options={options}
-      onClick={handleClick}
-    />
+    <Stack width={"100%"} height={"100%"} sx={{ position: "relative" }}>
+      {datalabels && (
+        <BootstrapTooltip title={showLabels ? "Hide Labels" : "Show Labels"} placement="right">
+          <IconButton
+            sx={{ position: "absolute", top: -10, right: "50%", zIndex: 1, transform: "translateX(50%)", opacity: 0.2 }}
+            size="small"
+            onClick={() => setShowLabels(!showLabels)}
+          >
+            {showLabels ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </BootstrapTooltip>
+      )}
+      <Bar
+        id={`bar-chart-${title || Math.random()}`}
+        ref={chartRef}
+        data={data}
+        options={options}
+        onClick={handleClick}
+      />
+    </Stack>
   );
 };

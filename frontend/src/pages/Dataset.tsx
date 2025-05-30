@@ -101,7 +101,7 @@ export const Dataset = () => {
       <SectionBox
         title={createSectionTitle(PREPROCESS_STEPS.preview)}
         leftSection={
-          <Stack direction="column">
+          <Stack justifyContent={"center"} flexGrow={1}>
             <InfoRow label="File name" value={mockDataset.metadata.name} />
             <InfoRow label="Format" value={mockDataset.metadata.format} />
             <InfoRow label="Rows" value={`${mockDataset.metadata.rows} rows`} />
