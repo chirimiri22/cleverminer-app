@@ -1,8 +1,9 @@
-import { Close } from "@mui/icons-material";
+
 import { Button, IconButton, Stack } from "@mui/material";
 import { useFieldArray, useForm } from "react-hook-form";
 import { NumberInput } from "./Input/NumberInput";
 import { Subtitle } from "./Subtitle";
+import { RemoveButton } from "./RemoveButton";
 
 type FormValues = {
   ranges: { from: number; to: number }[];
@@ -31,18 +32,7 @@ export const CategorizationInput = () => {
         <Stack key={field.id} direction="row" gap={2} alignItems="center" mb={2}>
           <NumberInput form={form} name={`ranges.${index}.from`} label="From" />
           <NumberInput form={form} name={`ranges.${index}.to`} label="To" />
-
-          <IconButton
-            size={"small"}
-            sx={{
-              height: 20,
-              width: 20,
-            }}
-            disabled={index === 0}
-            onClick={() => onRemove(index)}
-          >
-            <Close fontSize={"small"} />
-          </IconButton>
+          <RemoveButton onRemove={() => onRemove(index)} disabled={index === 0} />
         </Stack>
       ))}
       <Button onClick={() => append({ from: 0, to: 1 })}>Add Row</Button>

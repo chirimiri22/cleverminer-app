@@ -10,7 +10,7 @@ import {
   FilterAlt,
   PlayArrow,
   QueryStats,
-  Settings,
+  Settings, Upload,
 } from "@mui/icons-material";
 import { Box, Button, Paper, Typography, Stack, Divider } from "@mui/material";
 
@@ -38,6 +38,7 @@ import { OrdinalPreprocessing } from "../components/OrdinalPreprocessing";
 import { BooleanInput } from "../components/Input/BooleanInput";
 import { NominalPreprocessing } from "../components/NominalPreprocessing";
 import { useForm } from "react-hook-form";
+import FileDropzone from "../components/Input/FileDropZone";
 
 // todo: add to constants
 type Step = {
@@ -46,9 +47,14 @@ type Step = {
 };
 
 export const PREPROCESS_STEPS: {
+  load:Step,
   preview: Step;
   preprocess: Step;
 } = {
+  load: {
+    name: "Load",
+    icon: <Upload />,
+  },
   preview: {
     name: "Preview",
     icon: <QueryStats />,
@@ -98,6 +104,7 @@ export const Dataset = () => {
       {/* todo: creat container for loading dataset*/}
       {/* todo create constants for page names and icons not only menu items*/}
       <PageHeading title={PageNames.dataPreprocessing.name} icon={PageNames.dataPreprocessing.largeIcon} />
+      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} ><FileDropzone /></SectionBox>
       <SectionBox
         title={createSectionTitle(PREPROCESS_STEPS.preview)}
         leftSection={

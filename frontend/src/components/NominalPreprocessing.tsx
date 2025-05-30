@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { AutocompleteInput } from "./Input/AutocompleteInput";
 import { Colors } from "../styles/colors";
 import { TextInput } from "./Input/TextInput";
+import { RemoveButton } from "./RemoveButton";
 
 type Props = {
   data: AttributeData;
@@ -67,17 +68,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
             <Stack key={field.id} bgcolor={Colors.background} p={1} borderRadius={2}>
               <Stack direction={"row"} alignItems="center" gap={1}>
                 <TextInput name={`rows.${index}.label`} form={form} label={`Category #${index + 1}: Label`} />
-                <IconButton
-                  size="small"
-                  sx={{
-                    height: 20,
-                    width: 20,
-                  }}
-                  disabled={index === 0}
-                  onClick={() => remove(index)}
-                >
-                  <Close fontSize="small" />
-                </IconButton>
+                <RemoveButton onRemove={() => remove(index)} disabled={index === 0} />
               </Stack>
               <AutocompleteInput
                 form={form}

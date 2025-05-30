@@ -4,6 +4,7 @@ import { IconButton, Stack } from "@mui/material";
 import { SelectInput, SelectOption } from "./Input/SelectInput";
 import { NumberInput } from "./Input/NumberInput";
 import { Close } from "@mui/icons-material";
+import { RemoveButton } from "./RemoveButton";
 
 type Props = {
   form: UseFormReturn<CFProcedure>;
@@ -20,7 +21,6 @@ export const QuantifierRow = ({ form, index, options, onRemove }: Props) => {
       <SelectInput label="Quantifier" form={form} name={`${fieldName}.quantifier`} options={options} />
       <NumberInput
         label="Value"
-
         form={form}
         name={`${fieldName}.value`}
         min={0}
@@ -29,18 +29,7 @@ export const QuantifierRow = ({ form, index, options, onRemove }: Props) => {
           maxWidth: 60,
         }}
       />
-
-      <IconButton
-        size={"small"}
-        sx={{
-          height: 20,
-          width: 20,
-        }}
-        disabled={index === 0}
-        onClick={() => onRemove(index)}
-      >
-        <Close fontSize={"small"} />
-      </IconButton>
+      <RemoveButton onRemove={() => onRemove(index)} disabled={index === 0} />
     </Stack>
   );
 };
