@@ -35,7 +35,7 @@ type Props = {
 
 export const QuantifierChips = (props: Props) => {
   return (
-    <Stack direction={"row"} gap={1} mt={1}  justifyContent={"flex-start"} flexGrow={1} flexWrap={"wrap"} width={"100%"}>
+    <Stack direction={"row"} gap={1} mt={1} justifyContent={"flex-start"} flexGrow={1} flexWrap={"wrap"} width={"100%"}>
       <Chip label={`ID: ${props.ruleIndex}`} size="small" color={"primary"} />
       {Object.entries(props.displayQuantifiers).map(([key, value]) => {
         if (!value || key === "id") return null;

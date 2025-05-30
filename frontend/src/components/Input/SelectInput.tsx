@@ -23,13 +23,17 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
   size = "small",
 }: Props<TFormValues, TValue>) => {
   return (
-    <FormControl fullWidth size={size} variant={"filled"} sx={{
-      // backgroundColor: Colors.white,
-      "& .MuiInputBase-root": {
-        backgroundColor: Colors.white,
-      },
-
-    }}>
+    <FormControl
+      fullWidth
+      size={size}
+      variant={"filled"}
+      sx={{
+        // backgroundColor: Colors.white,
+        "& .MuiInputBase-root": {
+          backgroundColor: Colors.white,
+        },
+      }}
+    >
       <InputLabel id="quantifier-select-label">{label}</InputLabel>
       <Controller
         name={name}
@@ -43,7 +47,6 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
             label={label}
             variant={"filled"}
             sx={{
-
               fontSize: size === "medium" ? "x-large" : undefined,
               "&.MuiInputBase-root": {
                 // backgroundColor: Colors.white,

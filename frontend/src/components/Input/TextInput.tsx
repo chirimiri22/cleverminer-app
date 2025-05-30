@@ -31,7 +31,7 @@ export const TextInput = <TFormValues extends FieldValues, TValue>({
           variant="filled"
           sx={{
             "& .MuiInputBase-root": {
-              backgroundColor: 'transparent',
+              backgroundColor: "transparent",
             },
             ...sx,
           }}

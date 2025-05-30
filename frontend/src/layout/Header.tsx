@@ -11,7 +11,12 @@ export const Header = () => {
     <AppBar position="static" elevation={0} color={"default"} sx={{ borderBottom: `1px solid ${Colors.border}` }}>
       {/* TODO: make mouse change*/}
       <Toolbar>
-        <Stack sx={{ gap: 2, cursor: "pointer", }} onClick={() => navigate(ROUTES.HOME)} alignItems="center" direction="row">
+        <Stack
+          sx={{ gap: 2, cursor: "pointer" }}
+          onClick={() => navigate(ROUTES.HOME)}
+          alignItems="center"
+          direction="row"
+        >
           <Logo />
           <Typography variant="h5" component="div">
             {APP_NAME}

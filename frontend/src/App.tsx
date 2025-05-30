@@ -7,7 +7,7 @@ import { AppContainer } from "./layout/AppContainer";
 import { ROUTES } from "./constants/routes";
 import { Dataset } from "./pages/Dataset";
 import { Procedure4ftMiner } from "./pages/Procedure4ftMiner";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,7 +17,7 @@ import {
   Tooltip,
   Legend,
   PointElement,
-  LineElement
+  LineElement,
 } from "chart.js";
 
 // Register Chart.js components

@@ -99,7 +99,7 @@ export type CFRule = {
   histogramData: Category[];
   quantifiers: {
     [K in keyof typeof CFQuantifier]?: number;
-  }
+  };
 };
 
 export type ResultAtrribute = {
@@ -133,7 +133,7 @@ export const mockResults: CFResutls = {
         [CFQuantifier.RelBase]: 0.8,
         [CFQuantifier.RelMax]: 0.7,
         [CFQuantifier.RelMin_leq]: 0.9,
-      }
+      },
     },
     {
       attributes: [{ title: "Income", selectedCategories: ["Rich", "Middle Class"] }],
@@ -154,7 +154,7 @@ export const mockResults: CFResutls = {
         [CFQuantifier.RelBase]: 0.8,
         [CFQuantifier.RelMax]: 0.7,
         [CFQuantifier.RelMin_leq]: 0.9,
-      }
+      },
     },
     {
       attributes: [
@@ -178,7 +178,7 @@ export const mockResults: CFResutls = {
         [CFQuantifier.RelBase]: 0.8,
         [CFQuantifier.RelMax]: 0.7,
         [CFQuantifier.RelMin_leq]: 0.9,
-      }
+      },
     },
   ],
   targetAttribute: "City",

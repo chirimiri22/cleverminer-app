@@ -1,6 +1,6 @@
-import {CFQuantifier} from "../constants/enums/CFQuantifier";
+import { CFQuantifier } from "../constants/enums/CFQuantifier";
 
 export type QuantifierValue = {
-    quantifier?: CFQuantifier;
-    value?: number;
+  quantifier?: CFQuantifier;
+  value?: number;
 };

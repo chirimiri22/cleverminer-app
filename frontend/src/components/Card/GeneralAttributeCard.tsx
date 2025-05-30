@@ -16,7 +16,6 @@ import { ExpandMore, ExpandLess, Search, ListAlt } from "@mui/icons-material";
 import { Colors } from "../../styles/colors";
 import { BootstrapTooltip } from "../BootstrapTooltip";
 
-
 type Props = {
   title: string;
   dot?: string;
@@ -25,8 +24,6 @@ type Props = {
   actions?: ReactNode;
   disabled?: boolean;
 };
-
-
 
 // todo: think about the sctructure of the files
 
@@ -37,7 +34,7 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled }:
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 200, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content"}}>
+    <Card variant="outlined" sx={{ minWidth: 200, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
       <CardHeader
         title={
           <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>

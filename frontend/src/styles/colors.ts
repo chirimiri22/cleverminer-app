@@ -21,5 +21,5 @@ export const Colors = {
   white: "#ffffff",
   black: "#000000",
 
-  histogram: "rgba(75, 192, 192, 0.6)"
+  histogram: "rgba(75, 192, 192, 0.6)",
 };

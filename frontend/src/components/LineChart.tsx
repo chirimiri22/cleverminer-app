@@ -76,7 +76,6 @@ export const LineChart = ({
     ],
   };
 
-
   // Todo: customize histograms accordingly to the mode
   const options = {
     responsive: true,

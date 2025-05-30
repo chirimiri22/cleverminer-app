@@ -10,7 +10,8 @@ import {
   FilterAlt,
   PlayArrow,
   QueryStats,
-  Settings, Upload,
+  Settings,
+  Upload,
 } from "@mui/icons-material";
 import { Box, Button, Paper, Typography, Stack, Divider } from "@mui/material";
 
@@ -47,7 +48,7 @@ type Step = {
 };
 
 export const PREPROCESS_STEPS: {
-  load:Step,
+  load: Step;
   preview: Step;
   preprocess: Step;
 } = {
@@ -104,7 +105,9 @@ export const Dataset = () => {
       {/* todo: creat container for loading dataset*/}
       {/* todo create constants for page names and icons not only menu items*/}
       <PageHeading title={PageNames.dataPreprocessing.name} icon={PageNames.dataPreprocessing.largeIcon} />
-      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} ><FileDropzone /></SectionBox>
+      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)}>
+        <FileDropzone />
+      </SectionBox>
       <SectionBox
         title={createSectionTitle(PREPROCESS_STEPS.preview)}
         leftSection={
