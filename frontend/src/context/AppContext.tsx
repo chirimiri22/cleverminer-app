@@ -1,17 +1,24 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import { DatasetProcessed } from "../model/DatasetProcessed";
 
 type AppContextType = {
-  selectedDataset: File | null;
-  setSelectedDataset: (name: File | null) => void;
-  // datasetStats? :
+  datafile?: File;
+  setDatafile: (name?: File) => void;
+  datasetProcessed?: DatasetProcessed;
+  setDatasetProcessed: (dataset?: DatasetProcessed) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedDataset, setSelectedDataset] = useState<File | null>(null);
+  const [datafile, setDatafile] = useState<File | undefined>();
+  const [datasetProcessed, setDatasetProcessed] = useState<DatasetProcessed | undefined>();
 
-  return <AppContext.Provider value={{ selectedDataset, setSelectedDataset }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ datafile, setDatafile, setDatasetProcessed, datasetProcessed }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = () => {

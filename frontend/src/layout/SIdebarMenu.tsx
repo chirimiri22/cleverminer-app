@@ -51,7 +51,7 @@ export const menuGroups: GroupType[] = [
 export const SidebarMenu = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { selectedDataset } = useAppContext();
+  const { datafile } = useAppContext();
 
   return (
     <Stack sx={{ minWidth: 300, borderRight: `1px solid ${Colors.border}`, bgcolor: Colors.sidebar }}>
@@ -68,8 +68,8 @@ export const SidebarMenu = () => {
                   selected={currentPath === item.path}
                   note={
                     item.name === PageNames.dataPreprocessing.name &&
-                    selectedDataset && (
-                      <Chip label={` ${selectedDataset?.name}`} variant={"outlined"} size={"small"} color={"primary"} />
+                    datafile && (
+                      <Chip label={` ${datafile?.name}`} variant={"outlined"} size={"small"} color={"primary"} />
                     )
                   }
                 />

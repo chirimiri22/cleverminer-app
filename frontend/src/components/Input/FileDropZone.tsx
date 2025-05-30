@@ -6,13 +6,13 @@ import { RemoveButton } from "../RemoveButton";
 import { useAppContext } from "../../context/AppContext";
 
 const FileDropzone: React.FC = () => {
-  const { selectedDataset, setSelectedDataset } = useAppContext();
-  const [droppedFiles, setDroppedFiles] = useState<File[]>(selectedDataset ? [selectedDataset] : []);
+  const { datafile, setDatafile } = useAppContext();
+  const [droppedFiles, setDroppedFiles] = useState<File[]>(datafile ? [datafile] : []);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChangeFiles = (files: File[]) => {
-    files.length !== 0 ? setSelectedDataset(files[0]) : setSelectedDataset(null);
+    files.length !== 0 ? setDatafile(files[0]) : setDatafile(null);
     setDroppedFiles(files);
   };
 
