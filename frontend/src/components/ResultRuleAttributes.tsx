@@ -1,10 +1,11 @@
-import { ResultAtrribute } from "../model/DatasetProcessed";
+// import { ResultAtrribute } from "../model/dataset/DatasetProcessed";
 import { Card, CardHeader, Stack, Typography } from "@mui/material";
 import { Colors } from "../styles/colors";
 import { ResultRuleAttribute } from "./ResultRuleAttribute";
+import { ResultAttribute } from "../model/cf/result/CFResults";
 
 type Props = {
-  attributes: ResultAtrribute[];
+  attributes: ResultAttribute[];
   conjunction: boolean;
 };
 export const ResultRuleAttributes = ({ attributes, conjunction }: Props) => {

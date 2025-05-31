@@ -1,13 +1,13 @@
 import { Close, PlayArrow } from "@mui/icons-material";
 import { Button, Chip, IconButton, Stack, TextField } from "@mui/material";
-import { AttributeData } from "../model/AttributeData";
+import { AttributeData } from "../model/dataset/AttributeData";
 import { LineChart } from "./LineChart";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { SelectInput, SelectOption } from "./Input/SelectInput";
 import { NumberInput } from "./Input/NumberInput";
 import { Subtitle } from "./Subtitle";
 import { BooleanInput } from "./Input/BooleanInput";
-import { Category } from "../model/Category";
+import { Category } from "../model/dataset/Category";
 import { useEffect, useState } from "react";
 import { AutocompleteInput } from "./Input/AutocompleteInput";
 import { Colors } from "../styles/colors";

@@ -1,11 +1,14 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { DatasetProcessed } from "../model/DatasetProcessed";
+import { DatasetProcessed } from "../model/dataset/DatasetProcessed";
+import {CFResults} from "../model/cf/result/CFResults";
 
 type AppContextType = {
   datafile?: File;
   setDatafile: (name?: File) => void;
   datasetProcessed?: DatasetProcessed;
   setDatasetProcessed: (dataset?: DatasetProcessed) => void;
+  CFResults?: CFResults; // Adjust type as needed
+  setCFResults?: (results?: CFResults) => void; // Adjust type as needed
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);

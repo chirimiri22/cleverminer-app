@@ -1,7 +1,7 @@
 import { Bar } from "react-chartjs-2";
 import React, { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ChartOptions } from "chart.js";
-import { Category } from "../model/Category";
+import { Category } from "../model/dataset/Category";
 import { Colors } from "../styles/colors";
 import { getCategoriesLabelsArray } from "../helpers/getCategoriesLabelsArray";
 import { getCategoriesCountsArray } from "../helpers/getCategoriesCountsArray";

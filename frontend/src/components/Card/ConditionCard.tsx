@@ -16,14 +16,15 @@ import {
 } from "@mui/material";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { RangeSliderInput } from "../Input/RangeSliderInput";
-import { AttributeData } from "../../model/AttributeData";
+import { AttributeData } from "../../model/dataset/AttributeData";
 import { SelectInput, SelectOption } from "../Input/SelectInput";
-import { CFConditionAttributes } from "../../model/CFConditionAttributes";
+import { CFCondition } from "../../model/cf/condition/CFCondition";
 import React from "react";
 import { TypeOptions } from "../../constants/enums/TypeOptions";
+import { CFProcedure } from "../../model/cf/condition/CFProcedure";
 
 type ConditionCardProps = {
-  form: UseFormReturn<CFConditionAttributes>;
+  form: UseFormReturn<CFProcedure>;
   index: number;
   attributeData: AttributeData[];
   attributeOptions: SelectOption[];
@@ -36,7 +37,7 @@ export const ConditionCard = ({ form, index, attributeData, attributeOptions, on
     value: opt,
   }));
 
-  const currentCardData = form.watch(`conditionAttributes.${index}`);
+  const currentCardData = form.watch(`condition.conditionAttributes.${index}`);
   const categoriesCount = attributeData.find((x) => x.title === currentCardData.attribute)?.categories.length ?? 1;
   return (
     <Card variant="outlined" sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
@@ -46,7 +47,7 @@ export const ConditionCard = ({ form, index, attributeData, attributeOptions, on
         }}
         title={
           <SelectInput
-            name={`conditionAttributes.${index}.attribute`}
+            name={`condition.conditionAttributes.${index}.attribute`}
             form={form}
             options={attributeOptions}
             label={"Attribute"}
@@ -55,11 +56,11 @@ export const ConditionCard = ({ form, index, attributeData, attributeOptions, on
         }
       />
       <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, pt: 1 }}>
-        <SelectInput name={`conditionAttributes.${index}.type`} form={form} options={typeOptions} label={"Type"} />
+        <SelectInput name={`condition.conditionAttributes.${index}.type`} form={form} options={typeOptions} label={"Type"} />
 
         <RangeSliderInput
           form={form}
-          name={`conditionAttributes.${index}.range`}
+          name={`condition.conditionAttributes.${index}.range`}
           max={categoriesCount}
           label={"Range"}
           hideLabels={categoriesCount > 10}
@@ -69,7 +70,7 @@ export const ConditionCard = ({ form, index, attributeData, attributeOptions, on
         <Button
           color={"error"}
           onClick={() => onRemove(index)}
-          disabled={form.watch("conditionAttributes").length === 1}
+          disabled={form.watch("condition.conditionAttributes").length === 1}
         >
           Remove
         </Button>

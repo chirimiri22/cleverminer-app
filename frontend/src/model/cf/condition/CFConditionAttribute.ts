@@ -1,6 +1,6 @@
 import { IntervalRange } from "./IntervalRange";
 
-export type ConditionAttribute = {
+export type CFConditionAttribute = {
   attribute: string;
   type: string;
   range: IntervalRange;

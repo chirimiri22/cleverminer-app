@@ -4,7 +4,7 @@ import { Colors } from "../../styles/colors";
 import { Description } from "@mui/icons-material";
 import { RemoveButton } from "../RemoveButton";
 import { useAppContext } from "../../context/AppContext";
-import { mockDataset } from "../../model/DatasetProcessed";
+import { mockDataset } from "../../model/dataset/DatasetProcessed";
 import { uploadCsv } from "../../apiCalls/uploadCsv";
 
 const FileDropzone: React.FC = () => {
@@ -21,7 +21,6 @@ const FileDropzone: React.FC = () => {
     setLoading(true);
     const res = await uploadCsv(files[0]);
     setLoading(false);
-    // console.log(res);
     setDatasetProcessed(res);
   };
 

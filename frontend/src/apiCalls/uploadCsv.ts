@@ -1,6 +1,6 @@
 // api/uploadCsv.ts
 import axios from "axios";
-import { DatasetProcessed } from "../model/DatasetProcessed";
+import { DatasetProcessed } from "../model/dataset/DatasetProcessed";
 
 export const uploadCsv = async (file: File): Promise<DatasetProcessed> => {
   const formData = new FormData();

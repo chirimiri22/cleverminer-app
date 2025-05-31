@@ -1,11 +1,11 @@
 import { Bar, Line } from "react-chartjs-2";
-import { AttributeData } from "../model/AttributeData";
+import { AttributeData } from "../model/dataset/AttributeData";
 
 import React, { useEffect, useRef } from "react";
 
 import { Chart as ChartJS, ChartOptions } from "chart.js";
 import { Stack, SxProps } from "@mui/material";
-import { Category } from "../model/Category";
+import { Category } from "../model/dataset/Category";
 import { Colors } from "../styles/colors";
 import { Categorization } from "./OrdinalPreprocessing";
 

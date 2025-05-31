@@ -20,7 +20,7 @@ import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
 import { SectionBox } from "../components/SectionBox";
-import { mockDataset, mockResults } from "../model/DatasetProcessed";
+import { mockDataset,  } from "../model/dataset/DatasetProcessed";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
@@ -28,8 +28,8 @@ import React, { ReactNode, useState } from "react";
 import { createSectionTitle } from "./ProcedureCFMiner";
 import { PageNames } from "../constants/pageNames";
 import { Histogram } from "../components/Histogram";
-import { Category } from "../model/Category";
-import { AttributeData } from "../model/AttributeData";
+import { Category } from "../model/dataset/Category";
+import { AttributeData } from "../model/dataset/AttributeData";
 import { Subtitle } from "../components/Subtitle";
 import { Colors } from "../styles/colors";
 import { GeneralAttributeCard } from "../components/Card/GeneralAttributeCard";

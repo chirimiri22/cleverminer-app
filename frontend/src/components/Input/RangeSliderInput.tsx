@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Slider, Stack, SxProps, Tooltip, Typography } from "@mui/material";
 import { FormProps } from "../../model/FormProps";
 import { FieldValues, PathValue } from "react-hook-form";
-import { IntervalRange } from "../../model/IntervalRange";
+import { IntervalRange } from "../../model/cf/condition/IntervalRange";
 
 type Props<TFormValues extends FieldValues> = FormProps<TFormValues, IntervalRange> & {
   max: number;

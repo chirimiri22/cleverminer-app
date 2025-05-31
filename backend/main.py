@@ -1,12 +1,18 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from datetime import datetime
+
+from cleverminer import *
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+
 from typing import List, Optional
 import uvicorn
 import pandas as pd
-from datetime import datetime
+import json
 import io
 import os
+
+from classes.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
+    CFConditionAttribute, CFProcedure
 
 # Create FastAPI instance
 app = FastAPI(title="CleverMiner API")
@@ -20,34 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# # Data models for POST request (already present)
-# class UserData(BaseModel):
-#     name: str
-#     message: str
-
-# Data models for dataset response
-class Category(BaseModel):
-    label: str
-    count: int
-
-class AttributeData(BaseModel):
-    title: str
-    categories: List[Category]
-
-class Metadata(BaseModel):
-    name: str
-    format: str
-    size: int
-    rows: int
-    columns: int
-    date: datetime
-    hiddenAttributes: Optional[List[str]] = None
-
-class DatasetProcessed(BaseModel):
-    data: List[AttributeData]
-    metadata: Metadata
-
-# Submit endpoint (already present)
 
 @app.post("/api/upload", response_model=DatasetProcessed)
 async def upload_csv(file: UploadFile = File(...)):
@@ -78,6 +56,75 @@ async def upload_csv(file: UploadFile = File(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/cf-process", response_model=CFResults)
+async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
+    # print(procedure)
+    try:
+        contents = await file.read()
+        df = pd.read_csv(io.BytesIO(contents))
+
+        # Construct cond['attributes'] from frontend input
+        procedure_dict = json.loads(data)
+        procedure = CFProcedure.model_validate(procedure_dict)
+
+        cond_attributes = []
+        for attr in procedure.condition.conditionAttributes:
+            cond_attributes.append({
+                'name': attr.attribute,
+                'type': attr.type,  # 'seq' or 'subset'
+                'minlen': attr.range.start, 'maxlen': attr.range.end,
+
+            })
+
+        cf_quantifiers = {}
+        for quantifier in procedure.quantifiers:
+            cf_quantifiers[quantifier.quantifier] = quantifier.value
+
+        # Call cleverminer
+        clm = cleverminer(
+            df=df,
+            target=procedure.condition.targetAttribute,  # Use actual target from your dataset
+            proc='CFMiner',
+            quantifiers=cf_quantifiers,
+            cond={
+                'attributes': cond_attributes,
+                'minlen': procedure.range.start,
+                'maxlen': procedure.range.end,
+                "type": "con" if procedure.conjunction else "dis"
+            }
+        )
+
+        print(clm.rulelist())
+
+        # Extract results
+        rules = []
+        for r in clm.rulelist():
+            rule_attrs = []
+            for attr in r['rule']:
+                rule_attrs.append(ResultAttribute(
+                    title=attr['attribute'],
+                    selectedCategories=[str(val) for val in attr['category']]
+                ))
+
+            hist_data = [Category(label=k, count=int(v)) for k, v in r['histogram'].items()]
+
+            rules.append(CFRule(
+                attributes=rule_attrs,
+                histogramData=hist_data,
+                quantifiers=r['quantifiers']
+            ))
+
+        return CFResults(
+            targetAttribute=procedure.condition.targetAttribute,
+            conjunction=True,
+            rules=rules
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Run server
 if __name__ == "__main__":

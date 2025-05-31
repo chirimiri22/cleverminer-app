@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { CFProcedure } from "../model/CFProcedure";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { IconButton, Stack } from "@mui/material";
 import { SelectInput, SelectOption } from "./Input/SelectInput";
 import { NumberInput } from "./Input/NumberInput";

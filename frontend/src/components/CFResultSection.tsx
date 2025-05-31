@@ -1,7 +1,7 @@
 import { ArrowCircleRight, Settings, Terminal } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { mockDataset, mockResults } from "../model/DatasetProcessed";
+import { mockDataset } from "../model/dataset/DatasetProcessed";
 import { Colors } from "../styles/colors";
 import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";
@@ -13,6 +13,7 @@ import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 import { Subtitle } from "./Subtitle";
+import {mockResults} from "../model/cf/result/CFResults";
 
 const outputText = `
 Cleverminer version 1.2.1.

@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { CFProcedure } from "../model/CFProcedure";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { Stack, Typography } from "@mui/material";
 import { BooleanInput } from "./Input/BooleanInput";
 import { RangeSliderInput } from "./Input/RangeSliderInput";

@@ -1,9 +1,10 @@
 import { QuantifierValue } from "./QuantifierValue";
 import { IntervalRange } from "./IntervalRange";
+import { CFCondition } from "./CFCondition";
 
 export type CFProcedure = {
   range: IntervalRange;
   conjunction: boolean;
   quantifiers: QuantifierValue[];
-  //     other data
+  condition: CFCondition;
 };

@@ -1,13 +1,13 @@
 import { PlayArrow } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
-import { AttributeData } from "../model/AttributeData";
+import { AttributeData } from "../model/dataset/AttributeData";
 import { LineChart } from "./LineChart";
 import { useForm } from "react-hook-form";
 import { SelectInput, SelectOption } from "./Input/SelectInput";
 import { NumberInput } from "./Input/NumberInput";
 import { Subtitle } from "./Subtitle";
 import { BooleanInput } from "./Input/BooleanInput";
-import { Category } from "../model/Category";
+import { Category } from "../model/dataset/Category";
 import { useEffect, useState } from "react";
 import { Histogram } from "./Histogram";
 

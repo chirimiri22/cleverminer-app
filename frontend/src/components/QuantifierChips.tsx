@@ -1,7 +1,6 @@
 import { ArrowCircleRight, Settings } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { CFRule } from "../model/DatasetProcessed";
 import { Colors } from "../styles/colors";
 import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";
@@ -10,6 +9,7 @@ import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { CFQuantifierDisplay } from "./CFResultSection";
+import { CFRule } from "../model/cf/result/CFResults";
 
 //  todo: put to Colors.ts
 export const CFQuantifierColors: Record<CFQuantifier, string> = {

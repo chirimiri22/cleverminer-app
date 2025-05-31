@@ -1,14 +1,16 @@
-import { useForm, useFieldArray, FormProvider } from "react-hook-form";
+import { useForm, useFieldArray, FormProvider, UseFormReturn } from "react-hook-form";
 import { Stack, Button, IconButton, Alert, Typography } from "@mui/material";
 import { CFTargetCard } from "./Card/CFTargetCard";
 import { ConditionCard } from "./Card/ConditionCard";
 import { Add, ArrowCircleRight, ArrowDownward, ArrowRight } from "@mui/icons-material";
-import { AttributeData } from "../model/AttributeData";
-import { CFConditionAttributes } from "../model/CFConditionAttributes";
+import { AttributeData } from "../model/dataset/AttributeData";
+import { CFCondition } from "../model/cf/condition/CFCondition";
 import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Colors } from "../styles/colors";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
 
 type Props = {
+  form: UseFormReturn<CFProcedure>
   attributeData: AttributeData[];
   conjunction: boolean;
   horizontal?: boolean;
@@ -18,32 +20,32 @@ const getFirstUnusedAttribute = (attributeData: AttributeData[], usedAttributes:
   return attributeData.find((x) => !usedAttributes.includes(x.title));
 };
 
-export const ConditionBuilder = ({ attributeData, conjunction, horizontal }: Props) => {
-  const form = useForm<CFConditionAttributes>({
-    defaultValues: {
-      conditionAttributes: [
-        {
-          attribute: attributeData[0].title,
-          type: TypeOptions.Subset,
-          range: {
-            start: 0,
-            end: attributeData[0].categories.length,
-          },
-        },
-      ],
-    },
-  });
+export const ConditionBuilder = ({ attributeData, conjunction, horizontal, form }: Props) => {
+  // const form = useForm<CFCondition>({
+  //   defaultValues: {
+  //     conditionAttributes: [
+  //       {
+  //         attribute: attributeData[0].title,
+  //         type: TypeOptions.Subset,
+  //         range: {
+  //           start: 0,
+  //           end: attributeData[0].categories.length,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // });
 
   const { control } = form;
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "conditionAttributes",
+    name: "condition.conditionAttributes",
   });
 
   // const [horizontal, setHorizontal] = useState(true);
 
-  const conditionAttributes = form.watch("conditionAttributes").map((x) => x.attribute);
-  const targetAttribute = form.watch("targetAttribute");
+  const conditionAttributes = form.watch("condition.conditionAttributes").map((x) => x.attribute);
+  const targetAttribute = form.watch("condition.targetAttribute");
   const usedAttributes = targetAttribute ? [...conditionAttributes, targetAttribute] : conditionAttributes;
 
   const unusedAttributeOptions = attributeData.map((x) => ({

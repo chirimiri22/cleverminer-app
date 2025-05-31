@@ -2,11 +2,12 @@ import { Card, CardHeader } from "@mui/material";
 import { SelectInput, SelectOption } from "../Input/SelectInput";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CFConditionAttributes } from "../../model/CFConditionAttributes";
+import { CFCondition } from "../../model/cf/condition/CFCondition";
 import { Colors } from "../../styles/colors";
+import { CFProcedure } from "../../model/cf/condition/CFProcedure";
 
 type Props = {
-  form: UseFormReturn<CFConditionAttributes>;
+  form: UseFormReturn<CFProcedure>;
   attributeOptions: SelectOption[];
 };
 
@@ -22,7 +23,7 @@ export const CFTargetCard = ({ form, attributeOptions }: Props) => {
         }}
         title={
           <SelectInput
-            name={`targetAttribute`}
+            name={`condition.targetAttribute`}
             form={form}
             options={attributeOptions}
             label={"Target Attribute"}

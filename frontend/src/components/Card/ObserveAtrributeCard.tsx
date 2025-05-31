@@ -2,7 +2,7 @@ import { GeneralAttributeCard } from "./GeneralAttributeCard";
 import { IconButton, Stack, Typography } from "@mui/material";
 
 import { Histogram } from "../Histogram";
-import { AttributeData } from "../../model/AttributeData";
+import { AttributeData } from "../../model/dataset/AttributeData";
 import { ReactNode, useState } from "react";
 import { Analytics, ViewList } from "@mui/icons-material";
 import { BootstrapTooltip } from "../BootstrapTooltip";
