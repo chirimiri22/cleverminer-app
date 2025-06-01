@@ -17,7 +17,7 @@ import { TypeOptions } from "../constants/enums/TypeOptions";
 
 export const CFConditionSection = () => {
   const [horizontal, setHorizontal] = useState(true);
-  const { datasetProcessed, datafile } = useAppContext();
+  const { datasetProcessed, datafile, setCFResults } = useAppContext();
 
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
 
@@ -54,7 +54,9 @@ export const CFConditionSection = () => {
 
   const handleStart = async () => {
     if (datafile) {
-      await startCFProcedure(form.getValues(), datafile);
+      const res = await startCFProcedure(form.getValues(), datafile);
+
+      setCFResults(res);
     }
   };
 

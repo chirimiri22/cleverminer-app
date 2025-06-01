@@ -37,15 +37,15 @@ export const QuantifierChips = (props: Props) => {
   return (
     <Stack direction={"row"} gap={1} mt={1} justifyContent={"flex-start"} flexGrow={1} flexWrap={"wrap"} width={"100%"}>
       <Chip label={`ID: ${props.ruleIndex}`} size="small" color={"primary"} />
-      {Object.entries(props.displayQuantifiers).map(([key, value]) => {
-        if (!value || key === "id") return null;
+      {props.rule.quantifiers.map((q, index) => {
+        if (!q.quantifier || !props.displayQuantifiers[q.quantifier]) return null;
         return (
           <Chip
-            key={key}
-            label={`${key}: ${props.rule.quantifiers[key as keyof typeof CFQuantifier]}`}
+            key={index}
+            label={`${q.quantifier}: ${q.value}`}
             variant="outlined"
             size="small"
-            sx={{ borderColor: CFQuantifierColors[key as keyof typeof CFQuantifier] }}
+            sx={{ borderColor: CFQuantifierColors[q.quantifier] }}
           />
         );
       })}

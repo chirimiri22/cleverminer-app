@@ -1,5 +1,6 @@
 import { Category } from "../../dataset/Category";
 import { CFQuantifier } from "../../../constants/enums/CFQuantifier";
+import { QuantifierValue } from "../condition/QuantifierValue";
 
 export type CFResults = {
   rules: CFRule[];
@@ -10,11 +11,8 @@ export type CFResults = {
 export type CFRule = {
   attributes: ResultAttribute[];
   histogramData: Category[];
-  quantifiers: {
-    [K in keyof typeof CFQuantifier]?: number;
-  };
+  quantifiers: QuantifierValue[];
 };
-
 export type ResultAttribute = {
   title: string;
   selectedCategories: string[];
@@ -40,12 +38,13 @@ export const mockResults: CFResults = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
-      quantifiers: {
-        [CFQuantifier.Base]: 100,
-        [CFQuantifier.RelBase]: 0.8,
-        [CFQuantifier.RelMax]: 0.7,
-        [CFQuantifier.RelMin_leq]: 0.9,
-      },
+      quantifiers: [],
+      // quantifiers: {
+      //   [CFQuantifier.Base]: 100,
+      //   [CFQuantifier.RelBase]: 0.8,
+      //   [CFQuantifier.RelMax]: 0.7,
+      //   [CFQuantifier.RelMin_leq]: 0.9,
+      // },
     },
     {
       attributes: [{ title: "Income", selectedCategories: ["Rich", "Middle Class"] }],
@@ -61,12 +60,13 @@ export const mockResults: CFResults = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
-      quantifiers: {
-        [CFQuantifier.Base]: 100,
-        [CFQuantifier.RelBase]: 0.8,
-        [CFQuantifier.RelMax]: 0.7,
-        [CFQuantifier.RelMin_leq]: 0.9,
-      },
+      quantifiers: [],
+    //   quantifiers: {
+    //     [CFQuantifier.Base]: 100,
+    //     [CFQuantifier.RelBase]: 0.8,
+    //     [CFQuantifier.RelMax]: 0.7,
+    //     [CFQuantifier.RelMin_leq]: 0.9,
+    //   },
     },
     {
       attributes: [
@@ -85,12 +85,13 @@ export const mockResults: CFResults = {
         { label: "Dallas", count: 20 },
         { label: "San Jose", count: 10 },
       ],
-      quantifiers: {
-        [CFQuantifier.Base]: 100,
-        [CFQuantifier.RelBase]: 0.8,
-        [CFQuantifier.RelMax]: 0.7,
-        [CFQuantifier.RelMin_leq]: 0.9,
-      },
+      quantifiers: [],
+      // quantifiers: {
+      //   [CFQuantifier.Base]: 100,
+      //   [CFQuantifier.RelBase]: 0.8,
+      //   [CFQuantifier.RelMax]: 0.7,
+      //   [CFQuantifier.RelMin_leq]: 0.9,
+      // },
     },
   ],
   targetAttribute: "City",

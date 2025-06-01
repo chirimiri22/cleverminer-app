@@ -11,8 +11,10 @@ import json
 import io
 import os
 
+from matplotlib.pyplot import title
+
 from classes.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure
+    CFConditionAttribute, CFProcedure, CFResultQuantifiers
 
 # Create FastAPI instance
 app = FastAPI(title="CleverMiner API")
@@ -96,33 +98,42 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
             }
         )
 
-        print(clm.rulelist())
+        # print(clm.rulelist())
+
+        count = clm.get_rulecount()
 
         # Extract results
         rules = []
-        for r in clm.rulelist():
-            rule_attrs = []
-            for attr in r['rule']:
-                rule_attrs.append(ResultAttribute(
-                    title=attr['attribute'],
-                    selectedCategories=[str(val) for val in attr['category']]
-                ))
 
-            hist_data = [Category(label=k, count=int(v)) for k, v in r['histogram'].items()]
+        target_val_cat = clm.get_dataset_category_list( procedure.condition.targetAttribute)
+
+        for i in range(1, count + 1):
+            parsed_quantifiers = CFResultQuantifiers(**clm.get_quantifiers(i))
+            attributes_no_cat = clm.get_rule_variables(i, 'cond')
+            histogram_data = [Category(label=label, count=count) for (label, count) in zip(target_val_cat, clm.get_hist(i))]
+
+            attributes = [
+                ResultAttribute(
+                    title=attribute,
+                    selectedCategories=clm.get_rule_categories(i, 'cond', attribute)
+                )
+                for attribute in attributes_no_cat
+            ]
 
             rules.append(CFRule(
-                attributes=rule_attrs,
-                histogramData=hist_data,
-                quantifiers=r['quantifiers']
+                attributes=attributes,
+                histogramData=histogram_data,
+                quantifiers=parsed_quantifiers
             ))
 
         return CFResults(
             targetAttribute=procedure.condition.targetAttribute,
-            conjunction=True,
+            conjunction=procedure.conjunction,
             rules=rules
         )
 
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 

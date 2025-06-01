@@ -14,6 +14,7 @@ import { BootstrapTooltip } from "./BootstrapTooltip";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 import { Subtitle } from "./Subtitle";
 import {mockResults} from "../model/cf/result/CFResults";
+import { useAppContext } from "../context/AppContext";
 
 const outputText = `
 Cleverminer version 1.2.1.
@@ -57,6 +58,9 @@ export type CFQuantifierDisplay = {
 //  todo: create comparator for 2 histograms - modalni okno
 export const CFResultSection = () => {
   const form = useForm<CFQuantifierDisplay>();
+  const {  CFResults, datasetProcessed } = useAppContext();
+
+
 
   const formValues = form.watch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -73,6 +77,7 @@ export const CFResultSection = () => {
   };
 
   const [logOpen, setLogOpen] = useState(false);
+  if (!CFResults || !datasetProcessed) return <></>;
 
   return (
     <SectionBox
@@ -118,8 +123,8 @@ export const CFResultSection = () => {
       }
       leftSection={
         <Stack alignItems={"center"} justifyContent={"end"} flexGrow={1} gap={3} pb={5}>
-          <Typography variant={"h5"}>{mockResults.targetAttribute}</Typography>
-          <Histogram categories={mockDataset.data[0].categories} />
+          <Typography variant={"h5"}>{CFResults.targetAttribute}</Typography>
+          {/*<Histogram categories={datasetProcessed[CF]} />*/}
         </Stack>
       }
     >
@@ -144,16 +149,16 @@ export const CFResultSection = () => {
       )}
       {!logOpen && (
         <Stack direction={"row"} gap={2}>
-          {mockResults.rules.map((rule, ruleIndex) => (
+          {CFResults.rules.map((rule, ruleIndex) => (
             <Stack
               key={ruleIndex}
               alignItems={"center"}
               flexGrow={1}
               maxWidth={250}
               justifyContent={"space-between"}
-              pr={ruleIndex === mockResults.rules.length - 1 ? 4 : 0}
+              pr={ruleIndex === CFResults.rules.length - 1 ? 4 : 0}
             >
-              <ResultRuleAttributes attributes={rule.attributes} conjunction={mockResults.conjunction} />
+              <ResultRuleAttributes attributes={rule.attributes} conjunction={CFResults.conjunction} />
 
               <Stack alignItems={"center"}>
                 {/* Arrow */}

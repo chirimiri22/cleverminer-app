@@ -1,7 +1,7 @@
 from enum import Enum
 
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from pydantic import BaseModel, Field, root_validator, model_validator
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 
@@ -51,6 +51,22 @@ class CFQuantifier(str, Enum):
     RelMin = "RelMin"
     RelMax_leq = "RelMax_leq"
     RelMin_leq = "RelMin_leq"
+
+key_map = {
+    "base": CFQuantifier.Base,
+    "rel_base": CFQuantifier.RelBase,
+    "s_up": CFQuantifier.S_Up,
+    "s_down": CFQuantifier.S_Down,
+    "s_any_up": CFQuantifier.S_Any_Up,
+    "s_any_down": CFQuantifier.S_Any_Down,
+    "max": CFQuantifier.Max,
+    "min": CFQuantifier.Min,
+    "rel_max": CFQuantifier.RelMax,
+    "rel_min": CFQuantifier.RelMin,
+    "rel_max_leq": CFQuantifier.RelMax_leq,
+    "rel_min_leq": CFQuantifier.RelMin_leq,
+}
+
 
 
 class QuantifierValue(BaseModel):
