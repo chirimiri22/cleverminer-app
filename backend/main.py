@@ -130,7 +130,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
             ))
         # TARGET ATTRIBUTE
         target_attribute_name = procedure.condition.targetAttribute
-        ordered_target_categories = get_ordered_categories( # make sure ordering is accordin to clm miner
+        ordered_target_categories = get_ordered_categories(  # make sure ordering is accordin to clm miner
             clm.get_dataset_category_list(target_attribute_name), df, target_attribute_name)
         target_attribute = AttributeData(title=target_attribute_name, categories=ordered_target_categories)
 

@@ -161,7 +161,7 @@ export const Dataset = () => {
 
           {/* todo: right upper close all / open all*/}
           {/* todo: indicator of readiness*/}
-          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
+          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)} >
             <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
               {datasetProcessedAll.data.map((attribute, index) => {
                 const shouldBePreprocessed = aboveSuspicionLevel(attribute.categories.length, 100);
@@ -175,7 +175,7 @@ export const Dataset = () => {
                     stateTip={isHidden ? "Hidden" : shouldBePreprocessed ? "Large number of categories" : undefined}
                   >
                     <Stack textAlign={"center"} gap={1}>
-                      {shouldBePreprocessed && "Number of unique categories is large..."}
+                      {shouldBePreprocessed && "Number of unique categories is large. Do you want to hide it?"}
                       <BootstrapTooltip title={"Hide uncessary attribute. It will be hiddden in the whole app."}>
                         <Button
                           variant="outlined"
@@ -186,7 +186,7 @@ export const Dataset = () => {
                           {isHidden ? "Show" : "Hide"}
                         </Button>
                       </BootstrapTooltip>
-                      <Stack position={"relative"} my={1}>
+                      <Stack position={"relative"} my={2}>
                         <Divider />
                         <Typography
                           fontSize={"small"}
@@ -201,6 +201,7 @@ export const Dataset = () => {
                         </Typography>
                       </Stack>
                       <Stack alignItems={"center"}>
+                        Do you want to preprocess this?
                         <BooleanInput
                           name={"nominal"}
                           form={form}
