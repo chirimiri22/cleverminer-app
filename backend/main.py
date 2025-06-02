@@ -13,8 +13,9 @@ import os
 
 from matplotlib.pyplot import title
 
-from classes.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure, CFResultQuantifiers
+from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
+    CFConditionAttribute, CFProcedure
+from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
 app = FastAPI(title="CleverMiner API")
@@ -108,7 +109,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
         target_val_cat = clm.get_dataset_category_list( procedure.condition.targetAttribute)
 
         for i in range(1, count + 1):
-            parsed_quantifiers = CFResultQuantifiers(**clm.get_quantifiers(i))
+            parsed_quantifiers = parse_clm_quantifiers(clm.get_quantifiers(i))
             attributes_no_cat = clm.get_rule_variables(i, 'cond')
             histogram_data = [Category(label=label, count=count) for (label, count) in zip(target_val_cat, clm.get_hist(i))]
 

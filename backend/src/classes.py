@@ -52,22 +52,6 @@ class CFQuantifier(str, Enum):
     RelMax_leq = "RelMax_leq"
     RelMin_leq = "RelMin_leq"
 
-key_map = {
-    "base": CFQuantifier.Base,
-    "rel_base": CFQuantifier.RelBase,
-    "s_up": CFQuantifier.S_Up,
-    "s_down": CFQuantifier.S_Down,
-    "s_any_up": CFQuantifier.S_Any_Up,
-    "s_any_down": CFQuantifier.S_Any_Down,
-    "max": CFQuantifier.Max,
-    "min": CFQuantifier.Min,
-    "rel_max": CFQuantifier.RelMax,
-    "rel_min": CFQuantifier.RelMin,
-    "rel_max_leq": CFQuantifier.RelMax_leq,
-    "rel_min_leq": CFQuantifier.RelMin_leq,
-}
-
-
 
 class QuantifierValue(BaseModel):
     quantifier: Optional[CFQuantifier]
@@ -102,7 +86,7 @@ class ResultAttribute(BaseModel):
 class CFRule(BaseModel):
     attributes: List[ResultAttribute]
     histogramData: List[Category]
-    quantifiers: Dict[str, float]
+    quantifiers: List[QuantifierValue]
 
 
 class CFResults(BaseModel):
