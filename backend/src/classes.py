@@ -89,7 +89,13 @@ class CFRule(BaseModel):
     quantifiers: List[QuantifierValue]
 
 
+class ClmLogs(BaseModel):
+    summary: str
+    rulelist: str
+
+
 class CFResults(BaseModel):
     rules: List[CFRule]
     targetAttribute: str
     conjunction: bool
+    logs: ClmLogs

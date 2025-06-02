@@ -13,43 +13,43 @@ import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 import { Subtitle } from "./Subtitle";
-import {mockResults} from "../model/cf/result/CFResults";
+import { mockResults } from "../model/cf/result/CFResults";
 import { useAppContext } from "../context/AppContext";
 
-const outputText = `
-Cleverminer version 1.2.1.
-        Starting data preparation ...
-        Automatically reordering numeric categories ...
-        Automatically reordering numeric categories ...done
-        Encoding columns into bit-form...
-        Encoding columns into bit-form...done
-        Data preparation finished.
-        Will go for  CFMiner
-        Starting to mine rules.
-        100%|####################################################|Elapsed Time: 0:00:00
-        Done. Total verifications : 8, rules 1, times: prep 0.01sec, processing 0.02sec
-
-        CleverMiner task processing summary:
-
-        Task type : CFMiner
-        Number of verifications : 8
-        Number of rules : 1
-        Total time needed : 00h 00m 00s
-        Time of data preparation : 00h 00m 00s
-        Time of rule mining : 00h 00m 00s
-
-        List of rules:
-        RULEID BASE  S_UP  S_DOWN Condition
-        1 10571     1     1 Speed_limit(40 50 60) & Vehicle_Type(Motorcycle over 500cc)
-        2  8803     1     1 Speed_limit(50 60) & Vehicle_Type(Motorcycle over 500cc)
-        3  1143     1     1 Speed_limit(50 60) & Vehicle_Type(Pedal cycle)
-        4 10690     1     1 Speed_limit(50 60 70) & Vehicle_Type(Motorcycle over 500cc)
-        5  1198     1     1 Speed_limit(50 60 70) & Vehicle_Type(Pedal cycle)
-        6  7694     1     1 Speed_limit(60) & Vehicle_Type(Motorcycle over 500cc)
-        7   996     1     1 Speed_limit(60) & Vehicle_Type(Pedal cycle)
-        8  9581     1     1 Speed_limit(60 70) & Vehicle_Type(Motorcycle over 500cc)
-        9  1051     1     1 Speed_limit(60 70) & Vehicle_Type(Pedal cycle)
-`;
+// const outputText = `
+// Cleverminer version 1.2.1.
+//         Starting data preparation ...
+//         Automatically reordering numeric categories ...
+//         Automatically reordering numeric categories ...done
+//         Encoding columns into bit-form...
+//         Encoding columns into bit-form...done
+//         Data preparation finished.
+//         Will go for  CFMiner
+//         Starting to mine rules.
+//         100%|####################################################|Elapsed Time: 0:00:00
+//         Done. Total verifications : 8, rules 1, times: prep 0.01sec, processing 0.02sec
+//
+//         CleverMiner task processing summary:
+//
+//         Task type : CFMiner
+//         Number of verifications : 8
+//         Number of rules : 1
+//         Total time needed : 00h 00m 00s
+//         Time of data preparation : 00h 00m 00s
+//         Time of rule mining : 00h 00m 00s
+//
+//         List of rules:
+//         RULEID BASE  S_UP  S_DOWN Condition
+//         1 10571     1     1 Speed_limit(40 50 60) & Vehicle_Type(Motorcycle over 500cc)
+//         2  8803     1     1 Speed_limit(50 60) & Vehicle_Type(Motorcycle over 500cc)
+//         3  1143     1     1 Speed_limit(50 60) & Vehicle_Type(Pedal cycle)
+//         4 10690     1     1 Speed_limit(50 60 70) & Vehicle_Type(Motorcycle over 500cc)
+//         5  1198     1     1 Speed_limit(50 60 70) & Vehicle_Type(Pedal cycle)
+//         6  7694     1     1 Speed_limit(60) & Vehicle_Type(Motorcycle over 500cc)
+//         7   996     1     1 Speed_limit(60) & Vehicle_Type(Pedal cycle)
+//         8  9581     1     1 Speed_limit(60 70) & Vehicle_Type(Motorcycle over 500cc)
+//         9  1051     1     1 Speed_limit(60 70) & Vehicle_Type(Pedal cycle)
+// `;
 
 export type CFQuantifierDisplay = {
   [K in keyof typeof CFQuantifier]: boolean;
@@ -58,9 +58,7 @@ export type CFQuantifierDisplay = {
 //  todo: create comparator for 2 histograms - modalni okno
 export const CFResultSection = () => {
   const form = useForm<CFQuantifierDisplay>();
-  const {  CFResults, datasetProcessed } = useAppContext();
-
-
+  const { CFResults, datasetProcessed } = useAppContext();
 
   const formValues = form.watch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -122,10 +120,12 @@ export const CFResultSection = () => {
         </Stack>
       }
       leftSection={
-        <Stack alignItems={"center"} justifyContent={"end"} flexGrow={1} gap={3} pb={5}>
-          <Typography variant={"h5"}>{CFResults.targetAttribute}</Typography>
-          {/*<Histogram categories={datasetProcessed[CF]} />*/}
-        </Stack>
+        !logOpen && (
+          <Stack alignItems={"center"} justifyContent={"end"} flexGrow={1} gap={3} pb={5}>
+            <Typography variant={"h5"}>{CFResults.targetAttribute}</Typography>
+            {/*<Histogram categories={datasetProcessed[CF]} />*/}
+          </Stack>
+        )
       }
     >
       {logOpen && (
@@ -143,45 +143,45 @@ export const CFResultSection = () => {
               overflowY: "auto",
             }}
           >
-            {outputText}
+            {CFResults.logs.summary}
+            {CFResults.logs.rulelist}
           </Typography>
         </Stack>
       )}
-      {!logOpen && (
-        <Stack direction={"row"} gap={2}>
-          {CFResults.rules.map((rule, ruleIndex) => (
-            <Stack
-              key={ruleIndex}
-              alignItems={"center"}
-              flexGrow={1}
-              maxWidth={250}
-              justifyContent={"space-between"}
-              pr={ruleIndex === CFResults.rules.length - 1 ? 4 : 0}
-            >
-              <ResultRuleAttributes attributes={rule.attributes} conjunction={CFResults.conjunction} />
 
-              <Stack alignItems={"center"}>
-                {/* Arrow */}
-                <ArrowCircleRight
-                  sx={{
-                    py: 0.5,
-                    height: 20,
-                    width: 20,
-                    transform: "rotate(90deg)",
-                  }}
-                  color={"success"}
-                />
-                <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
-                  <CardContent>
-                    <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels />
-                  </CardContent>
-                </Card>
-                <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />
-              </Stack>
+      <Stack direction={"row"} gap={2} display={logOpen ? "none" : "flex"}>
+        {CFResults.rules.map((rule, ruleIndex) => (
+          <Stack
+            key={ruleIndex}
+            alignItems={"center"}
+            flexGrow={1}
+            maxWidth={250}
+            justifyContent={"space-between"}
+            pr={ruleIndex === CFResults.rules.length - 1 ? 4 : 0}
+          >
+            <ResultRuleAttributes attributes={rule.attributes} conjunction={CFResults.conjunction} />
+
+            <Stack alignItems={"center"}>
+              {/* Arrow */}
+              <ArrowCircleRight
+                sx={{
+                  py: 0.5,
+                  height: 20,
+                  width: 20,
+                  transform: "rotate(90deg)",
+                }}
+                color={"success"}
+              />
+              <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
+                <CardContent>
+                  <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels />
+                </CardContent>
+              </Card>
+              <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />
             </Stack>
-          ))}
-        </Stack>
-      )}
+          </Stack>
+        ))}
+      </Stack>
     </SectionBox>
   );
 };

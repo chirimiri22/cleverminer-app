@@ -6,7 +6,13 @@ export type CFResults = {
   rules: CFRule[];
   targetAttribute: string;
   conjunction: boolean;
+  logs:ClmLogs
 };
+
+type ClmLogs = {
+  summary: string;
+  rulelist: string;
+}
 
 export type CFRule = {
   attributes: ResultAttribute[];
@@ -61,12 +67,12 @@ export const mockResults: CFResults = {
         { label: "San Jose", count: 10 },
       ],
       quantifiers: [],
-    //   quantifiers: {
-    //     [CFQuantifier.Base]: 100,
-    //     [CFQuantifier.RelBase]: 0.8,
-    //     [CFQuantifier.RelMax]: 0.7,
-    //     [CFQuantifier.RelMin_leq]: 0.9,
-    //   },
+      //   quantifiers: {
+      //     [CFQuantifier.Base]: 100,
+      //     [CFQuantifier.RelBase]: 0.8,
+      //     [CFQuantifier.RelMax]: 0.7,
+      //     [CFQuantifier.RelMin_leq]: 0.9,
+      //   },
     },
     {
       attributes: [
@@ -96,4 +102,8 @@ export const mockResults: CFResults = {
   ],
   targetAttribute: "City",
   conjunction: true,
+  logs: {
+    summary: "",
+    rulelist: "",
+  },
 };

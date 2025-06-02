@@ -14,7 +14,8 @@ import os
 from matplotlib.pyplot import title
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure
+    CFConditionAttribute, CFProcedure, ClmLogs
+from src.helpers import capture_output
 from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
@@ -64,7 +65,7 @@ async def upload_csv(file: UploadFile = File(...)):
 
 
 @app.post("/api/cf-process", response_model=CFResults)
-async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
+async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=None):
     # print(procedure)
     try:
         contents = await file.read()
@@ -86,6 +87,8 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
         cf_quantifiers = {}
         for quantifier in procedure.quantifiers:
             cf_quantifiers[quantifier.quantifier] = quantifier.value
+
+
 
         # Call cleverminer
         clm = cleverminer(
@@ -129,10 +132,14 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...)):
                 quantifiers=parsed_quantifiers
             ))
 
+        summary_str = capture_output(clm.print_summary)
+        rules_str = capture_output(clm.print_rulelist)
+
         return CFResults(
             targetAttribute=procedure.condition.targetAttribute,
             conjunction=procedure.conjunction,
-            rules=rules
+            rules=rules,
+            logs=ClmLogs(summary=summary_str, rulelist=rules_str)
         )
 
     except Exception as e:
