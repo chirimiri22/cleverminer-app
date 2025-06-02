@@ -1,10 +1,10 @@
 import { Category } from "../../dataset/Category";
-import { CFQuantifier } from "../../../constants/enums/CFQuantifier";
 import { QuantifierValue } from "../condition/QuantifierValue";
+import { AttributeData } from "../../dataset/AttributeData";
 
 export type CFResults = {
   rules: CFRule[];
-  targetAttribute: string;
+  targetAttributeHistogram: AttributeData;
   conjunction: boolean;
   logs:ClmLogs
 };
@@ -100,10 +100,14 @@ export const mockResults: CFResults = {
       // },
     },
   ],
-  targetAttribute: "City",
+
   conjunction: true,
   logs: {
     summary: "",
     rulelist: "",
+  },
+  targetAttributeHistogram: {
+    title: "",
+    categories: [],
   },
 };

@@ -42,7 +42,7 @@ export const QuantifierChips = (props: Props) => {
         return (
           <Chip
             key={index}
-            label={`${q.quantifier}: ${q.value}`}
+            label={`${q.quantifier}: ${Number.isInteger(q.value) ? q.value : Number(q.value?.toFixed(3))}`}
             variant="outlined"
             size="small"
             sx={{ borderColor: CFQuantifierColors[q.quantifier] }}

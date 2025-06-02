@@ -1,6 +1,8 @@
 from typing import List
 
-from src.classes import QuantifierValue, CFQuantifier
+import pandas as pd
+
+from src.classes import QuantifierValue, CFQuantifier, Category
 
 key_map = {
     "base": CFQuantifier.Base,
@@ -22,3 +24,5 @@ def parse_clm_quantifiers(data: dict) -> List[QuantifierValue]:
         if k in key_map:
             result.append(QuantifierValue(quantifier=key_map[k], value=v))
     return result
+
+

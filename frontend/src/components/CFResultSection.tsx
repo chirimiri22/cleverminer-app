@@ -121,9 +121,12 @@ export const CFResultSection = () => {
       }
       leftSection={
         !logOpen && (
-          <Stack alignItems={"center"} justifyContent={"end"} flexGrow={1} gap={3} pb={5}>
-            <Typography variant={"h5"}>{CFResults.targetAttribute}</Typography>
-            {/*<Histogram categories={datasetProcessed[CF]} />*/}
+          <Stack alignItems={"start"} flexGrow={1} gap={3} pb={5}>
+            <Subtitle title={`Rules found: ${CFResults.rules.length}`} />
+            <Stack maxWidth={"100%"}>
+              <Typography variant={"h5"}>{CFResults.targetAttributeHistogram.title}</Typography>
+              <Histogram categories={CFResults.targetAttributeHistogram.categories} />
+            </Stack>
           </Stack>
         )
       }

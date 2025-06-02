@@ -96,6 +96,6 @@ class ClmLogs(BaseModel):
 
 class CFResults(BaseModel):
     rules: List[CFRule]
-    targetAttribute: str
+    targetAttributeHistogram: AttributeData
     conjunction: bool
     logs: ClmLogs
