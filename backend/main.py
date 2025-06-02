@@ -51,7 +51,9 @@ async def upload_csv(file: UploadFile = File(...)):
         # Process columns
         data = []
         for column in df.columns:
-            value_counts = df[column].astype(str).value_counts().to_dict()
+            value_counts = dict(sorted(
+                df[column].astype(str).value_counts().to_dict().items()
+            ))
             categories = [Category(label=k, count=v) for k, v in value_counts.items()]
             data.append(AttributeData(title=column, categories=categories))
 
