@@ -1,40 +1,25 @@
 import {
-  ArrowBack,
   ArrowCircleLeft,
-  ArrowCircleRight,
-  AutoGraph,
-  BarChart,
-  Check,
-  Construction,
   Download,
   FilterAlt,
-  PlayArrow,
   QueryStats,
-  Settings,
   Upload,
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
-import { Box, Button, Paper, Typography, Stack, Divider, IconButton, LinearProgress } from "@mui/material";
+import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
-
-import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";
 import { SectionBox } from "../components/SectionBox";
-import { mockDataset,  } from "../model/dataset/DatasetProcessed";
-
-import { CFResultSection } from "../components/CFResultSection";
-import { CFConditionSection } from "../components/CFConditionSection";
 import React, { ReactNode, useState } from "react";
 import { createSectionTitle } from "./ProcedureCFMiner";
 import { PageNames } from "../constants/pageNames";
 import { Histogram } from "../components/Histogram";
-import { Category } from "../model/dataset/Category";
 import { AttributeData } from "../model/dataset/AttributeData";
 import { Subtitle } from "../components/Subtitle";
 import { Colors } from "../styles/colors";
-import { GeneralAttributeCard } from "../components/Card/GeneralAttributeCard";
-import { LineChart } from "../components/LineChart";
-import { CategorizationInput } from "../components/CategorizationInput";
+import { GeneralAttributeCard, State } from "../components/Card/GeneralAttributeCard";
 import { OrdinalPreprocessing } from "../components/OrdinalPreprocessing";
 import { BooleanInput } from "../components/Input/BooleanInput";
 import { NominalPreprocessing } from "../components/NominalPreprocessing";
@@ -88,7 +73,7 @@ const formatDate = (isoString: string) => {
   const date = new Date(isoString);
   return date.toLocaleString();
 };
-const isGreaterThanTenPercent = (x: number, y: number): boolean => x > 0.1 * y;
+const aboveSuspicionLevel = (x: number, y: number): boolean => x > 0.2 * y;
 
 type FormValues = {
   nominal: boolean;
@@ -96,7 +81,9 @@ type FormValues = {
 
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
-  const { datasetProcessed } = useAppContext();
+  const { getDatasetProcessed, changeHiddenState } = useAppContext();
+  const datasetProcessed = getDatasetProcessed();
+  const datasetProcessedAll = getDatasetProcessed(true);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -104,6 +91,10 @@ export const Dataset = () => {
       nominal: true,
     },
   });
+
+  const handleHideAttribute = (attributeName: string) => {
+    changeHiddenState(attributeName);
+  };
 
   const isNominal = form.watch("nominal");
   return (
@@ -125,7 +116,7 @@ export const Dataset = () => {
         <FileDropzone onLoadingChange={(value) => setLoading(value)} />
       </SectionBox>
 
-      {datasetProcessed && (
+      {datasetProcessed && datasetProcessedAll && (
         <>
           <SectionBox
             title={createSectionTitle(PREPROCESS_STEPS.preview)}
@@ -172,48 +163,58 @@ export const Dataset = () => {
           {/* todo: indicator of readiness*/}
           <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
             <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-              {datasetProcessed.data.map((data, index) => {
-                const shouldBePreprocessed = isGreaterThanTenPercent(data.categories.length, 100);
+              {datasetProcessedAll.data.map((attribute, index) => {
+                const shouldBePreprocessed = aboveSuspicionLevel(attribute.categories.length, 100);
+                const isHidden = attribute.hidden;
                 return (
                   <GeneralAttributeCard
-                    title={data.title}
-                    dot={`${data.categories.length}`}
+                    title={attribute.title}
+                    dot={`${attribute.categories.length}`}
                     dotTip={"Categories count"}
-                    ok={!shouldBePreprocessed}
-                    warning={shouldBePreprocessed ? "Large number of categories" : undefined}
+                    state={isHidden ? State.Hidden : shouldBePreprocessed ? State.Warning : State.Ok}
+                    stateTip={isHidden ? "Hidden" : shouldBePreprocessed ? "Large number of categories" : undefined}
                   >
-                    {shouldBePreprocessed && (
-                      <Stack textAlign={"center"} gap={1}>
-                        Number of unique categories is large...
-                        <Button variant="outlined" size={"small"} startIcon={<Check />}>
-                          It's ok
+                    <Stack textAlign={"center"} gap={1}>
+                      {shouldBePreprocessed && "Number of unique categories is large..."}
+                      <BootstrapTooltip title={"Hide uncessary attribute. It will be hiddden in the whole app."}>
+                        <Button
+                          variant="outlined"
+                          size={"small"}
+                          startIcon={!isHidden ? <VisibilityOff /> : <Visibility />}
+                          onClick={() => handleHideAttribute(attribute.title)}
+                        >
+                          {isHidden ? "Show" : "Hide"}
                         </Button>
-                        <Stack position={"relative"} my={1}>
-                          <Divider />
-                          <Typography
-                            fontSize={"small"}
-                            color={Colors.textSecondary}
-                            bgcolor={"white"}
-                            position={"absolute"}
-                            left={"50%"}
-                            top={-9}
-                            sx={{ transform: "translateX(-50%)" }}
-                          >
-                            OR
-                          </Typography>
-                        </Stack>
-                        <Stack alignItems={"center"}>
-                          <BooleanInput
-                            name={"nominal"}
-                            form={form}
-                            label1={"Ordinal prep."}
-                            label2={"Nominal prep."}
-                            twoStates
-                          />
-                        </Stack>
-                        {isNominal ? <NominalPreprocessing data={data} /> : <OrdinalPreprocessing data={data} />}
+                      </BootstrapTooltip>
+                      <Stack position={"relative"} my={1}>
+                        <Divider />
+                        <Typography
+                          fontSize={"small"}
+                          color={Colors.textSecondary}
+                          bgcolor={"white"}
+                          position={"absolute"}
+                          left={"50%"}
+                          top={-9}
+                          sx={{ transform: "translateX(-50%)" }}
+                        >
+                          OR
+                        </Typography>
                       </Stack>
-                    )}
+                      <Stack alignItems={"center"}>
+                        <BooleanInput
+                          name={"nominal"}
+                          form={form}
+                          label1={"Ordinal prep."}
+                          label2={"Nominal prep."}
+                          twoStates
+                        />
+                      </Stack>
+                      {isNominal ? (
+                        <NominalPreprocessing data={attribute} />
+                      ) : (
+                        <OrdinalPreprocessing data={attribute} />
+                      )}
+                    </Stack>
                   </GeneralAttributeCard>
                 );
               })}

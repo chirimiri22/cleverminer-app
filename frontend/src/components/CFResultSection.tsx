@@ -31,8 +31,9 @@ export type CFQuantifierDisplay = {
 //  todo: create comparator for 2 histograms - modalni okno
 export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
   const form = useForm<CFQuantifierDisplay>();
-  const { CFResults, datasetProcessed, datafile, setCFResults } = useAppContext();
+  const { CFResults, getDatasetProcessed, datafile, setCFResults } = useAppContext();
 
+  const datasetProcessed = getDatasetProcessed()
   const formValues = form.watch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 

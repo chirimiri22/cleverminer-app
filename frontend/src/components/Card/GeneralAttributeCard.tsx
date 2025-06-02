@@ -12,9 +12,23 @@ import {
   Stack,
   SxProps,
 } from "@mui/material";
-import { ExpandMore, ExpandLess, Search, ListAlt, CheckCircleOutline, WarningAmber } from "@mui/icons-material";
+import {
+  ExpandMore,
+  ExpandLess,
+  Search,
+  ListAlt,
+  CheckCircleOutline,
+  WarningAmber,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { Colors } from "../../styles/colors";
 import { BootstrapTooltip } from "../BootstrapTooltip";
+
+export enum State {
+  Hidden = "Hidden",
+  Ok = "Ok",
+  Warning = "Warning",
+}
 
 type Props = {
   title: string;
@@ -23,20 +37,20 @@ type Props = {
   children?: ReactNode;
   actions?: ReactNode;
   disabled?: boolean;
-  ok?: boolean;
-  warning?: string;
+  stateTip?: string;
+  state?: State;
 };
 
 // todo: think about the sctructure of the files
 
-export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, ok, warning }: Props) => {
+export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, stateTip, state }: Props) => {
   // todo: implement disabled prop
-  const [expanded, setExpanded] = useState<boolean>(true);
+  const [expanded, setExpanded] = useState<boolean>(state === State.Warning);
 
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 200, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content" }}>
+    <Card variant="outlined" sx={{ minWidth: 300, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content", mb: 2 }}>
       <CardHeader
         title={
           <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
@@ -53,6 +67,7 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, o
                   backgroundColor: Colors.primary,
                   justifyContent: "center",
                   alignItems: "center",
+
                 }}
               >
                 <Typography variant="caption" color={"white"}>
@@ -63,16 +78,17 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, o
           </Stack>
         }
         action={
-          <>
-            {ok && (
-              <IconButton>
-                <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
-              </IconButton>
-            )}
-            {warning && (
-              <BootstrapTooltip title={warning}>
+          <Stack direction={"row"} alignItems={"center"} flexGrow={1} height={"100%"} alignSelf={"center"}>
+            {state && (
+              <BootstrapTooltip title={stateTip}>
                 <IconButton>
-                  <WarningAmber sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.warning }} />
+                  {state === State.Ok ? (
+                    <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
+                  ) : state === State.Hidden ? (
+                    <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
+                  ) : (
+                    <WarningAmber sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.warning }} />
+                  )}
                 </IconButton>
               </BootstrapTooltip>
             )}
@@ -82,7 +98,7 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, o
                 {expanded ? <ExpandLess /> : <ExpandMore />}
               </IconButton>
             )}
-          </>
+          </Stack>
         }
       />
       {children && (

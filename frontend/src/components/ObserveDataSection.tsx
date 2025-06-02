@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { LoadDatasetFirst } from "./LoadDatasetFirst";
 
 export const ObserveDataSection = () => {
-  const { datasetProcessed } = useAppContext();
+  const { getDatasetProcessed } = useAppContext();
+  const datasetProcessed = getDatasetProcessed()
 
   if (!datasetProcessed || !datasetProcessed.data || datasetProcessed.data.length === 0) {
     return (

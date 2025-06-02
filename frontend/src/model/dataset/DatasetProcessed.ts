@@ -1,6 +1,5 @@
 import { AttributeData } from "./AttributeData";
 import { Category } from "./Category";
-import { CFQuantifier } from "../../constants/enums/CFQuantifier";
 
 export type DatasetProcessed = {
   data: AttributeData[];

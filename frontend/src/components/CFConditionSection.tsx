@@ -20,7 +20,9 @@ type Props = {
 
 export const CFConditionSection = ({ form }: Props) => {
   const [horizontal, setHorizontal] = useState(true);
-  const { datasetProcessed } = useAppContext();
+  const { getDatasetProcessed } = useAppContext();
+
+  const datasetProcessed = getDatasetProcessed();
 
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
 

@@ -68,8 +68,8 @@ export const createSectionTitle = (step: Step) => {
 };
 
 export const ProcedureCFMiner = () => {
-  const { datasetProcessed, datafile, setCFResults } = useAppContext();
-
+  const { getDatasetProcessed } = useAppContext();
+  const datasetProcessed = getDatasetProcessed();
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
 
   const form = useForm<CFProcedure>({
