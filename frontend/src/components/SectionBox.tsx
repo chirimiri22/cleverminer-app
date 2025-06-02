@@ -41,6 +41,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
                 top: 0,
                 right: 0,
                 m: 1,
+                color: Colors.white,
                 bgcolor: Colors.primary,
                 borderRadius: 5,
                 zIndex: 120,

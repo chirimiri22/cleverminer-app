@@ -46,6 +46,7 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
     }
   };
 
+  const disabled = !conditionData.condition.targetAttribute
   const open = Boolean(anchorEl);
   const id = open ? "boolean-popover" : undefined;
 
@@ -68,10 +69,10 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
 
   if (!CFResults) {
     return (
-      <SectionBox title={createSectionTitle(FOUR_STEPS.results)}>
+      <SectionBox title={createSectionTitle(FOUR_STEPS.results)} loading={loading}>
         <Stack alignItems={"center"} flexGrow={1} justifyContent={"center"}>
           <Subtitle title={"Start the procedure"} />
-          <IconButton onClick={handleStartProcedure} size="large" disabled={!isFormValid}>
+          <IconButton onClick={handleStartProcedure} size="large" disabled={disabled}>
             {/* Arrow */}
             <PlayCircle
               sx={{
@@ -81,7 +82,6 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
               color={"primary"}
             />
           </IconButton>
-          {loading && <LinearProgress sx={{ position: "absolute", bottom: 0, right: 0, width: "100%" }} />}
         </Stack>
       </SectionBox>
     );
@@ -92,7 +92,7 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
       title={
         <Stack direction={"row"} gap={1} alignItems={"end"}>
           {createSectionTitle(FOUR_STEPS.results)}
-          <IconButton onClick={handleStartProcedure} size={"small"}>
+          <IconButton onClick={handleStartProcedure} size={"small"} disabled={disabled}>
             <PlayCircle color={"primary"} />
           </IconButton>
         </Stack>

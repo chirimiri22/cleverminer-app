@@ -55,7 +55,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
     <Stack gap={1} alignItems={"start"}>
       <Subtitle title={"New Categories"} />
       <Chip
-        label={`Remaining categories: ${unusedCategoriesOptions.filter((x) => !x.hidden).length}`}
+        label={`Remaining cat.: ${unusedCategoriesOptions.filter((x) => !x.hidden).length}`}
         size="small"
         variant={"outlined"}
         color={"primary"}

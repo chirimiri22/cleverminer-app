@@ -92,12 +92,7 @@ export const mockResults: CFResults = {
         { label: "San Jose", count: 10 },
       ],
       quantifiers: [],
-      // quantifiers: {
-      //   [CFQuantifier.Base]: 100,
-      //   [CFQuantifier.RelBase]: 0.8,
-      //   [CFQuantifier.RelMax]: 0.7,
-      //   [CFQuantifier.RelMin_leq]: 0.9,
-      // },
+
     },
   ],
 

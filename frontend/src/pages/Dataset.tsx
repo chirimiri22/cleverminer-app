@@ -186,7 +186,7 @@ export const Dataset = () => {
                       <Stack textAlign={"center"} gap={1}>
                         Number of unique categories is large...
                         <Button variant="outlined" size={"small"} startIcon={<Check />}>
-                          Keep data
+                          It's ok
                         </Button>
                         <Stack position={"relative"} my={1}>
                           <Divider />

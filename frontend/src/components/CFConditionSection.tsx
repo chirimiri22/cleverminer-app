@@ -4,7 +4,7 @@ import { ConditionBuilder } from "./CFConditionBuilder";
 import { SectionBox } from "./SectionBox";
 import { useState } from "react";
 import { BootstrapTooltip } from "./BootstrapTooltip";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import { ArrowCircleRight, PlayArrow } from "@mui/icons-material";
 import { Colors } from "../styles/colors";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -26,6 +26,8 @@ export const CFConditionSection = ({ form }: Props) => {
 
   const conjunction = form.watch("conjunction");
 
+  const targetValue = form.watch("condition.targetAttribute");
+
   if (!datasetProcessed)
     return (
       <SectionBox title={createSectionTitle(FOUR_STEPS.condition)}>
@@ -39,22 +41,25 @@ export const CFConditionSection = ({ form }: Props) => {
       leftSection={<CFConditionSettings form={form} max={max} />}
       minHeight={300}
       rightUpperTools={
-        <BootstrapTooltip title={"Change view "}>
-          <IconButton
-            onClick={() => setHorizontal(!horizontal)}
-            sx={{
-              height: 30,
-              width: 30,
-            }}
-          >
-            <ArrowCircleRight
+        <Stack direction={"row"} sx={{ alignItems: "center" }}>
+          {!targetValue && <Typography px={1}>Don't forget to add target attribute!</Typography>}
+          <BootstrapTooltip title={"Change view "}>
+            <IconButton
+              onClick={() => setHorizontal(!horizontal)}
               sx={{
-                transform: horizontal ? "rotate(90deg)" : undefined,
-                color: Colors.white,
+                height: 30,
+                width: 30,
               }}
-            />
-          </IconButton>
-        </BootstrapTooltip>
+            >
+              <ArrowCircleRight
+                sx={{
+                  transform: horizontal ? "rotate(90deg)" : undefined,
+                  color: Colors.white,
+                }}
+              />
+            </IconButton>
+          </BootstrapTooltip>
+        </Stack>
       }
     >
       <ConditionBuilder
