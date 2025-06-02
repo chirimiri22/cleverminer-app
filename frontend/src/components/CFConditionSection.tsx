@@ -7,70 +7,35 @@ import { BootstrapTooltip } from "./BootstrapTooltip";
 import { IconButton, Stack } from "@mui/material";
 import { ArrowCircleRight, PlayArrow } from "@mui/icons-material";
 import { Colors } from "../styles/colors";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 import { useAppContext } from "../context/AppContext";
-import { startCFProcedure } from "../apiCalls/startCFProcedure";
-import { TypeOptions } from "../constants/enums/TypeOptions";
+import { LoadDatasetFirst } from "./LoadDatasetFirst";
 
-export const CFConditionSection = () => {
+type Props = {
+  form: UseFormReturn<CFProcedure>;
+};
+
+export const CFConditionSection = ({ form }: Props) => {
   const [horizontal, setHorizontal] = useState(true);
-  const { datasetProcessed, datafile, setCFResults } = useAppContext();
+  const { datasetProcessed } = useAppContext();
 
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
 
-  const form = useForm<CFProcedure>({
-    defaultValues: {
-      range: {
-        start: 0,
-        end: max,
-      },
-      conjunction: true,
-      quantifiers: [
-        {
-          quantifier: CFQuantifier.Base,
-          value: datasetProcessed ? Math.floor(datasetProcessed.metadata.rows * 0.5) : 5,
-        },
-      ],
-
-      condition: {
-        conditionAttributes: [
-          {
-            attribute: datasetProcessed?.data[0].title,
-            type: TypeOptions.Subset,
-            range: {
-              start: 0,
-              end: datasetProcessed?.data[0].categories.length,
-            },
-          },
-        ],
-      },
-    },
-  });
-
   const conjunction = form.watch("conjunction");
 
-  const handleStart = async () => {
-    if (datafile) {
-      const res = await startCFProcedure(form.getValues(), datafile);
+  if (!datasetProcessed)
+    return (
+      <SectionBox title={createSectionTitle(FOUR_STEPS.condition)}>
+        <LoadDatasetFirst />
+      </SectionBox>
+    );
 
-      setCFResults(res);
-    }
-  };
-
-  if (!datasetProcessed) return <></>;
   return (
     <SectionBox
-      title={
-        <Stack direction={"row"} gap={2} alignItems={"end"}>
-          {createSectionTitle(FOUR_STEPS.condition)}
-          <IconButton onClick={handleStart}>
-            <PlayArrow />
-          </IconButton>
-        </Stack>
-      }
+      title={createSectionTitle(FOUR_STEPS.condition)}
       leftSection={<CFConditionSettings form={form} max={max} />}
       minHeight={300}
       rightUpperTools={

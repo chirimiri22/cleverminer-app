@@ -39,9 +39,9 @@ import { OrdinalPreprocessing } from "../components/OrdinalPreprocessing";
 import { BooleanInput } from "../components/Input/BooleanInput";
 import { NominalPreprocessing } from "../components/NominalPreprocessing";
 import { useForm } from "react-hook-form";
-import FileDropzone from "../components/Input/FileDropZone";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
 import { useAppContext } from "../context/AppContext";
+import { FileDropzone } from "../components/Input/FileDropZone";
 
 // todo: add to constants
 type Step = {
@@ -97,8 +97,8 @@ type FormValues = {
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
   const { datasetProcessed } = useAppContext();
-
   const [loading, setLoading] = useState(false);
+
   const form = useForm<FormValues>({
     defaultValues: {
       nominal: true,
@@ -121,9 +121,8 @@ export const Dataset = () => {
           </BootstrapTooltip>
         }
       />
-      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)}>
-        <FileDropzone />
-
+      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} loading={loading}>
+        <FileDropzone onLoadingChange={(value) => setLoading(value)} />
       </SectionBox>
 
       {datasetProcessed && (

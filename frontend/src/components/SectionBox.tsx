@@ -1,6 +1,7 @@
-import { Button, Paper, Stack, SxProps, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import { Button, LinearProgress, Paper, Stack, SxProps, Typography } from "@mui/material";
+import React, { ReactNode } from "react";
 import { Colors } from "../styles/colors";
+import { LoadDatasetFirst } from "./LoadDatasetFirst";
 
 type Props = {
   title: ReactNode;
@@ -8,9 +9,10 @@ type Props = {
   leftSection?: ReactNode;
   minHeight?: number;
   rightUpperTools?: ReactNode;
+  loading?: boolean;
 };
 
-export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools }: Props) => {
+export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools, loading }: Props) => {
   return (
     <Stack>
       <Typography variant="h6" fontWeight={"bold"} mb={1}>
@@ -59,6 +61,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
             {children}
           </Stack>
         </Stack>
+        {loading && <LinearProgress />}
       </Paper>
     </Stack>
   );

@@ -22,6 +22,11 @@ import { ReactNode } from "react";
 import { PageNames } from "../constants/pageNames";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
 import { useAppContext } from "../context/AppContext";
+import { ObserveDataSection } from "../components/ObserveDataSection";
+import { useForm } from "react-hook-form";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
+import { CFQuantifier } from "../constants/enums/CFQuantifier";
+import { TypeOptions } from "../constants/enums/TypeOptions";
 
 // todo: add to constants
 type Step = {
@@ -63,25 +68,47 @@ export const createSectionTitle = (step: Step) => {
 };
 
 export const ProcedureCFMiner = () => {
-  const { datasetProcessed } = useAppContext();
+  const { datasetProcessed, datafile, setCFResults } = useAppContext();
 
-  // todo: make it nicer and navigate to dataset routes
-  if (!datasetProcessed) return <>Load data first</>;
+  const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
+
+  const form = useForm<CFProcedure>({
+    defaultValues: {
+      range: {
+        start: 0,
+        end: max,
+      },
+      conjunction: true,
+      quantifiers: [
+        {
+          quantifier: CFQuantifier.Base,
+          value: datasetProcessed ? Math.floor(datasetProcessed.metadata.rows * 0.5) : 5,
+        },
+      ],
+
+      condition: {
+        conditionAttributes: [
+          {
+            attribute: datasetProcessed?.data[0].title,
+            type: TypeOptions.Subset,
+            range: {
+              start: 0,
+              end: datasetProcessed?.data[0].categories.length,
+            },
+          },
+        ],
+      },
+    },
+  });
 
   return (
     <PageContainer>
       <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
 
-      <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
-        <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-          {datasetProcessed.data.map((data, index) => (
-            <ObserveAtrributeCard key={index} attributeData={data} />
-          ))}
-        </Stack>
-      </SectionBox>
+      <ObserveDataSection />
       {/* Condition Section */}
-      <CFConditionSection />
-      <CFResultSection />
+      <CFConditionSection form={form} />
+      <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} />
       {/* Export */}
 
       <SectionBox title={createSectionTitle(FOUR_STEPS.exporting)}>

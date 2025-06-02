@@ -6,21 +6,38 @@ import { RemoveButton } from "../RemoveButton";
 import { useAppContext } from "../../context/AppContext";
 import { mockDataset } from "../../model/dataset/DatasetProcessed";
 import { uploadCsv } from "../../apiCalls/uploadCsv";
+import { loadMockDataset } from "../../helpers/loadMockDataset";
 
-const FileDropzone: React.FC = () => {
+type Props = {
+  onLoadingChange?: (loading: boolean) => void;
+};
+
+export const FileDropzone = ({ onLoadingChange }: Props) => {
   const { datafile, setDatafile, setDatasetProcessed } = useAppContext();
   const [droppedFiles, setDroppedFiles] = useState<File[]>(datafile ? [datafile] : []);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const changeLoadingState = (loading: boolean) => {
+    setLoading(loading);
+    if (onLoadingChange) {
+      onLoadingChange(loading);
+    }
+  };
+
   const handleChangeFiles = async (files: File[]) => {
-    files.length !== 0 ? setDatafile(files[0]) : setDatafile(undefined);
+    if (files.length === 0) {
+      setDatafile(undefined);
+      setDroppedFiles([]);
+      setDatasetProcessed(undefined);
+      return;
+    }
     setDroppedFiles(files);
-    //   todo: here pokud je nastavený, tak tady poslat request na BE
-    setLoading(true);
+    setDatafile(files[0]);
+    changeLoadingState(true);
     const res = await uploadCsv(files[0]);
-    setLoading(false);
+    changeLoadingState(false);
     setDatasetProcessed(res);
   };
 
@@ -147,11 +164,23 @@ const FileDropzone: React.FC = () => {
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          <label htmlFor="file-upload">
-            <Button variant="outlined" component="span">
-              Browse CSV Files
+          <Stack direction={"row"} justifyContent={"center"} gap={2}>
+            <label htmlFor="file-upload">
+              <Button variant="contained" component="span">
+                Browse CSV Files
+              </Button>
+            </label>
+            <Button
+              variant="outlined"
+              component="span"
+              onClick={async () => {
+                const file = await loadMockDataset();
+                await handleChangeFiles([file]);
+              }}
+            >
+              Use Mock Dataset
             </Button>
-          </label>
+          </Stack>
 
           {error && (
             <Typography color="error" mt={2}>
@@ -173,9 +202,6 @@ const FileDropzone: React.FC = () => {
           </Stack>
         </Stack>
       )}
-      {loading && <LinearProgress sx={{ position: "absolute", bottom: 0, right: 0, width: "100%" }} />}
     </Box>
   );
 };
-
-export default FileDropzone;

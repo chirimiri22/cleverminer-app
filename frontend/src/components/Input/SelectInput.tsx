@@ -42,6 +42,7 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
         render={({ field }) => (
           <Select
             {...field}
+            // required={true}
             labelId="quantifier-select-label"
             id="quantifier-select"
             label={label}

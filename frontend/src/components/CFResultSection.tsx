@@ -1,5 +1,5 @@
-import { ArrowCircleRight, Settings, Terminal } from "@mui/icons-material";
-import { Box, Card, CardContent, Chip, IconButton, Popover, Stack, Typography } from "@mui/material";
+import { ArrowCircleRight, PlayCircle, Settings, Terminal } from "@mui/icons-material";
+import { Box, Card, CardContent, Chip, IconButton, LinearProgress, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { mockDataset } from "../model/dataset/DatasetProcessed";
 import { Colors } from "../styles/colors";
@@ -7,7 +7,7 @@ import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";
 import { SectionBox } from "./SectionBox";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
-import { useState } from "react";
+import React, { useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
@@ -15,53 +15,36 @@ import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
 import { Subtitle } from "./Subtitle";
 import { mockResults } from "../model/cf/result/CFResults";
 import { useAppContext } from "../context/AppContext";
+import { startCFProcedure } from "../apiCalls/startCFProcedure";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
+import { LoadDatasetFirst } from "./LoadDatasetFirst";
 
-// const outputText = `
-// Cleverminer version 1.2.1.
-//         Starting data preparation ...
-//         Automatically reordering numeric categories ...
-//         Automatically reordering numeric categories ...done
-//         Encoding columns into bit-form...
-//         Encoding columns into bit-form...done
-//         Data preparation finished.
-//         Will go for  CFMiner
-//         Starting to mine rules.
-//         100%|####################################################|Elapsed Time: 0:00:00
-//         Done. Total verifications : 8, rules 1, times: prep 0.01sec, processing 0.02sec
-//
-//         CleverMiner task processing summary:
-//
-//         Task type : CFMiner
-//         Number of verifications : 8
-//         Number of rules : 1
-//         Total time needed : 00h 00m 00s
-//         Time of data preparation : 00h 00m 00s
-//         Time of rule mining : 00h 00m 00s
-//
-//         List of rules:
-//         RULEID BASE  S_UP  S_DOWN Condition
-//         1 10571     1     1 Speed_limit(40 50 60) & Vehicle_Type(Motorcycle over 500cc)
-//         2  8803     1     1 Speed_limit(50 60) & Vehicle_Type(Motorcycle over 500cc)
-//         3  1143     1     1 Speed_limit(50 60) & Vehicle_Type(Pedal cycle)
-//         4 10690     1     1 Speed_limit(50 60 70) & Vehicle_Type(Motorcycle over 500cc)
-//         5  1198     1     1 Speed_limit(50 60 70) & Vehicle_Type(Pedal cycle)
-//         6  7694     1     1 Speed_limit(60) & Vehicle_Type(Motorcycle over 500cc)
-//         7   996     1     1 Speed_limit(60) & Vehicle_Type(Pedal cycle)
-//         8  9581     1     1 Speed_limit(60 70) & Vehicle_Type(Motorcycle over 500cc)
-//         9  1051     1     1 Speed_limit(60 70) & Vehicle_Type(Pedal cycle)
-// `;
+type Props = {
+  conditionData: CFProcedure;
+  isFormValid: boolean;
+};
 
 export type CFQuantifierDisplay = {
   [K in keyof typeof CFQuantifier]: boolean;
 };
 
 //  todo: create comparator for 2 histograms - modalni okno
-export const CFResultSection = () => {
+export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
   const form = useForm<CFQuantifierDisplay>();
-  const { CFResults, datasetProcessed } = useAppContext();
+  const { CFResults, datasetProcessed, datafile, setCFResults } = useAppContext();
 
   const formValues = form.watch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const [loading, setLoading] = useState(false);
+  const handleStartProcedure = async () => {
+    if (conditionData && datafile) {
+      setLoading(true);
+      const result = await startCFProcedure(conditionData, datafile);
+      setCFResults(result);
+      setLoading(false);
+    }
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? "boolean-popover" : undefined;
@@ -75,11 +58,45 @@ export const CFResultSection = () => {
   };
 
   const [logOpen, setLogOpen] = useState(false);
-  if (!CFResults || !datasetProcessed) return <></>;
+
+  if (!datasetProcessed)
+    return (
+      <SectionBox title={createSectionTitle(FOUR_STEPS.results)}>
+        <LoadDatasetFirst />
+      </SectionBox>
+    );
+
+  if (!CFResults) {
+    return (
+      <SectionBox title={createSectionTitle(FOUR_STEPS.results)}>
+        <Stack alignItems={"center"} flexGrow={1} justifyContent={"center"}>
+          <Subtitle title={"Start the procedure"} />
+          <IconButton onClick={handleStartProcedure} size="large" disabled={!isFormValid}>
+            {/* Arrow */}
+            <PlayCircle
+              sx={{
+                height: 50,
+                width: 50,
+              }}
+              color={"primary"}
+            />
+          </IconButton>
+          {loading && <LinearProgress sx={{ position: "absolute", bottom: 0, right: 0, width: "100%" }} />}
+        </Stack>
+      </SectionBox>
+    );
+  }
 
   return (
     <SectionBox
-      title={createSectionTitle(FOUR_STEPS.results)}
+      title={
+        <Stack direction={"row"} gap={1} alignItems={"end"}>
+          {createSectionTitle(FOUR_STEPS.results)}
+          <IconButton onClick={handleStartProcedure} size={"small"}>
+            <PlayCircle color={"primary"} />
+          </IconButton>
+        </Stack>
+      }
       rightUpperTools={
         <Stack direction={"row"} gap={1} alignItems={"center"}>
           <BootstrapTooltip title={"See logs from the process"} placement={"left"}>
