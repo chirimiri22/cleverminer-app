@@ -13,6 +13,7 @@ import { Histogram } from "./Histogram";
 import { sendCategorizeRequest } from "../apiCalls/generateCategories";
 import { useAppContext } from "../context/AppContext";
 import { getProcessedAttribute } from "../apiCalls/getProcessedAttribute";
+import { previewCategories } from "../apiCalls/previewCategories";
 
 type Props = {
   data: AttributeData;
@@ -40,6 +41,20 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
     },
   });
 
+  const formValues = form.watch();
+
+  const [divisionRanges, setDivisionRanges] = useState<[number, number][] | undefined>();
+
+  useEffect(() => {
+    console.log(data.title);
+    if (!data.numeric || !datafile || formValues.categoryCount >= data.categories.length) return;
+    previewCategories(formValues, datafile).then((data) => {
+      setDivisionRanges(data.category_ranges);
+    });
+    //   todo: fix this dependency, it causes infinite loop
+    // eslint-disable-next-line
+  }, [datafile, JSON.stringify(formValues)]);
+
   const categorizationOptions: SelectOption[] = Object.keys(Categorization)
     .filter((key) => isNaN(Number(key))) // Filter out reverse mapping (numbers) from enums
     .map((key) => ({
@@ -47,16 +62,13 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       value: key,
     }));
 
-  const groupingMode = form.watch("categorization");
-  const groupingCount = form.watch("categoryCount");
-
   const handleConvertt = async () => {
     if (datafile) {
       try {
-        const newFile = await sendCategorizeRequest(form.getValues(), datafile);
+        const newFile = await sendCategorizeRequest(formValues, datafile);
         setDatafile(newFile);
-        const newProcessedData = await getProcessedAttribute(form.getValues("column"), newFile);
-        updateProcessedAttributeData(form.getValues("column"), newProcessedData);
+        const newProcessedData = await getProcessedAttribute(formValues.column, newFile);
+        updateProcessedAttributeData(formValues.column, newProcessedData);
       } catch (error) {
         console.error("Error during categorization:", error);
       }
@@ -76,7 +88,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       </Stack>
 
       <Subtitle title={"Preview"} />
-      <Histogram categories={data.categories} groupingCount={groupingCount} groupingMode={groupingMode} datalabels />
+      <Histogram categories={data.categories} divisionRanges={divisionRanges} datalabels />
 
       <Button
         variant={"contained"}

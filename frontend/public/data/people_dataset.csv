@@ -1,101 +1,101 @@
-Name,Gender,Age Group,Occupation,City,Num,Dec
-Person_1,Male,Senior,Engineer,Miami,1,1.2
-Person_2,Male,Middle-aged,Retired,Los Angeles,2,1.4
-Person_3,Non-binary,Young,Artist,New York,3,1.6
-Person_4,Female,Middle-aged,Student,Los Angeles,4,1.8
-Person_5,Male,Senior,Engineer,Houston,5,2
-Person_6,Female,Senior,Retired,Miami,6,2.2
-Person_7,Male,Middle-aged,Engineer,Houston,7,2.4
-Person_8,Male,Young,Artist,Houston,8,2.6
-Person_9,Female,Middle-aged,Teacher,New York,9,2.8
-Person_10,Non-binary,Senior,Student,Miami,10,3
-Person_11,Non-binary,Middle-aged,Student,Los Angeles,11,3.2
-Person_12,Male,Senior,Engineer,Chicago,12,3.4
-Person_13,Male,Young,Student,New York,13,3.6
-Person_14,Female,Senior,Student,Houston,14,3.8
-Person_15,Female,Senior,Teacher,Los Angeles,15,4
-Person_16,Non-binary,Middle-aged,Artist,Houston,16,4.2
-Person_17,Female,Senior,Teacher,Houston,17,4.4
-Person_18,Male,Young,Artist,Chicago,18,4.6
-Person_19,Non-binary,Middle-aged,Retired,New York,19,4.8
-Person_20,Male,Senior,Doctor,Chicago,20,5
-Person_21,Non-binary,Young,Student,Houston,21,5.2
-Person_22,Non-binary,Young,Teacher,Miami,22,5.4
-Person_23,Female,Senior,Retired,Miami,23,5.6
-Person_24,Non-binary,Senior,Retired,Houston,24,5.8
-Person_25,Male,Middle-aged,Engineer,Chicago,25,6
-Person_26,Male,Young,Teacher,New York,26,6.2
-Person_27,Non-binary,Senior,Teacher,New York,27,6.4
-Person_28,Female,Young,Doctor,Houston,28,6.6
-Person_29,Female,Middle-aged,Artist,Miami,29,6.8
-Person_30,Non-binary,Middle-aged,Engineer,Miami,30,7
-Person_31,Non-binary,Young,Retired,Houston,31,7.2
-Person_32,Non-binary,Young,Teacher,Chicago,32,7.4
-Person_33,Non-binary,Senior,Teacher,Los Angeles,33,7.6
-Person_34,Non-binary,Middle-aged,Doctor,Houston,34,7.8
-Person_35,Female,Young,Engineer,New York,35,8
-Person_36,Female,Senior,Student,Miami,36,8.2
-Person_37,Female,Young,Student,Houston,37,8.4
-Person_38,Non-binary,Senior,Engineer,Miami,38,8.6
-Person_39,Female,Young,Doctor,Miami,39,8.8
-Person_40,Non-binary,Young,Artist,Miami,40,9
-Person_41,Female,Middle-aged,Teacher,Chicago,41,9.2
-Person_42,Female,Middle-aged,Student,Miami,42,9.4
-Person_43,Male,Young,Artist,Miami,43,9.6
-Person_44,Male,Middle-aged,Doctor,Miami,44,9.8
-Person_45,Female,Middle-aged,Retired,Miami,45,10
-Person_46,Female,Senior,Student,Houston,46,10.2
-Person_47,Female,Young,Retired,Los Angeles,47,10.4
-Person_48,Non-binary,Senior,Engineer,New York,48,10.6
-Person_49,Male,Middle-aged,Artist,Los Angeles,49,10.8
-Person_50,Non-binary,Young,Doctor,New York,50,11
-Person_51,Male,Middle-aged,Engineer,Miami,51,11.2
-Person_52,Non-binary,Middle-aged,Teacher,Houston,52,11.4
-Person_53,Non-binary,Young,Engineer,Los Angeles,53,11.6
-Person_54,Female,Senior,Teacher,Los Angeles,54,11.8
-Person_55,Non-binary,Middle-aged,Artist,Los Angeles,55,12
-Person_56,Male,Young,Retired,Miami,56,12.2
-Person_57,Male,Senior,Engineer,New York,57,12.4
-Person_58,Female,Senior,Doctor,Houston,58,12.6
-Person_59,Female,Middle-aged,Doctor,Miami,59,12.8
-Person_60,Non-binary,Senior,Artist,Houston,60,13
-Person_61,Female,Middle-aged,Engineer,Houston,61,13.2
-Person_62,Female,Middle-aged,Doctor,Chicago,62,13.4
-Person_63,Non-binary,Young,Retired,Houston,63,13.6
-Person_64,Male,Middle-aged,Artist,Houston,64,13.8
-Person_65,Non-binary,Senior,Retired,Chicago,65,14
-Person_66,Non-binary,Senior,Student,Miami,66,14.2
-Person_67,Male,Young,Teacher,Chicago,67,14.4
-Person_68,Female,Senior,Retired,New York,68,14.6
-Person_69,Male,Young,Student,Los Angeles,69,14.8
-Person_70,Non-binary,Senior,Doctor,Miami,70,15
-Person_71,Male,Senior,Retired,New York,71,15.2
-Person_72,Female,Middle-aged,Teacher,New York,72,15.4
-Person_73,Female,Senior,Engineer,Houston,73,15.6
-Person_74,Male,Senior,Artist,New York,74,15.8
-Person_75,Male,Senior,Artist,Miami,75,16
-Person_76,Non-binary,Middle-aged,Retired,Miami,76,16.2
-Person_77,Male,Young,Teacher,Chicago,77,16.4
-Person_78,Male,Middle-aged,Teacher,Houston,78,16.6
-Person_79,Female,Senior,Artist,Chicago,79,16.8
-Person_80,Female,Middle-aged,Artist,Miami,80,17
-Person_81,Female,Young,Doctor,Los Angeles,81,17.2
-Person_82,Male,Young,Teacher,Los Angeles,82,17.4
-Person_83,Female,Senior,Artist,New York,83,17.6
-Person_84,Non-binary,Senior,Student,New York,84,17.8
-Person_85,Non-binary,Young,Student,Los Angeles,85,18
-Person_86,Female,Middle-aged,Retired,Los Angeles,86,18.2
-Person_87,Non-binary,Young,Artist,Chicago,87,18.4
-Person_88,Female,Young,Doctor,Chicago,88,18.6
-Person_89,Female,Young,Engineer,Los Angeles,89,18.8
-Person_90,Non-binary,Young,Student,Chicago,90,19
-Person_91,Female,Middle-aged,Artist,Los Angeles,91,19.2
-Person_92,Non-binary,Young,Teacher,Miami,92,19.4
-Person_93,Male,Senior,Student,New York,93,19.6
-Person_94,Female,Senior,Student,New York,94,19.8
-Person_95,Female,Young,Engineer,Houston,95,20
-Person_96,Male,Senior,Engineer,Los Angeles,96,20.2
-Person_97,Non-binary,Young,Engineer,Los Angeles,97,20.4
-Person_98,Male,Middle-aged,Engineer,Chicago,98,20.6
-Person_99,Male,Young,Student,Chicago,99,20.8
-Person_100,Female,Young,Retired,New York,100,
+Name,Gender,Age Group,Occupation,City,Num,Dec,Hourly_Wage,Height_cm
+Person_1,Male,Senior,Engineer,Miami,1,1.2,42.5,175
+Person_2,Male,Middle-aged,Retired,Los Angeles,2,1.4,15.0,168
+Person_3,Non-binary,Young,Artist,New York,3,1.6,25.0,160
+Person_4,Female,Middle-aged,Student,Los Angeles,4,1.8,12.0,172
+Person_5,Male,Senior,Engineer,Houston,5,2,45.0,180
+Person_6,Female,Senior,Retired,Miami,6,2.2,15.5,165
+Person_7,Male,Middle-aged,Engineer,Houston,7,2.4,40.0,178
+Person_8,Male,Young,Artist,Houston,8,2.6,22.5,162
+Person_9,Female,Middle-aged,Teacher,New York,9,2.8,30.0,170
+Person_10,Non-binary,Senior,Student,Miami,10,3,11.5,175
+Person_11,Non-binary,Middle-aged,Student,Los Angeles,11,3.2,12.5,168
+Person_12,Male,Senior,Engineer,Chicago,12,3.4,43.0,182
+Person_13,Male,Young,Student,New York,13,3.6,10.5,165
+Person_14,Female,Senior,Student,Houston,14,3.8,11.0,170
+Person_15,Female,Senior,Teacher,Los Angeles,15,4,32.0,167
+Person_16,Non-binary,Middle-aged,Artist,Houston,16,4.2,24.0,160
+Person_17,Female,Senior,Teacher,Houston,17,4.4,31.5,169
+Person_18,Male,Young,Artist,Chicago,18,4.6,23.0,163
+Person_19,Non-binary,Middle-aged,Retired,New York,19,4.8,16.0,172
+Person_20,Male,Senior,Doctor,Chicago,20,5,48.0,185
+Person_21,Non-binary,Young,Student,Houston,21,5.2,10.0,166
+Person_22,Non-binary,Young,Teacher,Miami,22,5.4,28.5,168
+Person_23,Female,Senior,Retired,Miami,23,5.6,15.0,164
+Person_24,Non-binary,Senior,Retired,Houston,24,5.8,14.5,170
+Person_25,Male,Middle-aged,Engineer,Chicago,25,6,41.0,179
+Person_26,Male,Young,Teacher,New York,26,6.2,29.0,167
+Person_27,Non-binary,Senior,Teacher,New York,27,6.4,33.0,171
+Person_28,Female,Young,Doctor,Houston,28,6.6,47.0,162
+Person_29,Female,Middle-aged,Artist,Miami,29,6.8,25.5,160
+Person_30,Non-binary,Middle-aged,Engineer,Miami,30,7,39.5,176
+Person_31,Non-binary,Young,Retired,Houston,31,7.2,14.0,165
+Person_32,Non-binary,Young,Teacher,Chicago,32,7.4,27.5,169
+Person_33,Non-binary,Senior,Teacher,Los Angeles,33,7.6,32.5,170
+Person_34,Non-binary,Middle-aged,Doctor,Houston,34,7.8,46.5,175
+Person_35,Female,Young,Engineer,New York,35,8,38.0,172
+Person_36,Female,Senior,Student,Miami,36,8.2,11.5,168
+Person_37,Female,Young,Student,Houston,37,8.4,10.5,164
+Person_38,Non-binary,Senior,Engineer,Miami,38,8.6,44.0,180
+Person_39,Female,Young,Doctor,Miami,39,8.8,47.5,161
+Person_40,Non-binary,Young,Artist,Miami,40,9,24.5,159
+Person_41,Female,Middle-aged,Teacher,Chicago,41,9.2,31.0,170
+Person_42,Female,Middle-aged,Student,Miami,42,9.4,12.0,167
+Person_43,Male,Young,Artist,Miami,43,9.6,23.5,163
+Person_44,Male,Middle-aged,Doctor,Miami,44,9.8,48.5,182
+Person_45,Female,Middle-aged,Retired,Miami,45,10,15.5,166
+Person_46,Female,Senior,Student,Houston,46,10.2,11.0,169
+Person_47,Female,Young,Retired,Los Angeles,47,10.4,14.5,165
+Person_48,Non-binary,Senior,Engineer,New York,48,10.6,43.5,178
+Person_49,Male,Middle-aged,Artist,Los Angeles,49,10.8,25.0,171
+Person_50,Non-binary,Young,Doctor,New York,50,11,46.0,160
+Person_51,Male,Middle-aged,Engineer,Miami,51,11.2,40.5,177
+Person_52,Non-binary,Middle-aged,Teacher,Houston,52,11.4,30.5,168
+Person_53,Non-binary,Young,Engineer,Los Angeles,53,11.6,39.0,174
+Person_54,Female,Senior,Teacher,Los Angeles,54,11.8,33.5,170
+Person_55,Non-binary,Middle-aged,Artist,Los Angeles,55,12,24.0,162
+Person_56,Male,Young,Retired,Miami,56,12.2,14.0,166
+Person_57,Male,Senior,Engineer,New York,57,12.4,44.5,181
+Person_58,Female,Senior,Doctor,Houston,58,12.6,49.0,169
+Person_59,Female,Middle-aged,Doctor,Miami,59,12.8,48.0,172
+Person_60,Non-binary,Senior,Artist,Houston,60,13,25.5,161
+Person_61,Female,Middle-aged,Engineer,Houston,61,13.2,41.5,175
+Person_62,Female,Middle-aged,Doctor,Chicago,62,13.4,47.5,170
+Person_63,Non-binary,Young,Retired,Houston,63,13.6,14.5,164
+Person_64,Male,Middle-aged,Artist,Houston,64,13.8,24.5,171
+Person_65,Non-binary,Senior,Retired,Chicago,65,14,15.0,168
+Person_66,Non-binary,Senior,Student,Miami,66,14.2,11.5,167
+Person_67,Male,Young,Teacher,Chicago,67,14.4,28.0,169
+Person_68,Female,Senior,Retired,New York,68,14.6,15.5,165
+Person_69,Male,Young,Student,Los Angeles,69,14.8,10.0,166
+Person_70,Non-binary,Senior,Doctor,Miami,70,15,49.5,174
+Person_71,Male,Senior,Retired,New York,71,15.2,14.5,170
+Person_72,Female,Middle-aged,Teacher,New York,72,15.4,31.5,168
+Person_73,Female,Senior,Engineer,Houston,73,15.6,42.5,176
+Person_74,Male,Senior,Artist,New York,74,15.8,25.0,172
+Person_75,Male,Senior,Artist,Miami,75,16,24.5,171
+Person_76,Non-binary,Middle-aged,Retired,Miami,76,16.2,15.0,167
+Person_77,Male,Young,Teacher,Chicago,77,16.4,28.5,169
+Person_78,Male,Middle-aged,Teacher,Houston,78,16.6,30.0,170
+Person_79,Female,Senior,Artist,Chicago,79,16.8,25.5,162
+Person_80,Female,Middle-aged,Artist,Miami,80,17,24.0,160
+Person_81,Female,Young,Doctor,Los Angeles,81,17.2,47.0,163
+Person_82,Male,Young,Teacher,Los Angeles,82,17.4,28.0,168
+Person_83,Female,Senior,Artist,New York,83,17.6,25.0,161
+Person_84,Non-binary,Senior,Student,New York,84,17.8,11.0,166
+Person_85,Non-binary,Young,Student,Los Angeles,85,18,10.5,165
+Person_86,Female,Middle-aged,Retired,Los Angeles,86,18.2,15.5,168
+Person_87,Non-binary,Young,Artist,Chicago,87,18.4,23.5,160
+Person_88,Female,Young,Doctor,Chicago,88,18.6,46.5,162
+Person_89,Female,Young,Engineer,Los Angeles,89,18.8,38.5,173
+Person_90,Non-binary,Young,Student,Chicago,90,19,10.0,164
+Person_91,Female,Middle-aged,Artist,Los Angeles,91,19.2,24.5,161
+Person_92,Non-binary,Young,Teacher,Miami,92,19.4,27.5,168
+Person_93,Male,Senior,Student,New York,93,19.6,11.5,167
+Person_94,Female,Senior,Student,New York,94,19.8,11.0,166
+Person_95,Female,Young,Engineer,Houston,95,20,39.0,172
+Person_96,Male,Senior,Engineer,Los Angeles,96,20.2,43.0,180
+Person_97,Non-binary,Young,Engineer,Los Angeles,97,20.4,38.5,174
+Person_98,Male,Middle-aged,Engineer,Chicago,98,20.6,41.5,179
+Person_99,Male,Young,Student,Chicago,99,20.8,10.5,165
+Person_100,Female,Young,Retired,New York,100,,14.0,164

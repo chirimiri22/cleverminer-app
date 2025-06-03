@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
 import { useAppContext } from "../context/AppContext";
 import { FileDropzone } from "../components/Input/FileDropZone";
+import { downloadFile } from "../helpers/downloadFile";
 
 // todo: add to constants
 type Step = {
@@ -81,7 +82,7 @@ type FormValues = {
 
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
-  const { getDatasetProcessed, changeHiddenState } = useAppContext();
+  const { getDatasetProcessed, changeHiddenState, datafile } = useAppContext();
   const datasetProcessed = getDatasetProcessed();
   const datasetProcessedAll = getDatasetProcessed(true);
   const [loading, setLoading] = useState(false);
@@ -96,6 +97,10 @@ export const Dataset = () => {
     changeHiddenState(attributeName);
   };
 
+  const handleDownload = () => {
+    datafile && downloadFile(datafile, datasetProcessed?.metadata.name);
+  };
+
   const isNominal = form.watch("nominal");
   return (
     <PageContainer>
@@ -106,7 +111,7 @@ export const Dataset = () => {
         icon={PageNames.dataPreprocessing.largeIcon}
         action={
           <BootstrapTooltip title={"Download current dataset"} placement={"left"}>
-            <IconButton size={"large"}>
+            <IconButton size={"large"} onClick={handleDownload}>
               <Download fontSize={"large"} />
             </IconButton>
           </BootstrapTooltip>
@@ -161,7 +166,7 @@ export const Dataset = () => {
 
           {/* todo: right upper close all / open all*/}
           {/* todo: indicator of readiness*/}
-          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)} >
+          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
             <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
               {datasetProcessedAll.data.map((attribute, index) => {
                 const shouldBePreprocessed = aboveSuspicionLevel(attribute.categories.length, 100);
@@ -208,6 +213,7 @@ export const Dataset = () => {
                           label1={"Ordinal prep."}
                           label2={"Nominal prep."}
                           twoStates
+                          disabled={!attribute.numeric} // todo add explaining tooltip
                         />
                       </Stack>
                       {isNominal ? (

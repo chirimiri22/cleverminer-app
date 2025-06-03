@@ -1,16 +1,17 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { DatasetProcessed } from "../model/dataset/DatasetProcessed";
 import { CFResults } from "../model/cf/result/CFResults";
+import { AttributeData } from "../model/dataset/AttributeData";
 
 type AppContextType = {
   datafile?: File;
   setDatafile: (name?: File) => void;
-  datasetProcessed?: DatasetProcessed;
   setDatasetProcessed: (dataset?: DatasetProcessed) => void;
   CFResults?: CFResults;
   setCFResults: (results?: CFResults) => void;
   changeHiddenState: (attributeName: string) => void;
   getDatasetProcessed: (includeHidden?: boolean) => DatasetProcessed | undefined;
+  updateProcessedAttributeData: (attributeName: string, data: AttributeData) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -20,12 +21,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [datasetProcessed, setDatasetProcessed] = useState<DatasetProcessed | undefined>();
   const [CFResults, setCFResults] = useState<CFResults | undefined>();
 
-  const changeHiddenState = (attributeName: string) => {
+  const updateProcessedAttributeData = (attributeName: string, data: AttributeData) => {
     if (datasetProcessed) {
       const updatedData = datasetProcessed.data.map((a) => {
-        return a.title === attributeName ? { ...a, hidden: !a.hidden } : a;
+        return a.title === attributeName ? data : a;
       });
       setDatasetProcessed({ ...datasetProcessed, data: updatedData });
+    }
+  };
+
+  const changeHiddenState = (attributeName: string) => {
+    const attributeData = datasetProcessed?.data.find((a) => a.title === attributeName);
+    if (attributeData && datasetProcessed) {
+      updateProcessedAttributeData(attributeName, { ...attributeData, hidden: !attributeData?.hidden });
     }
   };
 
@@ -45,9 +53,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         datafile,
         setDatafile,
         setDatasetProcessed,
-        datasetProcessed,
         changeHiddenState,
-        getDatasetProcessed
+        updateProcessedAttributeData,
+        getDatasetProcessed,
       }}
     >
       {children}

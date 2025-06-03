@@ -18,20 +18,8 @@ type Props = {
   sx?: SxProps;
   onClick?: (categoryName?: string) => void;
   datalabels?: boolean;
-} & (
-  | {
-      groupingMode: Categorization.Equidistant;
-      groupingCount: number;
-    }
-  | {
-      groupingMode: Categorization.Equifrequent;
-      groupingCount: number;
-    }
-  | {
-      groupingMode?: Categorization;
-      groupingCount?: number;
-    }
-);
+  divisionRanges?: [number, number][];
+};
 
 export const Histogram = ({
   categories,
@@ -39,9 +27,8 @@ export const Histogram = ({
   mode = "simple",
   color,
   onClick,
-  groupingMode,
-  groupingCount = 1,
   datalabels,
+  divisionRanges,
 }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
   const isComplex = mode === "complex";
@@ -60,16 +47,16 @@ export const Histogram = ({
   ];
 
   const getGroupColor = (index: number) => {
-    const totalPoints = categories.length;
-    let group: number;
-
-    if (groupingMode === Categorization.Equidistant) {
-      group = Math.floor(index / groupingCount);
-    } else {
-      group = Math.floor((index / totalPoints) * groupingCount);
+    if (!divisionRanges || divisionRanges.length === 0) {
+      return colors[0]; // default color if no ranges are defined
     }
 
-    return colors[group % colors.length];
+    for (let i = 0; i < divisionRanges.length; i++) {
+      const [start, end] = divisionRanges[i];
+      if (index >= start && index <= end) {
+         return colors[i % colors.length];
+      }
+    }
   };
 
   const backgroundColors = categories.map((_, index) =>
@@ -102,7 +89,7 @@ export const Histogram = ({
       },
       tooltip: {
         enabled: !showLabels,
-        displayColors: !!groupingMode,
+        displayColors: !!divisionRanges,
         callbacks: {
           label: (context) => `${context.parsed.y}`,
         },

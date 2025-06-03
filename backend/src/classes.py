@@ -14,6 +14,7 @@ class Category(BaseModel):
 class AttributeData(BaseModel):
     title: str
     categories: List[Category]
+    numeric: bool
 
 
 class Metadata(BaseModel):

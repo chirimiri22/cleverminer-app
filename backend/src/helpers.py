@@ -14,62 +14,86 @@ def capture_output(func, *args, **kwargs) -> str:
         func(*args, **kwargs)
     return buffer.getvalue()
 
-def get_ordered_categories(category_names: List[str], df: pd.DataFrame, column: str) -> List[Category]:
+
+def get_ordered_categories(ordered_category_names: List[str], df: pd.DataFrame, column: str) -> List[Category]:
     value_counts = df[column].astype(str).value_counts().to_dict()
     categories = [
         Category(label=name, count=value_counts.get(name, 0))
-        for name in category_names
+        for name in ordered_category_names
     ]
     return categories
 
 
+def is_numeric(column: str, df: pd.DataFrame) -> bool:
+    return pd.api.types.is_numeric_dtype(df[column])
 
 
-def prepare_string_series(series: pd.Series):
+def get_ordered_unique_category_names(series: pd.Series) -> list[str]:
+    """Returns sorted unique values as strings.
+    - If the series is numeric, sort numerically.
+    - Otherwise, sort lexicographically as strings.
     """
-    Převede stringový sloupec na číselný podle abecedy a připraví mapování zpět.
-    Vrací: numeric_series, inverse_mapping
-    """
-    sorted_unique = sorted(series.unique())
-    mapping = {val: i for i, val in enumerate(sorted_unique)}
-    inverse_mapping = {i: val for val, i in mapping.items()}
-    numeric_series = series.map(mapping)
-    return numeric_series, inverse_mapping
+    unique_vals = series.dropna().unique()
+
+    if pd.api.types.is_numeric_dtype(series):
+        sorted_vals = sorted(unique_vals)
+    else:
+        sorted_vals = sorted(map(str, unique_vals))
+
+    return list(map(str, sorted_vals))
+
 
 def equal_width_bins(series: pd.Series, n_bins: int) -> pd.Series:
     """
     Rozdělení do ekvidistantních skupin s textovými labely 'start – end'.
+    Funguje pouze pro číselné sloupce.
     """
-    if series.dtype == object or isinstance(series.iloc[0], str):
-        numeric, inverse = prepare_string_series(series)
-        cut = pd.cut(numeric, bins=n_bins, duplicates='drop')
-        labels = [f"{inverse[int(edge.left)]} – {inverse[int(edge.right) - 1]}"
-                  for edge in cut.cat.categories]
-        return pd.cut(numeric, bins=n_bins, labels=labels, duplicates='drop')
-    else:
+    if not pd.api.types.is_numeric_dtype(series):
+        raise TypeError("equal_width_bins expects a numeric Series.")
+
+    try:
         cut = pd.cut(series, bins=n_bins, duplicates='drop')
         labels = [f"{round(edge.left, 2)} – {round(edge.right, 2)}"
                   for edge in cut.cat.categories]
         return pd.cut(series, bins=n_bins, labels=labels, duplicates='drop')
+    except ValueError:
+        return pd.Series([np.nan] * len(series), index=series.index)
+
 
 def equal_freq_bins(series: pd.Series, n_bins: int) -> pd.Series:
     """
     Rozdělení do ekvifrekventních skupin s textovými labely 'start – end'.
+    Funguje pouze pro číselné sloupce.
     """
-    if series.dtype == object or isinstance(series.iloc[0], str):
-        numeric, inverse = prepare_string_series(series)
-        try:
-            cut = pd.qcut(numeric, q=n_bins, duplicates='drop')
-        except ValueError:
-            return pd.Series([np.nan] * len(series))
-        labels = [f"{inverse[int(edge.left)]} – {inverse[int(edge.right) - 1]}"
-                  for edge in cut.cat.categories]
-        return pd.qcut(numeric, q=n_bins, labels=labels, duplicates='drop')
-    else:
-        try:
-            cut = pd.qcut(series, q=n_bins, duplicates='drop')
-        except ValueError:
-            return pd.Series([np.nan] * len(series))
+    if not pd.api.types.is_numeric_dtype(series):
+        raise TypeError("equal_freq_bins expects a numeric Series.")
+
+    try:
+        cut = pd.qcut(series, q=n_bins, duplicates='drop')
         labels = [f"{round(edge.left, 2)} – {round(edge.right, 2)}"
                   for edge in cut.cat.categories]
         return pd.qcut(series, q=n_bins, labels=labels, duplicates='drop')
+    except ValueError:
+        return pd.Series([np.nan] * len(series), index=series.index)
+
+
+
+def count_original_values_per_bin(df: pd.DataFrame, original_col: str, bin_col: str) -> list[int]:
+    return (
+        df.groupby(bin_col)[original_col]
+        .nunique()
+        .tolist()
+    )
+
+
+def group_counts_to_intervals(counts: list[int]) -> list[list[int]]:
+    intervals = []
+    start = 0
+    for count in counts:
+        end = start + count - 1
+        intervals.append([start, end])
+        start = end + 1
+    return intervals
+
+
+

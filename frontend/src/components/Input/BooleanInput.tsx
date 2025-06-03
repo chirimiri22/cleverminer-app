@@ -8,6 +8,7 @@ type Props<TFormValues extends FieldValues> = FormProps<TFormValues, boolean> & 
   label2?: string;
   id?: string;
   twoStates?: true;
+  disabled?: boolean;
 };
 
 export const BooleanInput = <TFormValues extends FieldValues>({
@@ -17,6 +18,7 @@ export const BooleanInput = <TFormValues extends FieldValues>({
   label2,
   id,
   twoStates,
+  disabled
 }: Props<TFormValues>) => {
   const value = form.watch(name) ?? false;
 
@@ -29,6 +31,7 @@ export const BooleanInput = <TFormValues extends FieldValues>({
       {label1}
       <Switch
         checked={value}
+        disabled={disabled}
         onChange={handleChange}
         sx={{
           // ✔️ Thumb (circle) when checked
