@@ -99,3 +99,13 @@ class CFResults(BaseModel):
     targetAttributeHistogram: AttributeData
     conjunction: bool
     logs: ClmLogs
+
+
+class Categorization(str, Enum):
+    Equidistant = "Equidistant"
+    Equifrequent = "Equifrequent"
+
+class CategorizationFormData(BaseModel):
+    categoryCount: int
+    categorization: Categorization
+    column: str

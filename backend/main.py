@@ -12,10 +12,11 @@ import io
 import os
 
 from matplotlib.pyplot import title
+from starlette.responses import StreamingResponse, JSONResponse
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure, ClmLogs
-from src.helpers import capture_output, get_ordered_categories
+    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData
+from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins
 from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
@@ -148,6 +149,62 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
     except Exception as e:
         print(e)
     raise HTTPException(status_code=500, detail=str(e))
+
+
+# data.column
+# data.categorization
+# data.categoryCount
+# update file
+
+# todo add try catch
+@app.post("/api/generate_categories")
+async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
+    contents = await file.read()
+    df = pd.read_csv(io.BytesIO(contents))
+
+    form_data_dict = json.loads(data)
+    form_data = CategorizationFormData.model_validate(form_data_dict)
+    col = df[form_data.column]
+
+    if form_data.categorization == Categorization.Equidistant:
+        categorized = equal_width_bins(col, n_bins=form_data.categoryCount)
+    else:  # Equifrequent
+        categorized = equal_freq_bins(col, n_bins=form_data.categoryCount)
+
+    result_df = df.copy()
+    result_df[form_data.column] = categorized  # Overwrite column
+
+    # Convert to CSV and return as file
+    buffer = io.StringIO()
+    result_df.to_csv(buffer, index=False)
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=categorized.csv"}
+    )
+
+
+# call this after preprocessing
+@app.post("/api/attribute-data")
+async def get_attribute_data(
+        column: str = Form(...),
+        file: UploadFile = File(...)
+):
+    contents = await file.read()
+    df = pd.read_csv(io.BytesIO(contents))
+
+    if column not in df.columns:
+        return JSONResponse(status_code=400, content={"error": f"Column '{column}' not found"})
+
+    category_names = sorted(df[column].astype(str).unique())
+    categories = get_ordered_categories(category_names, df, column)
+
+    return AttributeData(
+        title=column,
+        categories=categories,
+    )
 
 
 # Run server

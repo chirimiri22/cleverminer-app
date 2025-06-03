@@ -10,6 +10,9 @@ import { BooleanInput } from "./Input/BooleanInput";
 import { Category } from "../model/dataset/Category";
 import { useEffect, useState } from "react";
 import { Histogram } from "./Histogram";
+import { sendCategorizeRequest } from "../apiCalls/generateCategories";
+import { useAppContext } from "../context/AppContext";
+import { getProcessedAttribute } from "../apiCalls/getProcessedAttribute";
 
 type Props = {
   data: AttributeData;
@@ -18,21 +21,22 @@ type Props = {
 export enum Categorization {
   Equidistant = "Equidistant",
   Equifrequent = "Equifrequent",
-  // Custom,
 }
 
-type FormData = {
-  ordered: boolean;
+export type CategorizationFormData = {
   categoryCount: number;
   categorization: Categorization;
+  column: string;
 };
 
 export const OrdinalPreprocessing = ({ data }: Props) => {
-  const form = useForm<FormData>({
+  const { datafile, setDatafile, updateProcessedAttributeData, getDatasetProcessed } = useAppContext();
+
+  const form = useForm<CategorizationFormData>({
     defaultValues: {
-      ordered: false,
       categoryCount: 5,
       categorization: Categorization.Equidistant,
+      column: data.title,
     },
   });
 
@@ -46,22 +50,22 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   const groupingMode = form.watch("categorization");
   const groupingCount = form.watch("categoryCount");
 
-  const [orderCategories, setOrderedCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const newArray = [...data.categories];
-    newArray.sort((a, b) => a.label.localeCompare(b.label));
-    setOrderedCategories(newArray);
-  }, [data.categories]);
-
-  const categories = form.watch("ordered") ? orderCategories : data.categories;
+  const handleConvertt = async () => {
+    if (datafile) {
+      try {
+        const newFile = await sendCategorizeRequest(form.getValues(), datafile);
+        setDatafile(newFile);
+        const newProcessedData = await getProcessedAttribute(form.getValues("column"), newFile);
+        updateProcessedAttributeData(form.getValues("column"), newProcessedData);
+      } catch (error) {
+        console.error("Error during categorization:", error);
+      }
+    }
+  };
 
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
-
       <Subtitle title={"Generate Categories"} />
-      {/*todo ordinal categorization */}
-      <BooleanInput name={"ordered"} form={form} label2={"Order According To Labels"} />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
           <SelectInput name={"categorization"} form={form} options={categorizationOptions} label={"Categorization"} />
@@ -72,7 +76,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       </Stack>
 
       <Subtitle title={"Preview"} />
-      <Histogram categories={categories} groupingCount={groupingCount} groupingMode={groupingMode} datalabels />
+      <Histogram categories={data.categories} groupingCount={groupingCount} groupingMode={groupingMode} datalabels />
 
       <Button
         variant={"contained"}
@@ -81,6 +85,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
         sx={{
           width: "100%",
         }}
+        onClick={handleConvertt}
       >
         Convert
       </Button>
