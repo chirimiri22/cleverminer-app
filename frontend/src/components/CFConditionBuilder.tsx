@@ -21,20 +21,6 @@ const getFirstUnusedAttribute = (attributeData: AttributeData[], usedAttributes:
 };
 
 export const ConditionBuilder = ({ attributeData, conjunction, horizontal, form }: Props) => {
-  // const form = useForm<CFCondition>({
-  //   defaultValues: {
-  //     conditionAttributes: [
-  //       {
-  //         attribute: attributeData[0].title,
-  //         type: TypeOptions.Subset,
-  //         range: {
-  //           start: 0,
-  //           end: attributeData[0].categories.length,
-  //         },
-  //       },
-  //     ],
-  //   },
-  // });
 
   const { control } = form;
   const { fields, append, remove } = useFieldArray({
