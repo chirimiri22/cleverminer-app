@@ -11,6 +11,7 @@ type Props<TFormValues extends FieldValues, TValue = string> = FormProps<TFormVa
   onChange?: () => void;
   options: SelectOption[];
   size?: "small" | "medium";
+
 };
 
 export const SelectInput = <TFormValues extends FieldValues, TValue>({
@@ -21,7 +22,8 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
   options,
   onChange,
   size = "small",
-  disabled
+  disabled,
+  required
 }: Props<TFormValues, TValue>) => {
   return (
     <FormControl
@@ -38,12 +40,13 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
       <InputLabel id="quantifier-select-label">{label}</InputLabel>
       <Controller
         name={name}
-        rules={{ required: true }}
+        rules={{ required: required }}
         control={form.control}
-        render={({ field }) => (
+        render={({ field, fieldState }) => (
           <Select
             {...field}
-            // required={true}
+            required={required}
+            error={!!fieldState.error}
             labelId="quantifier-select-label"
             id="quantifier-select"
             disabled={disabled}

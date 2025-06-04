@@ -18,7 +18,7 @@ export const QuantifierRow = ({ form, index, options, onRemove }: Props) => {
 
   return (
     <Stack direction="row" sx={{ gap: 1 }} alignItems={"center"}>
-      <SelectInput label="Quantifier" form={form} name={`${fieldName}.quantifier`} options={options} />
+      <SelectInput label="Quantifier" form={form} name={`${fieldName}.quantifier`} options={options} required />
       <NumberInput
         label="Value"
         form={form}
@@ -28,6 +28,7 @@ export const QuantifierRow = ({ form, index, options, onRemove }: Props) => {
         sx={{
           maxWidth: 60,
         }}
+        required
       />
       <RemoveButton onRemove={() => onRemove(index)} disabled={index === 0} />
     </Stack>

@@ -30,9 +30,10 @@ export const AutocompleteInput = <TFormValues extends FieldValues>({
       name={name}
       rules={{ required: true }}
       control={form.control}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <Autocomplete
           multiple
+
 
           size={"small"}
           disableCloseOnSelect
@@ -57,6 +58,7 @@ export const AutocompleteInput = <TFormValues extends FieldValues>({
             <TextField
               {...params}
               variant="filled"
+              error={!!fieldState.error}
               label={label}
               required={true}
               placeholder={placeholder}

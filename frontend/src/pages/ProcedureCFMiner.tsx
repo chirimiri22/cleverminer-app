@@ -1,13 +1,4 @@
-import {
-  ArrowCircleRight,
-  AutoGraph,
-  BarChart,
-  Construction,
-  Download,
-  PlayArrow,
-  QueryStats,
-  Settings,
-} from "@mui/icons-material";
+import { Download } from "@mui/icons-material";
 import { Box, Button, Paper, Typography, Stack, IconButton } from "@mui/material";
 
 import { PageContainer } from "../layout/PageContainer";
@@ -29,9 +20,6 @@ import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Step } from "../model/Step";
 import { FOUR_STEPS } from "../constants/fourSteps";
-
-
-
 
 export const createSectionTitle = (step: Step) => {
   return (
@@ -74,6 +62,7 @@ export const ProcedureCFMiner = () => {
         ],
       },
     },
+    mode: "onBlur",
   });
 
   return (

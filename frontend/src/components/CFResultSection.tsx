@@ -74,14 +74,15 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
       <SectionBox title={createSectionTitle(FOUR_STEPS.results)} loading={loading}>
         <Stack alignItems={"center"} flexGrow={1} justifyContent={"center"}>
           <Subtitle title={"Start the procedure"} />
-          <IconButton onClick={handleStartProcedure} size="large" disabled={disabled}>
+          <IconButton onClick={handleStartProcedure} size="large" disabled={!isFormValid}>
             {/* Arrow */}
             <PlayCircle
               sx={{
                 height: 50,
                 width: 50,
+                color: isFormValid ? Colors.primary : Colors.textSecondary,
               }}
-              color={"primary"}
+              // color={"primary"}
             />
           </IconButton>
         </Stack>

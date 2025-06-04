@@ -21,6 +21,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
   sx,
   onChange,
   disabled,
+  required
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -31,12 +32,14 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
         max: max,
       }}
       control={form.control}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <TextField
           {...field}
           id="quantifier-value"
           label={label}
           disabled={disabled}
+          required={required}
+          error={!!fieldState.error}
           type="number"
           size="small"
           variant={"filled"}

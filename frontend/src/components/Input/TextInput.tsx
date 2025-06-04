@@ -20,12 +20,14 @@ export const TextInput = <TFormValues extends FieldValues, TValue>({
   return (
     <Controller
       name={name}
-      rules={{ required: true }}
+      rules={{ required: ":(" }}
+
       control={form.control}
-      render={({ field }) => (
+      render={({ field, fieldState}) => (
         <TextField
           {...field}
           required={required}
+          error={!!fieldState.error}
           id={`${name}-text`}
           label={label}
           type="text"

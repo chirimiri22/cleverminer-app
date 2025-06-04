@@ -30,12 +30,16 @@ export const CFQuantifiersSection = ({ form }: Props) => {
     hidden: watchedQuantifiers.includes(q),
   }));
 
+  const availableQuantifiers = getAvailableQ(watchedQuantifiers);
+
   return (
     <Stack gap={2}>
       {fields.map((field, index) => {
         return <QuantifierRow key={field.id} form={form} index={index} options={options} onRemove={remove} />;
       })}
-      <Button onClick={() => append({ quantifier: undefined, value: undefined })}>Add Row</Button>
+      {availableQuantifiers.length > 0 && (
+        <Button onClick={() => append({ quantifier: availableQuantifiers[0], value: undefined })}>Add Row</Button>
+      )}
     </Stack>
   );
 };

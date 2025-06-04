@@ -28,7 +28,7 @@ export const CFTargetCard = ({ form, attributeOptions }: Props) => {
             options={attributeOptions}
             label={"Target Attribute"}
             size={"medium"}
-
+            required={true}
           />
         }
       />
