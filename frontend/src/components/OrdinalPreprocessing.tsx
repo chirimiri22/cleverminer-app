@@ -32,7 +32,7 @@ export type CategorizationFormData = {
 };
 
 export const OrdinalPreprocessing = ({ data }: Props) => {
-  const { datafile, setDatafile, updateProcessedAttributeData, getDatasetProcessed } = useAppContext();
+  const { datafile, setDatafile, updateProcessedAttributeData } = useAppContext();
 
   const form = useForm<CategorizationFormData>({
     defaultValues: {
@@ -80,6 +80,8 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
+      <Subtitle title={"Preview"} />
+      <Histogram categories={data.categories} showYAxis divisionRanges={divisionRanges} datalabels />
       <Subtitle title={"Generate Categories"} />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
@@ -104,8 +106,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
         </Stack>
       </Stack>
 
-      <Subtitle title={"Preview"} />
-      <Histogram categories={data.categories} divisionRanges={divisionRanges} datalabels />
+
       <BootstrapTooltip
         placement={"bottom"}
         title={!data.numeric && "This attribute is not numeric anymore. Cannot be converted."}

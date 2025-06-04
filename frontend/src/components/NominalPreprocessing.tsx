@@ -14,18 +14,22 @@ import { Colors } from "../styles/colors";
 import { TextInput } from "./Input/TextInput";
 import { RemoveButton } from "./RemoveButton";
 import { BootstrapTooltip } from "./BootstrapTooltip";
+import { sendCategorizeRequest } from "../apiCalls/generateCategories";
+import { getProcessedAttribute } from "../apiCalls/getProcessedAttribute";
+import { createCustomNominalCategories } from "../apiCalls/createCustomNominalCategories";
+import { useAppContext } from "../context/AppContext";
+import { Histogram } from "./Histogram";
 
 type Props = {
   data: AttributeData;
 };
 
-type NewCategory = {
+export type NewCategory = {
   label: string;
   selectedOptions: SelectOption[];
 };
 
 type NominalProcessingForm = {
-  column: string;
   rows: NewCategory[];
 };
 
@@ -41,9 +45,9 @@ const eachValueIsUnique = (values: string[]) => {
 };
 
 export const NominalPreprocessing = ({ data }: Props) => {
+  const { datafile, setDatafile, updateProcessedAttributeData, getDatasetProcessed } = useAppContext();
   const form = useForm<NominalProcessingForm>({
     defaultValues: {
-      column: data.title,
       rows: [
         {
           label: "First Category",
@@ -70,15 +74,30 @@ export const NominalPreprocessing = ({ data }: Props) => {
 
   const reaminitngCategoriesCount = unusedCategoriesOptions.filter((x) => !x.hidden).length;
 
+  const handleConvert = async () => {
+    if (datafile) {
+      try {
+        const newFile = await createCustomNominalCategories(usedCategories, data.title, datafile);
+        setDatafile(newFile);
+        const newProcessedData = await getProcessedAttribute(data.title, newFile);
+        updateProcessedAttributeData(data.title, newProcessedData);
+        form.reset();
+      } catch (error) {
+        console.error("Error during categorization:", error);
+      }
+    }
+  };
   return (
     <Stack gap={1} alignItems={"start"}>
+      <Subtitle title={"Preview"} />
+      <Histogram categories={data.categories} showYAxis datalabels />
       <Subtitle title={"New Categories"} />
       <Chip
-        label={`Remaining cat.: ${reaminitngCategoriesCount}`}
+        label={`Remaining: ${reaminitngCategoriesCount}`}
         size="small"
         variant={"outlined"}
         color={"primary"}
-        sx={{ mb: 1 }}
+        sx={{ mb: 1, alignSelf: "center"}}
       />
 
       <Stack direction={"row"} gap={1}>
@@ -126,6 +145,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
               !form.formState.isValid ||
               !eachValueIsUnique(usedCategories.map((c) => c.label))
             }
+            onClick={handleConvert}
           >
             Convert
           </Button>

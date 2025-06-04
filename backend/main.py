@@ -15,7 +15,7 @@ from matplotlib.pyplot import title
 from starlette.responses import StreamingResponse, JSONResponse
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData
+    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
     get_ordered_unique_category_names, is_numeric, count_original_values_per_bin, \
     group_counts_to_intervals
@@ -244,6 +244,46 @@ async def preview_categories(
 
     # return {"category_ranges": [[0, 5], [6, 99]]}
     return {"category_ranges": category_group_intervals}
+
+@app.post("/api/replace_categories")
+async def replace_categories(
+    data: str = Form(...),
+    file: UploadFile = File(...)
+):
+    # Read CSV from uploaded file
+    contents = await file.read()
+    df = pd.read_csv(io.BytesIO(contents))
+
+    # Parse JSON form data into Pydantic model
+    form_data_dict = json.loads(data)
+    form_data = NominalProcessingForm.model_validate(form_data_dict)
+
+    if form_data.column not in df.columns:
+        raise HTTPException(status_code=400, detail=f"Column '{form_data.column}' not found in CSV.")
+
+
+    # Build mapping dict: old_value => new_label
+    mapping = {}
+    for row in form_data.rows:
+        new_label = row.label
+        for opt in row.selectedOptions:
+            mapping[opt] = new_label
+
+    # Replace values in the column
+    df_copy = df.copy()
+    df_copy[form_data.column] = df_copy[form_data.column].replace(mapping)
+
+    # Convert updated DataFrame to CSV in-memory
+    buffer = io.StringIO()
+    df_copy.to_csv(buffer, index=False)
+    buffer.seek(0)
+
+    # Stream CSV back as attachment
+    return StreamingResponse(
+        iter([buffer.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
+    )
 
 # Run server
 if __name__ == "__main__":

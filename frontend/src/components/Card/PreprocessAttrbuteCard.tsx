@@ -9,6 +9,7 @@ import { Colors } from "../../styles/colors";
 import { BooleanInput } from "../Input/BooleanInput";
 import { NominalPreprocessing } from "../NominalPreprocessing";
 import { OrdinalPreprocessing } from "../OrdinalPreprocessing";
+import { Subtitle } from "../Subtitle";
 
 type Props = {
   attribute: AttributeData;
@@ -46,6 +47,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       stateTip={isHidden ? "Hidden" : shouldBePreprocessed ? "Large number of categories" : undefined}
     >
       <Stack textAlign={"center"} gap={1}>
+        <Subtitle title={"Hide"} sx={{alignSelf: "start"}} />
         {shouldBePreprocessed && "Number of unique categories is large. Do you want to hide it?"}
         <BootstrapTooltip title={"Hide uncessary attribute. It will be hiddden in the whole app."}>
           <Button
@@ -72,7 +74,8 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
           </Typography>
         </Stack>
         <Stack alignItems={"center"}>
-          Do you want to preprocess this?
+          <Subtitle title={"Preprocess"} sx={{alignSelf: "start"}} />
+          {/*Do you want to preprocess this?*/}
           <BootstrapTooltip
             placement={"bottom"}
             title={disabledOrdinal && "This attribute is not numeric, so ordinal preprocessing is not available."}

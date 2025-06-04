@@ -106,7 +106,18 @@ class Categorization(str, Enum):
     Equidistant = "Equidistant"
     Equifrequent = "Equifrequent"
 
+
 class CategorizationFormData(BaseModel):
     categoryCount: int
     categorization: Categorization
     column: str
+
+
+class NewCategory(BaseModel):
+    label: str
+    selectedOptions: list[str]
+
+
+class NominalProcessingForm(BaseModel):
+    column: str
+    rows: list[NewCategory]

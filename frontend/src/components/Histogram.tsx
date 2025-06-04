@@ -19,6 +19,7 @@ type Props = {
   onClick?: (categoryName?: string) => void;
   datalabels?: boolean;
   divisionRanges?: [number, number][];
+  showYAxis?: boolean;
 };
 
 export const Histogram = ({
@@ -29,6 +30,7 @@ export const Histogram = ({
   onClick,
   datalabels,
   divisionRanges,
+  showYAxis,
 }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
   const isComplex = mode === "complex";
@@ -54,7 +56,7 @@ export const Histogram = ({
     for (let i = 0; i < divisionRanges.length; i++) {
       const [start, end] = divisionRanges[i];
       if (index >= start && index <= end) {
-         return colors[i % colors.length];
+        return colors[i % colors.length];
       }
     }
   };
@@ -117,7 +119,7 @@ export const Histogram = ({
         type: "category" as const,
       },
       y: {
-        display: isComplex,
+        display: isComplex || showYAxis,
         type: "linear" as const,
         beginAtZero: true,
       },
