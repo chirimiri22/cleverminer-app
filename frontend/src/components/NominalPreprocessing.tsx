@@ -100,6 +100,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
                 label={`Merge following`}
                 options={unusedCategoriesOptions}
                 size="small"
+                required
               />
             </Stack>
           ))}
