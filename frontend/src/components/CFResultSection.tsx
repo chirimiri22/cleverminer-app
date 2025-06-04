@@ -34,7 +34,7 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
   const form = useForm<CFQuantifierDisplay>();
   const { CFResults, getDatasetProcessed, datafile, setCFResults } = useAppContext();
 
-  const datasetProcessed = getDatasetProcessed()
+  const datasetProcessed = getDatasetProcessed();
   const formValues = form.watch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -48,9 +48,13 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
     }
   };
 
-  const disabled = !conditionData.condition.targetAttribute
+  const disabled = !conditionData.condition.targetAttribute;
   const open = Boolean(anchorEl);
   const id = open ? "boolean-popover" : undefined;
+  const max = CFResults?.targetAttributeHistogram.categories
+    .map((c) => c.count)
+    .sort()
+    .reverse()[0];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -145,7 +149,10 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
             <Subtitle title={`Rules found: ${CFResults.rules.length}`} />
             <Stack maxWidth={"100%"}>
               <Typography variant={"h5"}>{CFResults.targetAttributeHistogram.title}</Typography>
-              <Histogram categories={CFResults.targetAttributeHistogram.categories} />
+              <Histogram
+                categories={CFResults.targetAttributeHistogram.categories}
+                max={max}
+              />
             </Stack>
           </Stack>
         )
@@ -197,7 +204,7 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
               />
               <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
                 <CardContent>
-                  <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels />
+                  <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels max={max} />
                 </CardContent>
               </Card>
               <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />

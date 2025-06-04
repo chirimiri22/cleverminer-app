@@ -20,6 +20,7 @@ type Props = {
   datalabels?: boolean;
   divisionRanges?: [number, number][];
   showYAxis?: boolean;
+  max?: number;
 };
 
 export const Histogram = ({
@@ -31,6 +32,8 @@ export const Histogram = ({
   datalabels,
   divisionRanges,
   showYAxis,
+  max
+
 }: Props) => {
   const chartRef = useRef<ChartJS<"bar"> | null>(null);
   const isComplex = mode === "complex";
@@ -122,6 +125,7 @@ export const Histogram = ({
         display: isComplex || showYAxis,
         type: "linear" as const,
         beginAtZero: true,
+        max: max
       },
     },
   };
