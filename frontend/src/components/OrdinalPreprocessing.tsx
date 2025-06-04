@@ -8,7 +8,7 @@ import { NumberInput } from "./Input/NumberInput";
 import { Subtitle } from "./Subtitle";
 import { BooleanInput } from "./Input/BooleanInput";
 import { Category } from "../model/dataset/Category";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Histogram } from "./Histogram";
 import { sendCategorizeRequest } from "../apiCalls/generateCategories";
 import { useAppContext } from "../context/AppContext";
@@ -45,15 +45,17 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   const [divisionRanges, setDivisionRanges] = useState<[number, number][] | undefined>();
 
+  const handleFormChange = useCallback(async () => {
+    const formValues1 = form.getValues();
+    if (!data.numeric || !datafile || formValues1.categoryCount >= data.categories.length) return;
+    const response = await previewCategories(formValues1, datafile);
+
+    setDivisionRanges(response.category_ranges);
+  }, [data.categories.length, data.numeric, datafile, form]);
+
   useEffect(() => {
-    console.log(data.title);
-    if (!data.numeric || !datafile || formValues.categoryCount >= data.categories.length) return;
-    previewCategories(formValues, datafile).then((data) => {
-      setDivisionRanges(data.category_ranges);
-    });
-    //   todo: fix this dependency, it causes infinite loop
-    // eslint-disable-next-line
-  }, [datafile, JSON.stringify(formValues)]);
+    handleFormChange();
+  }, []);
 
   const categorizationOptions: SelectOption[] = Object.keys(Categorization)
     .filter((key) => isNaN(Number(key))) // Filter out reverse mapping (numbers) from enums
@@ -62,7 +64,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       value: key,
     }));
 
-  const handleConvertt = async () => {
+  const handleConvert = async () => {
     if (datafile) {
       try {
         const newFile = await sendCategorizeRequest(formValues, datafile);
@@ -80,10 +82,16 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       <Subtitle title={"Generate Categories"} />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
-          <SelectInput name={"categorization"} form={form} options={categorizationOptions} label={"Categorization"} />
+          <SelectInput
+            name={"categorization"}
+            form={form}
+            options={categorizationOptions}
+            label={"Categorization"}
+            onChange={handleFormChange}
+          />
         </Stack>
         <Stack flex={1}>
-          <NumberInput name={"categoryCount"} form={form} min={1} label={"Count"} />
+          <NumberInput name={"categoryCount"} form={form} min={1} label={"Count"} onChange={handleFormChange} />
         </Stack>
       </Stack>
 
@@ -97,7 +105,8 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
         sx={{
           width: "100%",
         }}
-        onClick={handleConvertt}
+        onClick={handleConvert}
+        disabled={!data.numeric}
       >
         Convert
       </Button>

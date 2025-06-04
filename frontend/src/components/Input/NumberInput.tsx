@@ -8,6 +8,7 @@ type Props<TFormValues extends FieldValues, TValue> = FormProps<TFormValues, TVa
   min?: number;
   max?: number;
   sx?: SxProps;
+  onChange?: (value?: TValue ) => void;
 };
 
 export const NumberInput = <TFormValues extends FieldValues, TValue>({
@@ -18,6 +19,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
   min,
   max,
   sx,
+  onChange
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -47,6 +49,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
           onChange={(e) => {
             const parsed = e.target.value === "" ? undefined : Number(e.target.value);
             field.onChange(parsed);
+            onChange && onChange(parsed as TValue);
           }}
           onBlur={() => {
             field.onBlur();

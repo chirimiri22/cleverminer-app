@@ -9,6 +9,7 @@ type Props<TFormValues extends FieldValues> = FormProps<TFormValues, boolean> & 
   id?: string;
   twoStates?: true;
   disabled?: boolean;
+  value?: boolean
 };
 
 export const BooleanInput = <TFormValues extends FieldValues>({
@@ -18,9 +19,10 @@ export const BooleanInput = <TFormValues extends FieldValues>({
   label2,
   id,
   twoStates,
-  disabled
+  disabled,
+  value
 }: Props<TFormValues>) => {
-  const value = form.watch(name) ?? false;
+  const val = form.watch(name) ?? value;
 
   const handleChange = (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
     form.setValue(name, checked as PathValue<TFormValues, typeof name>);
@@ -30,8 +32,9 @@ export const BooleanInput = <TFormValues extends FieldValues>({
     <Stack id={id} direction="row" alignItems="center" sx={{ fontSize: "small" }}>
       {label1}
       <Switch
-        checked={value}
+        checked={val}
         disabled={disabled}
+
         onChange={handleChange}
         sx={{
           // ✔️ Thumb (circle) when checked

@@ -77,7 +77,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
             label1={"Ordinal prep."}
             label2={"Nominal prep."}
             twoStates
-            disabled={!attribute.numeric} // todo add explaining tooltip
+            disabled={!attribute.numeric && isNominal} // todo add explaining tooltip
           />
         </Stack>
         {isNominal ? <NominalPreprocessing data={attribute} /> : <OrdinalPreprocessing data={attribute} />}

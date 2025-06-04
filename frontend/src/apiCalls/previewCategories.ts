@@ -21,7 +21,6 @@ export const previewCategories = async (
     }
   );
 
-  console.log("Preview categories response:", response.data);
 
   return response.data;
 };
