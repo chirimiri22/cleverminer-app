@@ -27,36 +27,11 @@ import { useForm } from "react-hook-form";
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { TypeOptions } from "../constants/enums/TypeOptions";
+import { Step } from "../model/Step";
+import { FOUR_STEPS } from "../constants/fourSteps";
 
-// todo: add to constants
-type Step = {
-  name: string;
-  icon: ReactNode;
-};
 
-export const FOUR_STEPS: {
-  observe: Step;
-  condition: Step;
-  results: Step;
-  exporting: Step;
-} = {
-  observe: {
-    name: "Observe",
-    icon: <QueryStats />,
-  },
-  condition: {
-    name: "Condition",
-    icon: <Construction />,
-  },
-  results: {
-    name: "Results",
-    icon: <AutoGraph />,
-  },
-  exporting: {
-    name: "Export",
-    icon: <Download />,
-  },
-};
+
 
 export const createSectionTitle = (step: Step) => {
   return (

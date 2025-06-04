@@ -39,18 +39,19 @@ type Props = {
   disabled?: boolean;
   stateTip?: string;
   state?: State;
+  key?: string | number;
 };
 
 // todo: think about the sctructure of the files
 
-export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, stateTip, state }: Props) => {
+export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, stateTip, state, key }: Props) => {
   // todo: implement disabled prop
   const [expanded, setExpanded] = useState<boolean>(state === State.Warning);
 
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 300, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content", mb: 2 }}>
+    <Card key={key} variant="outlined" sx={{ minWidth: 300, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content", mb: 2, }}>
       <CardHeader
         title={
           <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
