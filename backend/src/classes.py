@@ -75,6 +75,7 @@ class CFProcedure(BaseModel):
     conjunction: bool
     quantifiers: List[QuantifierValue]
     condition: CFCondition
+    generateImages: bool
 
 
 # RESULTS
@@ -88,6 +89,7 @@ class CFRule(BaseModel):
     attributes: List[ResultAttribute]
     histogramData: List[Category]
     quantifiers: List[QuantifierValue]
+    imageBase64: Optional[str]
 
 
 class ClmLogs(BaseModel):
@@ -121,3 +123,8 @@ class NewCategory(BaseModel):
 class NominalProcessingForm(BaseModel):
     column: str
     rows: list[NewCategory]
+
+
+class RuleImage(BaseModel):
+    rule_id: int
+    image_base64: str

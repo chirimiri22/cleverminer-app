@@ -20,6 +20,7 @@ import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Step } from "../model/Step";
 import { FOUR_STEPS } from "../constants/fourSteps";
+import { CFExportSection } from "../components/CFExportSection";
 
 export const createSectionTitle = (step: Step) => {
   return (
@@ -48,6 +49,7 @@ export const ProcedureCFMiner = () => {
           value: datasetProcessed ? Math.floor(datasetProcessed.metadata.rows * 0.5) : 5,
         },
       ],
+      generateImages: false,
 
       condition: {
         conditionAttributes: [
@@ -62,7 +64,7 @@ export const ProcedureCFMiner = () => {
         ],
       },
     },
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   return (
@@ -70,27 +72,12 @@ export const ProcedureCFMiner = () => {
       <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
 
       <ObserveDataSection />
-      {/* Condition Section */}
-      <CFConditionSection form={form} />
-      <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} />
-      {/* Export */}
 
-      <SectionBox title={createSectionTitle(FOUR_STEPS.exporting)}>
-        <Stack direction={"row"} gap={1} alignItems={"center"}>
-          <Button variant="outlined" startIcon={<Download />}>
-            Export PNGs
-          </Button>
-          <Button variant="outlined" startIcon={<Download />}>
-            Export CSV
-          </Button>
-          <Button variant="outlined" startIcon={<Download />}>
-            Export TXT log
-          </Button>
-          <Button variant="outlined" startIcon={<Download />}>
-            All in ZIP
-          </Button>
-        </Stack>
-      </SectionBox>
+      <CFConditionSection form={form} />
+
+      <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} />
+
+      <CFExportSection />
     </PageContainer>
   );
 };

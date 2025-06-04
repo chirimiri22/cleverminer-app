@@ -7,4 +7,5 @@ export type CFProcedure = {
   conjunction: boolean;
   quantifiers: QuantifierValue[];
   condition: CFCondition;
+  generateImages: boolean;
 };

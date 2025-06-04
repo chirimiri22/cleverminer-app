@@ -1,9 +1,11 @@
+import base64
 import io
 from contextlib import redirect_stdout
 from typing import List
 
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 
 from src.classes import Category
 
@@ -95,5 +97,37 @@ def group_counts_to_intervals(counts: list[int]) -> list[list[int]]:
         start = end + 1
     return intervals
 
+# def get_rule_image_base64(clm, rule_id: int) -> str:
+#     plt.close('all')  # zavře všechna předchozí otevřená okna
+#     clm.draw_rule(rule_id)  # vykreslí do aktivního figuru
+#     fig = plt.gcf()  # get current figure
+#     buf = io.BytesIO()
+#     fig.savefig(buf, format='png')
+#     buf.seek(0)
+#     encoded = base64.b64encode(buf.read()).decode('utf-8')
+#     plt.close(fig)  # zavře i aktuální figure
+#     return encoded
 
 
+def get_rule_images_base64(clm, rule_count: int) -> List[str]:
+    encoded_images = []
+
+    for i in range(1, rule_count+1):
+        plt.close('all')  # Zavře předchozí figury a uvolní paměť
+
+        clm.draw_rule(i, show=False)  # Vykreslí do aktuálního plt figure
+
+        fig = plt.gcf()  # Získá aktuální figure (kde je nakresleno)
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', bbox_inches='tight')  # Ořízne bílé okraje
+        buf.seek(0)
+
+        encoded = base64.b64encode(buf.read()).decode('utf-8')
+        encoded_images.append(encoded)
+
+        plt.close(fig)  # Zavře použitou figuru
+
+    print(len(encoded_images))
+
+    return encoded_images

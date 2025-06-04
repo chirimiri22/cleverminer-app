@@ -13,7 +13,6 @@ import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
 import { createSectionTitle } from "../pages/ProcedureCFMiner";
 import { Subtitle } from "./Subtitle";
-import { mockResults } from "../model/cf/result/CFResults";
 import { useAppContext } from "../context/AppContext";
 import { startCFProcedure } from "../apiCalls/startCFProcedure";
 import { CFProcedure } from "../model/cf/condition/CFProcedure";

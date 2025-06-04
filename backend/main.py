@@ -16,9 +16,10 @@ from starlette.responses import StreamingResponse, JSONResponse
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
     CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm
+
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
     get_ordered_unique_category_names, is_numeric, count_original_values_per_bin, \
-    group_counts_to_intervals
+    group_counts_to_intervals, get_rule_images_base64
 from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
@@ -57,7 +58,7 @@ async def upload_csv(file: UploadFile = File(...)):
         for column in df.columns:
             category_names = get_ordered_unique_category_names(df[column])
             categories = get_ordered_categories(category_names, df, column)
-            data.append(AttributeData(title=column, categories=categories, numeric=is_numeric(column,df)))
+            data.append(AttributeData(title=column, categories=categories, numeric=is_numeric(column, df)))
 
         return DatasetProcessed(data=data, metadata=metadata)
 
@@ -105,7 +106,12 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
 
         # print(clm.rulelist())
 
-        count = clm.get_rulecount()
+        count: int = clm.get_rulecount()
+
+        images = []
+        #  Generate Images
+        if procedure.generateImages:
+            images = get_rule_images_base64(clm, count)
 
         # Extract results
         rules = []
@@ -129,13 +135,16 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
             rules.append(CFRule(
                 attributes=attributes,
                 histogramData=histogram_data,
-                quantifiers=parsed_quantifiers
+                quantifiers=parsed_quantifiers,
+                imageBase64=images[i - 1] if procedure.generateImages else None
+
             ))
         # TARGET ATTRIBUTE
         target_attribute_name = procedure.condition.targetAttribute
         ordered_target_categories = get_ordered_categories(  # make sure ordering is accordin to clm miner
             clm.get_dataset_category_list(target_attribute_name), df, target_attribute_name)
-        target_attribute = AttributeData(title=target_attribute_name, categories=ordered_target_categories, numeric=is_numeric(target_attribute_name,df) )
+        target_attribute = AttributeData(title=target_attribute_name, categories=ordered_target_categories,
+                                         numeric=is_numeric(target_attribute_name, df))
 
         # LOGS
         summary_str = capture_output(clm.print_summary)
@@ -150,7 +159,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
 
     except Exception as e:
         print(e)
-    raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # data.column
@@ -206,14 +215,14 @@ async def get_attribute_data(
     return AttributeData(
         title=column,
         categories=categories,
-        numeric=is_numeric(column,df),
+        numeric=is_numeric(column, df),
     )
 
 
 @app.post("/api/preview_categories")
 async def preview_categories(
-    data: str = Form(...),
-    file: UploadFile = File(...),
+        data: str = Form(...),
+        file: UploadFile = File(...),
 ):
     contents = await file.read()
     df = pd.read_csv(io.BytesIO(contents))
@@ -245,10 +254,11 @@ async def preview_categories(
     # return {"category_ranges": [[0, 5], [6, 99]]}
     return {"category_ranges": category_group_intervals}
 
+
 @app.post("/api/replace_categories")
 async def replace_categories(
-    data: str = Form(...),
-    file: UploadFile = File(...)
+        data: str = Form(...),
+        file: UploadFile = File(...)
 ):
     # Read CSV from uploaded file
     contents = await file.read()
@@ -260,7 +270,6 @@ async def replace_categories(
 
     if form_data.column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{form_data.column}' not found in CSV.")
-
 
     # Build mapping dict: old_value => new_label
     mapping = {}
@@ -284,6 +293,7 @@ async def replace_categories(
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
     )
+
 
 # Run server
 if __name__ == "__main__":

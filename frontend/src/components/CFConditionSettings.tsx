@@ -5,6 +5,7 @@ import { BooleanInput } from "./Input/BooleanInput";
 import { RangeSliderInput } from "./Input/RangeSliderInput";
 import { CFQuantifiersSection } from "./CFQuantifiersSection";
 import { Subtitle } from "./Subtitle";
+import { BootstrapTooltip } from "./BootstrapTooltip";
 
 type Props = {
   max: number;
@@ -18,6 +19,11 @@ export const CFConditionSettings = ({ max, form }: Props) => {
       <Stack gap={1} alignItems={"center"}>
         <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} twoStates />
         <RangeSliderInput max={max} form={form} name={"range"} />
+        <BootstrapTooltip placement={"bottom"} title={"Generate Cleverminer native images for the rules. It can slow down the process."}>
+          <Stack>
+            <BooleanInput name={"generateImages"} form={form} label2={"Generate Images"} />
+          </Stack>
+        </BootstrapTooltip>
       </Stack>
 
       <Subtitle title={"Quantifiers"} />
