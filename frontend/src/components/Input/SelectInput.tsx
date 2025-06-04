@@ -21,6 +21,7 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
   options,
   onChange,
   size = "small",
+  disabled
 }: Props<TFormValues, TValue>) => {
   return (
     <FormControl
@@ -45,6 +46,7 @@ export const SelectInput = <TFormValues extends FieldValues, TValue>({
             // required={true}
             labelId="quantifier-select-label"
             id="quantifier-select"
+            disabled={disabled}
             label={label}
             variant={"filled"}
             sx={{

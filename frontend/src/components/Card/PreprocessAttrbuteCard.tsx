@@ -34,6 +34,8 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
     changeHiddenState(attributeName);
   };
 
+  const disabledOrdinal = !attribute.numeric && isNominal;
+
   return (
     <GeneralAttributeCard
       key={attribute.title}
@@ -71,14 +73,21 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
         </Stack>
         <Stack alignItems={"center"}>
           Do you want to preprocess this?
-          <BooleanInput
-            name={"nominal"}
-            form={form}
-            label1={"Ordinal prep."}
-            label2={"Nominal prep."}
-            twoStates
-            disabled={!attribute.numeric && isNominal} // todo add explaining tooltip
-          />
+          <BootstrapTooltip
+            placement={"bottom"}
+            title={disabledOrdinal && "This attribute is not numeric, so ordinal preprocessing is not available."}
+          >
+            <Stack>
+              <BooleanInput
+                name={"nominal"}
+                form={form}
+                label1={"Ordinal prep."}
+                label2={"Nominal prep."}
+                twoStates
+                disabled={disabledOrdinal} // todo add explaining tooltip
+              />
+            </Stack>
+          </BootstrapTooltip>
         </Stack>
         {isNominal ? <NominalPreprocessing data={attribute} /> : <OrdinalPreprocessing data={attribute} />}
       </Stack>

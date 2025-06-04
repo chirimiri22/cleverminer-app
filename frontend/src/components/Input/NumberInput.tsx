@@ -8,7 +8,7 @@ type Props<TFormValues extends FieldValues, TValue> = FormProps<TFormValues, TVa
   min?: number;
   max?: number;
   sx?: SxProps;
-  onChange?: (value?: TValue ) => void;
+  onChange?: (value?: TValue) => void;
 };
 
 export const NumberInput = <TFormValues extends FieldValues, TValue>({
@@ -19,7 +19,8 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
   min,
   max,
   sx,
-  onChange
+  onChange,
+  disabled,
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -35,6 +36,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
           {...field}
           id="quantifier-value"
           label={label}
+          disabled={disabled}
           type="number"
           size="small"
           variant={"filled"}

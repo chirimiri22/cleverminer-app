@@ -4,4 +4,5 @@ export type FormProps<TFormValues extends FieldValues, TValue> = {
   name: FieldPathByValue<TFormValues, TValue>;
   form: UseFormReturn<TFormValues>;
   label?: string;
+  disabled?: boolean;
 };

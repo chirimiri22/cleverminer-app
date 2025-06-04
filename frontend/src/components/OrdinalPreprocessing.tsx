@@ -14,6 +14,7 @@ import { sendCategorizeRequest } from "../apiCalls/generateCategories";
 import { useAppContext } from "../context/AppContext";
 import { getProcessedAttribute } from "../apiCalls/getProcessedAttribute";
 import { previewCategories } from "../apiCalls/previewCategories";
+import { BootstrapTooltip } from "./BootstrapTooltip";
 
 type Props = {
   data: AttributeData;
@@ -88,28 +89,42 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
             options={categorizationOptions}
             label={"Categorization"}
             onChange={handleFormChange}
+            disabled={!data.numeric}
           />
         </Stack>
         <Stack flex={1}>
-          <NumberInput name={"categoryCount"} form={form} min={1} label={"Count"} onChange={handleFormChange} />
+          <NumberInput
+            name={"categoryCount"}
+            form={form}
+            min={1}
+            label={"Count"}
+            onChange={handleFormChange}
+            disabled={!data.numeric}
+          />
         </Stack>
       </Stack>
 
       <Subtitle title={"Preview"} />
       <Histogram categories={data.categories} divisionRanges={divisionRanges} datalabels />
-
-      <Button
-        variant={"contained"}
-        size={"small"}
-        startIcon={<PlayArrow />}
-        sx={{
-          width: "100%",
-        }}
-        onClick={handleConvert}
-        disabled={!data.numeric}
+      <BootstrapTooltip
+        placement={"bottom"}
+        title={!data.numeric && "This attribute is not numeric anymore. Cannot be converted."}
       >
-        Convert
-      </Button>
+        <Stack direction={"row"} flexGrow={1} width={"100%"}>
+          <Button
+            variant={"contained"}
+            size={"small"}
+            startIcon={<PlayArrow />}
+            sx={{
+              width: "100%",
+            }}
+            onClick={handleConvert}
+            disabled={!data.numeric}
+          >
+            Convert
+          </Button>
+        </Stack>
+      </BootstrapTooltip>
     </Stack>
   );
 };
