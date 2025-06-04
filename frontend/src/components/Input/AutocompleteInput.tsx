@@ -33,19 +33,13 @@ export const AutocompleteInput = <TFormValues extends FieldValues>({
       render={({ field }) => (
         <Autocomplete
           multiple
+
           size={"small"}
           disableCloseOnSelect
           id={`${name}-autocomplete`}
           options={options.sort((a, b) => a.label.localeCompare(b.label))} // Filter out hidden options
           renderOption={(props, option: SelectOption) => (
-            <li
-              {...props}
-              key={option.label}
-              style={{ padding: 1 }}
-
-              // style={{ display: option.hidden ? 'none' : 'block' }}
-            >
-              <Checkbox style={{ marginRight: 8 }} checked={option.hidden} />
+            <li {...props} key={option.label} style={{ display: option.hidden ? "none" : "block" }}>
               {option.label}
             </li>
           )}
@@ -64,6 +58,7 @@ export const AutocompleteInput = <TFormValues extends FieldValues>({
               {...params}
               variant="filled"
               label={label}
+              required={true}
               placeholder={placeholder}
               sx={{
                 fontSize: size === "medium" ? "x-large" : undefined,

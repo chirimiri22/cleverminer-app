@@ -15,6 +15,7 @@ export const TextInput = <TFormValues extends FieldValues, TValue>({
   onBlur,
   label,
   sx,
+  required
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -24,6 +25,7 @@ export const TextInput = <TFormValues extends FieldValues, TValue>({
       render={({ field }) => (
         <TextField
           {...field}
+          required={required}
           id={`${name}-text`}
           label={label}
           type="text"
