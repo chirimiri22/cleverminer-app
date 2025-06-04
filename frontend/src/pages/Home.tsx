@@ -7,7 +7,8 @@ import { menuGroups } from "../layout/SIdebarMenu";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { Footer } from "../layout/Footer";
 import { Logo } from "../components/Logo";
-import { createSectionTitle, FOUR_STEPS } from "./ProcedureCFMiner";
+import { createSectionTitle } from "./ProcedureCFMiner";
+import { FOUR_STEPS } from "../constants/fourSteps";
 
 const BigButton = ({ onClick, title, icon }: { onClick: () => void; title: string; icon: React.ReactNode }) => {
   return (

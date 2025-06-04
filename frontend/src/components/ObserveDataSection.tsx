@@ -1,11 +1,12 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { ObserveAtrributeCard } from "./Card/ObserveAtrributeCard";
 import { SectionBox } from "./SectionBox";
-import { createSectionTitle, FOUR_STEPS } from "../pages/ProcedureCFMiner";
+import { createSectionTitle } from "../pages/ProcedureCFMiner";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 import { LoadDatasetFirst } from "./LoadDatasetFirst";
+import { FOUR_STEPS } from "../constants/fourSteps";
 
 export const ObserveDataSection = () => {
   const { getDatasetProcessed } = useAppContext();
