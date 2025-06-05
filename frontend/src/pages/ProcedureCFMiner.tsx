@@ -9,7 +9,7 @@ import { SectionBox } from "../components/SectionBox";
 
 import { CFResultSection } from "../components/CFResultSection";
 import { CFConditionSection } from "../components/CFConditionSection";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { PageNames } from "../constants/pageNames";
 import { BootstrapTooltip } from "../components/BootstrapTooltip";
 import { useAppContext } from "../context/AppContext";
@@ -21,6 +21,7 @@ import { TypeOptions } from "../constants/enums/TypeOptions";
 import { Step } from "../model/Step";
 import { FOUR_STEPS } from "../constants/fourSteps";
 import { CFExportSection } from "../components/CFExportSection";
+import { downloadChildrenAsPNGsZip } from "../helpers/donwload";
 
 export const createSectionTitle = (step: Step) => {
   return (
@@ -35,6 +36,9 @@ export const ProcedureCFMiner = () => {
   const { getDatasetProcessed } = useAppContext();
   const datasetProcessed = getDatasetProcessed();
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
 
   const form = useForm<CFProcedure>({
     defaultValues: {
@@ -75,9 +79,9 @@ export const ProcedureCFMiner = () => {
 
       <CFConditionSection form={form} />
 
-      <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} />
+      <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} ref={containerRef} />
 
-      <CFExportSection />
+      <CFExportSection downloadRenderedAsPNG={() => downloadChildrenAsPNGsZip(containerRef.current, null ,"rules.zip")} />
     </PageContainer>
   );
 };

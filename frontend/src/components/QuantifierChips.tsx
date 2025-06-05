@@ -6,7 +6,7 @@ import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";
 import { SectionBox } from "./SectionBox";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
-import { useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { CFQuantifierDisplay } from "./CFResultSection";
 import { CFRule } from "../model/cf/result/CFResults";
@@ -33,9 +33,11 @@ type Props = {
   displayQuantifiers: CFQuantifierDisplay;
 };
 
-export const QuantifierChips = (props: Props) => {
+export const QuantifierChips = forwardRef<HTMLDivElement, Props>((props: Props, ref ) => {
+
+
   return (
-    <Stack direction={"row"} gap={1} mt={1} justifyContent={"flex-start"} flexGrow={1} flexWrap={"wrap"} width={"100%"}>
+    <Stack ref={ref} direction={"row"} gap={1} mt={1} justifyContent={"flex-start"} flexGrow={1} flexWrap={"wrap"} width={"100%"}>
       <Chip label={`ID: ${props.ruleIndex}`} size="small" color={"primary"} />
       {props.rule.quantifiers.map((q, index) => {
         if (!q.quantifier || !props.displayQuantifiers[q.quantifier]) return null;
@@ -51,4 +53,4 @@ export const QuantifierChips = (props: Props) => {
       })}
     </Stack>
   );
-};
+})

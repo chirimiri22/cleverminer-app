@@ -7,7 +7,7 @@ import { Histogram } from "./Histogram";
 import { ResultRuleAttributes } from "./ResultRuleAttributes";
 import { SectionBox } from "./SectionBox";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
-import React, { useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
@@ -29,7 +29,7 @@ export type CFQuantifierDisplay = {
 };
 
 //  todo: create comparator for 2 histograms - modalni okno
-export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
+export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionData, isFormValid }, ref) => {
   const form = useForm<CFQuantifierDisplay>();
   const { CFResults, getDatasetProcessed, datafile, setCFResults } = useAppContext();
 
@@ -46,6 +46,16 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
       setLoading(false);
     }
   };
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>();
+
+  const f = JSON.stringify(form.watch())
+
+  useEffect(() => {
+    if (chipsRef.current) {
+      setHeight(chipsRef.current.offsetHeight);
+    }
+  }, [chipsRef.current?.offsetHeight,f ]);
 
   const disabled = !conditionData.condition.targetAttribute;
   const open = Boolean(anchorEl);
@@ -133,6 +143,7 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
               {Object.keys(CFQuantifier).map((key) => (
                 <BooleanInput
                   key={key}
+                  value={false}
                   form={form}
                   name={key as keyof CFQuantifierDisplay}
                   label2={CFQuantifier[key as keyof typeof CFQuantifier]}
@@ -144,14 +155,14 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
       }
       leftSection={
         !logOpen && (
-          <Stack alignItems={"start"} flexGrow={1} gap={3} pb={5}>
+          <Stack alignItems={"center"} justifyContent={"space-between"} flexGrow={1} gap={3} mb={2} pb={`${height}px`}>
             <Subtitle title={`Rules found: ${CFResults.rules.length}`} />
-            <Stack maxWidth={"100%"}>
+            <Stack maxWidth={"100%"} gap={2} alignItems={"center"}>
               <Typography variant={"h5"}>{CFResults.targetAttributeHistogram.title}</Typography>
-              <Histogram
-                categories={CFResults.targetAttributeHistogram.categories}
-                max={max}
-              />
+
+              <Histogram categories={CFResults.targetAttributeHistogram.categories} max={max} datalabels />
+
+              <Chip label={`Entire dataset distribution`} sx={{height: "43px", fontColor: Colors.black}} variant={"outlined"} size="small" color={"primary"} />
             </Stack>
           </Stack>
         )
@@ -178,15 +189,17 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
         </Stack>
       )}
 
-      <Stack direction={"row"} gap={2} display={logOpen ? "none" : "flex"}>
+      <Stack ref={ref} direction={"row"} gap={1} display={logOpen ? "none" : "flex"}>
         {CFResults.rules.map((rule, ruleIndex) => (
           <Stack
             key={ruleIndex}
             alignItems={"center"}
             flexGrow={1}
+            p={1}
+            bgcolor={Colors.white}
             maxWidth={250}
             justifyContent={"space-between"}
-            pr={ruleIndex === CFResults.rules.length - 1 ? 4 : 0}
+            pr={ruleIndex === CFResults.rules.length - 1 ? 4 : 1}
           >
             <ResultRuleAttributes attributes={rule.attributes} conjunction={CFResults.conjunction} />
 
@@ -201,16 +214,21 @@ export const CFResultSection = ({ conditionData, isFormValid }: Props) => {
                 }}
                 color={"success"}
               />
-              <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 250 }}>
+              <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 240 }}>
                 <CardContent>
                   <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels max={max} />
                 </CardContent>
               </Card>
-              <QuantifierChips displayQuantifiers={formValues} rule={rule} ruleIndex={ruleIndex + 1} />
+              <QuantifierChips
+                ref={ruleIndex === 0 ? chipsRef : undefined}
+                displayQuantifiers={formValues}
+                rule={rule}
+                ruleIndex={ruleIndex + 1}
+              />
             </Stack>
           </Stack>
         ))}
       </Stack>
     </SectionBox>
   );
-};
+});

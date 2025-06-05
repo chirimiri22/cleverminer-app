@@ -20,7 +20,7 @@ export const BooleanInput = <TFormValues extends FieldValues>({
   id,
   twoStates,
   disabled,
-  value
+  value = false
 }: Props<TFormValues>) => {
   const val = form.watch(name) ?? value;
 

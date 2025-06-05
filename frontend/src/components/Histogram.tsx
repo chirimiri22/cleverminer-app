@@ -157,6 +157,7 @@ export const Histogram = ({
       {datalabels && (
         <BootstrapTooltip title={showLabels ? "Hide Labels" : "Show Labels"} placement="right">
           <IconButton
+            id={"show-labels-button"}
             sx={{ position: "absolute", top: -10, right: "50%", zIndex: 1, transform: "translateX(50%)", opacity: 0.2 }}
             size="small"
             onClick={() => setShowLabels(!showLabels)}

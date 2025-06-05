@@ -128,6 +128,4 @@ def get_rule_images_base64(clm, rule_count: int) -> List[str]:
 
         plt.close(fig)  # Zavře použitou figuru
 
-    print(len(encoded_images))
-
     return encoded_images

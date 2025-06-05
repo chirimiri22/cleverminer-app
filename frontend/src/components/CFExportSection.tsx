@@ -7,8 +7,16 @@ import { downloadTxtFile } from "../helpers/downloadTxtFile";
 import { useAppContext } from "../context/AppContext";
 import { downlaodZipClmImages } from "../helpers/downlaodZipClmImages";
 
-export const CFExportSection = () => {
+import { useRef } from "react";
+
+type Props = {
+  downloadRenderedAsPNG: () => void;
+}
+
+
+export const CFExportSection = ({downloadRenderedAsPNG} : Props) => {
   const { CFResults } = useAppContext();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const handleExportTxtLOgs = () => {
     // Implement the logic to export TXT log
@@ -22,9 +30,14 @@ export const CFExportSection = () => {
     downlaodZipClmImages(CFResults.rules.map((rule) => rule.imageBase64 || ""));
   };
 
+  const handleExportVisiblePngs = () => {
+    if (!CFResults) return;
+    downloadRenderedAsPNG()
+  }
+
   return (
-    <SectionBox title={createSectionTitle(FOUR_STEPS.exporting)}>
-      <Stack direction={"row"} gap={1} alignItems={"center"}>
+    <SectionBox  title={createSectionTitle(FOUR_STEPS.exporting)}>
+      <Stack ref={ref} direction={"row"} gap={1} alignItems={"center"} bgcolor={"white"}>
         <Button
           variant="outlined"
           startIcon={<Download />}
@@ -33,8 +46,8 @@ export const CFExportSection = () => {
         >
           Export Clm native PNGs
         </Button>
-        <Button variant="outlined" startIcon={<Download />}>
-          Export CSV
+        <Button variant="outlined" startIcon={<Download />} onClick={handleExportVisiblePngs} disabled={!CFResults}>
+          Export PNGs from visible
         </Button>
         <Button variant="outlined" startIcon={<Download />} onClick={handleExportTxtLOgs} disabled={!CFResults}>
           Export TXT log
