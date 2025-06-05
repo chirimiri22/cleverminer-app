@@ -2,24 +2,32 @@
 import { Card, CardHeader, Stack, Typography } from "@mui/material";
 import { Colors } from "../styles/colors";
 import { ResultAttribute } from "../model/cf/result/CFResults";
+import { CardBody } from "react-bootstrap";
 
 type Props = {
   attribute: ResultAttribute;
 };
 export const ResultRuleAttribute = ({ attribute }: Props) => {
   return (
-    <Card variant="outlined" sx={{ minWidth: 200, width: "100%", borderRadius: 2, height: "fit-content" }}>
-      <CardHeader
-        sx={{ py: 1, flexGrow: 1 }}
-        title={
-          <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            {attribute.title}
-            <Typography color={Colors.textSecondary} variant={"subtitle2"} textAlign={"center"}>
-              {attribute.selectedCategories.join(", ")}
-            </Typography>
-          </Stack>
-        }
-      />
+    <Card
+      variant="outlined"
+
+      sx={{
+        borderRadius: 2,
+        height: "fit-content",
+        p: 2,
+        display: "flex",
+        width: "-webkit-fill-available",
+      }}
+    >
+      <Stack width={"100%"} >
+        <CardHeader sx={{ flexGrow: 1, p: 0 }} title={attribute.title} />
+        <CardBody>
+          <Typography color={Colors.textSecondary} variant={"subtitle2"}>
+            {attribute.selectedCategories.join(", ")}
+          </Typography>
+        </CardBody>
+      </Stack>
     </Card>
   );
 };

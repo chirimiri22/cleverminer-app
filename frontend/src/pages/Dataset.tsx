@@ -29,7 +29,7 @@ import { Step } from "../model/Step";
 import { PREPROCESS_STEPS } from "../constants/preprocessSteps";
 import { formatSize } from "../helpers/formatSize";
 import { formatDate } from "../helpers/formatDate";
-import { aboveSuspicionLevel } from "../helpers/aboveSuspicionLevel";
+import { isAboveUniquenessThreshold } from "../helpers/isAboveUniquenessThreshold";
 
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
@@ -106,7 +106,10 @@ export const Dataset = () => {
           <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
             <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
               {datasetProcessedAll.data.map((attribute, index) => {
-                const shouldBePreprocessed = aboveSuspicionLevel(attribute.categories.length, 100);
+                const shouldBePreprocessed = isAboveUniquenessThreshold(
+                  attribute.categories.length,
+                  datasetProcessed.metadata.rows
+                );
                 return <PreprocessAttributeCard attribute={attribute} shouldBePreprocessed={shouldBePreprocessed} />;
               })}
             </Stack>

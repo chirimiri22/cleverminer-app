@@ -43,13 +43,14 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       title={attribute.title}
       dot={`${attribute.categories.length}`}
       dotTip={"Categories count"}
-      state={isHidden ? State.Hidden : shouldBePreprocessed ? State.Warning : State.Ok}
-      stateTip={isHidden ? "Hidden" : shouldBePreprocessed ? "Large number of categories" : undefined}
+      isHidden={isHidden}
+      shouldBePreprocessed={shouldBePreprocessed}
+
     >
       <Stack textAlign={"center"} gap={1}>
         <Subtitle title={"Hide"} sx={{alignSelf: "start"}} />
         {shouldBePreprocessed && "Number of unique categories is large. Do you want to hide it?"}
-        <BootstrapTooltip title={"Hide uncessary attribute. It will be hiddden in the whole app."}>
+        <BootstrapTooltip title={"Hide uncessary attribute, therefore it was hiddden."}>
           <Button
             variant="outlined"
             size={"small"}

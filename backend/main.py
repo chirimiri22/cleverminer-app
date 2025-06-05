@@ -19,7 +19,7 @@ from src.classes import DatasetProcessed, Metadata, Category, AttributeData, Res
 
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
     get_ordered_unique_category_names, is_numeric, count_original_values_per_bin, \
-    group_counts_to_intervals, get_rule_images_base64
+    group_counts_to_intervals, get_rule_images_base64, is_above_uniqueness_threshold
 from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
@@ -58,7 +58,8 @@ async def upload_csv(file: UploadFile = File(...)):
         for column in df.columns:
             category_names = get_ordered_unique_category_names(df[column])
             categories = get_ordered_categories(category_names, df, column)
-            data.append(AttributeData(title=column, categories=categories, numeric=is_numeric(column, df)))
+            hidden = is_above_uniqueness_threshold(len(category_names), metadata.rows)
+            data.append(AttributeData(title=column, categories=categories, numeric=is_numeric(column, df), hidden=hidden))
 
         return DatasetProcessed(data=data, metadata=metadata)
 
@@ -252,6 +253,7 @@ async def preview_categories(
     category_group_intervals = group_counts_to_intervals(category_group_counts)
 
     # return {"category_ranges": [[0, 5], [6, 99]]}
+    # todo use classse
     return {"category_ranges": category_group_intervals}
 
 

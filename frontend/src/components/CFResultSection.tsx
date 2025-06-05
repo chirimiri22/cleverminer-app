@@ -30,7 +30,9 @@ export type CFQuantifierDisplay = {
 
 //  todo: create comparator for 2 histograms - modalni okno
 export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionData, isFormValid }, ref) => {
-  const form = useForm<CFQuantifierDisplay>();
+  const form = useForm<CFQuantifierDisplay>({defaultValues: {
+    [CFQuantifier.Base]: true,
+    }});
   const { CFResults, getDatasetProcessed, datafile, setCFResults } = useAppContext();
 
   const datasetProcessed = getDatasetProcessed();
@@ -169,7 +171,7 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
       }
     >
       {logOpen && (
-        <Stack bgcolor={Colors.black} height={"100%"} width={"100%"} flexGrow={1}>
+        <Stack bgcolor={Colors.black} height={"100%"}  flexGrow={1}>
           {/* todo: newline wrapping doesnt work*/}
           <Typography
             variant="body2"

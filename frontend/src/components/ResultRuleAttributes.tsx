@@ -10,7 +10,7 @@ type Props = {
 };
 export const ResultRuleAttributes = ({ attributes, conjunction }: Props) => {
   return (
-    <Stack width={"100%"} justifyContent={"end"} flexGrow={1}>
+    <Stack  justifyContent={"end"} flexGrow={1}  >
       {attributes.map((attribute, attributeIndex) => (
         <Stack key={attribute.title} alignItems={"center"}>
           <ResultRuleAttribute attribute={attribute} />
@@ -22,6 +22,7 @@ export const ResultRuleAttributes = ({ attributes, conjunction }: Props) => {
           )}
         </Stack>
       ))}
+
     </Stack>
   );
 };

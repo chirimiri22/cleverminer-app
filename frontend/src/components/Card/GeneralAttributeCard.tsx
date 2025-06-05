@@ -37,21 +37,36 @@ type Props = {
   children?: ReactNode;
   actions?: ReactNode;
   disabled?: boolean;
-  stateTip?: string;
-  state?: State;
+  // stateTip?: string;
+  // state?: State;
+  isHidden?: boolean;
+  shouldBePreprocessed?: boolean;
   key?: string | number;
 };
 
 // todo: think about the sctructure of the files
 
-export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, stateTip, state, key }: Props) => {
+export const GeneralAttributeCard = ({
+  title,
+  dot,
+  dotTip,
+  children,
+  disabled,
+  isHidden,
+  shouldBePreprocessed,
+  key,
+}: Props) => {
   // todo: implement disabled prop
-  const [expanded, setExpanded] = useState<boolean>(state === State.Warning);
+  const [expanded, setExpanded] = useState<boolean>(!!shouldBePreprocessed);
 
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
   return (
-    <Card key={key} variant="outlined" sx={{ minWidth: 300, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content", mb: 2, }}>
+    <Card
+      key={key}
+      variant="outlined"
+      sx={{ minWidth: 300, width: 300, flexGrow: 0, borderRadius: 2, height: "fit-content", mb: 2 }}
+    >
       <CardHeader
         title={
           <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
@@ -68,7 +83,6 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, s
                   backgroundColor: Colors.primary,
                   justifyContent: "center",
                   alignItems: "center",
-
                 }}
               >
                 <Typography variant="caption" color={"white"}>
@@ -80,19 +94,23 @@ export const GeneralAttributeCard = ({ title, dot, dotTip, children, disabled, s
         }
         action={
           <Stack direction={"row"} alignItems={"center"} flexGrow={1} height={"100%"} alignSelf={"center"}>
-            {state && (
-              <BootstrapTooltip title={stateTip}>
-                <IconButton>
-                  {state === State.Ok ? (
-                    <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
-                  ) : state === State.Hidden ? (
-                    <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
-                  ) : (
-                    <WarningAmber sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.warning }} />
-                  )}
-                </IconButton>
+            <BootstrapTooltip title={shouldBePreprocessed ? "Attribute too many categories." : undefined}>
+              <IconButton>
+                {!shouldBePreprocessed ? (
+                  <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
+                ) : (
+                  <WarningAmber sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.warning }} />
+                )}
+              </IconButton>
+            </BootstrapTooltip>
+
+            {isHidden && (
+              <BootstrapTooltip title={shouldBePreprocessed ? "Attribute is hidden." : undefined}>
+                <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
               </BootstrapTooltip>
             )}
+
+
 
             {children && (
               <IconButton onClick={toggleExpand} size="small" sx={{ verticalAlign: "middle" }}>

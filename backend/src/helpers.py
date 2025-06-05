@@ -129,3 +129,9 @@ def get_rule_images_base64(clm, rule_count: int) -> List[str]:
         plt.close(fig)  # Zavře použitou figuru
 
     return encoded_images
+
+
+UNIQUENESS_THRESHOLD = 0.2  # adjust as needed
+
+def is_above_uniqueness_threshold(cat_count: int, records_count: int) -> bool:
+    return cat_count > UNIQUENESS_THRESHOLD * records_count
