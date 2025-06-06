@@ -50,7 +50,7 @@ export const ProcedureCFMiner = () => {
       quantifiers: [
         {
           quantifier: CFQuantifier.Base,
-          value: datasetProcessed ? Math.floor(datasetProcessed.metadata.rows * 0.5) : 5,
+          value: datasetProcessed ? Math.floor(datasetProcessed.metadata.rows * 0.8) : 5,
         },
       ],
       generateImages: false,

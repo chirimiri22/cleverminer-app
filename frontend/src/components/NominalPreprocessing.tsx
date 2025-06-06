@@ -89,9 +89,8 @@ export const NominalPreprocessing = ({ data }: Props) => {
   };
   return (
     <Stack gap={1} alignItems={"start"}>
-      <Subtitle title={"Preview"} />
       <Histogram categories={data.categories} showYAxis datalabels />
-      <Subtitle title={"New Categories"} />
+      <Subtitle title={"New Categories"} smaller />
       <Chip
         label={`Remaining: ${reaminitngCategoriesCount}`}
         size="small"

@@ -36,7 +36,7 @@ def get_ordered_unique_category_names(series: pd.Series) -> list[str]:
     - If the series is numeric, sort numerically.
     - Otherwise, sort lexicographically as strings.
     """
-    unique_vals = series.dropna().unique()
+    unique_vals = series.unique()
 
     if pd.api.types.is_numeric_dtype(series):
         sorted_vals = sorted(unique_vals)

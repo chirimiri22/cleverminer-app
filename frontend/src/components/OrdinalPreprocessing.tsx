@@ -80,9 +80,8 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
-      <Subtitle title={"Preview"} />
       <Histogram categories={data.categories} showYAxis divisionRanges={divisionRanges} datalabels />
-      <Subtitle title={"Generate Categories"} />
+      <Subtitle title={"Generate Categories"} smaller/>
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
           <SelectInput

@@ -1,13 +1,19 @@
 import { SxProps, Typography } from "@mui/material";
+import { Colors } from "../styles/colors";
 
 type Props = {
   title: string;
-  sx?: SxProps
+  smaller?: boolean;
+  sx?: SxProps;
 };
 
-export const Subtitle = ({ title, sx }: Props) => {
+export const Subtitle = ({ title, sx, smaller }: Props) => {
   return (
-    <Typography variant="subtitle1" fontWeight={"bold"} sx={sx}>
+    <Typography
+      variant={smaller ? "body2" : "subtitle1"}
+      fontWeight={"bold"}
+      sx={{ color: smaller ? Colors.textPrimary : Colors.black, ...sx }}
+    >
       {title}
     </Typography>
   );

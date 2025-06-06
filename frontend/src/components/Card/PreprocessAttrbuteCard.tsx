@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FindReplace, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { AttributeData } from "../../model/dataset/AttributeData";
@@ -10,6 +10,8 @@ import { BooleanInput } from "../Input/BooleanInput";
 import { NominalPreprocessing } from "../NominalPreprocessing";
 import { OrdinalPreprocessing } from "../OrdinalPreprocessing";
 import { Subtitle } from "../Subtitle";
+import { SelectInput } from "../Input/SelectInput";
+import { ReplaceEmptyValues } from "../ReplaceEmptyValues";
 
 type Props = {
   attribute: AttributeData;
@@ -17,6 +19,25 @@ type Props = {
 };
 type FormValues = {
   nominal: boolean;
+};
+
+const OrDivider = () => {
+  return (
+    <Stack position={"relative"} my={2}>
+      <Divider />
+      <Typography
+        fontSize={"small"}
+        color={Colors.textSecondary}
+        bgcolor={"white"}
+        position={"absolute"}
+        left={"50%"}
+        top={-9}
+        sx={{ transform: "translateX(-50%)" }}
+      >
+        OR
+      </Typography>
+    </Stack>
+  );
 };
 
 export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Props) => {
@@ -47,13 +68,13 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       shouldBePreprocessed={shouldBePreprocessed}
     >
       <Stack textAlign={"center"} gap={1}>
-        {attribute.containsNull && (
+        <Subtitle title={"Hide"} sx={{ alignSelf: "start" }} />
+        {shouldBePreprocessed && (
           <Typography variant={"caption"} color={"error"}>
-            {"This column contains null values"}
+            {" "}
+            {"Number of unique categories is large. Do you want to hide it?"}
           </Typography>
         )}
-        <Subtitle title={"Hide"} sx={{ alignSelf: "start" }} />
-        {shouldBePreprocessed && "Number of unique categories is large. Do you want to hide it?"}
         <BootstrapTooltip title={"Hide uncessary attribute, therefore it was hiddden."}>
           <Button
             variant="outlined"
@@ -64,20 +85,14 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
             {isHidden ? "Show" : "Hide"}
           </Button>
         </BootstrapTooltip>
-        <Stack position={"relative"} my={2}>
-          <Divider />
-          <Typography
-            fontSize={"small"}
-            color={Colors.textSecondary}
-            bgcolor={"white"}
-            position={"absolute"}
-            left={"50%"}
-            top={-9}
-            sx={{ transform: "translateX(-50%)" }}
-          >
-            OR
-          </Typography>
-        </Stack>
+
+        {attribute.containsNull && (
+          <>
+            <OrDivider />
+            <ReplaceEmptyValues column={attribute.title} />
+          </>
+        )}
+        <OrDivider />
         <Stack alignItems={"center"}>
           <Subtitle title={"Preprocess"} sx={{ alignSelf: "start" }} />
           {/*Do you want to preprocess this?*/}

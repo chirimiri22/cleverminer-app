@@ -15,7 +15,8 @@ from matplotlib.pyplot import title
 from starlette.responses import StreamingResponse, JSONResponse
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm
+    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm, \
+    ReplaceMode, ReplaceRequest
 
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
     get_ordered_unique_category_names, is_numeric, count_original_values_per_bin, \
@@ -61,6 +62,8 @@ async def upload_csv(file: UploadFile = File(...)):
             contains_null = df[column].isnull().any()
 
             category_names = get_ordered_unique_category_names(df[column])
+            if contains_null:
+                print(category_names)
             categories = get_ordered_categories(category_names, df, column)
             hidden = is_above_uniqueness_threshold(len(category_names), metadata.rows)
             data.append(
@@ -307,6 +310,50 @@ async def replace_categories(
         headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
     )
 
+
+@app.post("/api/replace_empty_values")
+async def replace_empty_values(
+    data: str = Form(...),
+    file: UploadFile = File(...)
+):
+    # Parse form data JSON
+    form_data_dict = json.loads(data)
+    form_data = ReplaceRequest.model_validate(form_data_dict)
+
+    # Read CSV from uploaded file
+    contents = await file.read()
+    df = pd.read_csv(io.BytesIO(contents))
+
+    if form_data.column not in df.columns:
+        raise HTTPException(status_code=400, detail=f"Column '{form_data.column}' not found in CSV.")
+
+    # Decide replacement value based on mode
+    if form_data.replaceMode == ReplaceMode.none:
+        replacement_value = "Empty Value"
+    elif form_data.replaceMode == ReplaceMode.zero:
+        replacement_value = 0
+    elif form_data.replaceMode == ReplaceMode.false:
+        replacement_value = False
+    else:
+        raise HTTPException(status_code=400, detail="Invalid replace_mode")
+
+    # Replace empty values (NaN or empty strings) in the column
+    df_copy = df.copy()
+    # Consider empty strings too: replace both NaN and ""
+    df_copy[form_data.column] = df_copy[form_data.column].replace("", pd.NA)
+    df_copy[form_data.column] = df_copy[form_data.column].fillna(replacement_value)
+
+    # Convert updated DataFrame to CSV in-memory
+    buffer = io.StringIO()
+    df_copy.to_csv(buffer, index=False)
+    buffer.seek(0)
+
+    # Return CSV file as response
+    return StreamingResponse(
+        iter([buffer.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
+    )
 
 # Run server
 if __name__ == "__main__":

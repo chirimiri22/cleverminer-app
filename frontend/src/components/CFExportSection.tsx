@@ -18,20 +18,22 @@ export const CFExportSection = ({downloadRenderedAsPNG} : Props) => {
   const { CFResults } = useAppContext();
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const disabled = !CFResults || !CFResults.rules || CFResults.rules.length === 0;
+
   const handleExportTxtLOgs = () => {
     // Implement the logic to export TXT log
-    if (!CFResults) return;
+    if (disabled) return;
     downloadTxtFile("CFMiner_Logs", CFResults.logs.summary.concat(CFResults.logs.rulelist));
   };
 
   const handleExportClmPngs = () => {
     // Implement the logic to export PNGs for each column
-    if (!CFResults) return;
+    if (disabled) return;
     downlaodZipClmImages(CFResults.rules.map((rule) => rule.imageBase64 || ""));
   };
 
   const handleExportVisiblePngs = () => {
-    if (!CFResults) return;
+    if (disabled) return;
     downloadRenderedAsPNG()
   }
 
@@ -41,7 +43,7 @@ export const CFExportSection = ({downloadRenderedAsPNG} : Props) => {
         <Button
           variant="outlined"
           startIcon={<Download />}
-          disabled={!CFResults?.rules || !CFResults?.rules[0].imageBase64}
+          disabled={disabled || !CFResults?.rules[0].imageBase64}
           onClick={handleExportClmPngs}
         >
           Export Clm native PNGs
