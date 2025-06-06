@@ -1,7 +1,10 @@
 import { AttributeData } from "../model/dataset/AttributeData";
 
-export const getProcessedAttribute = async (column: string, file: File): Promise<AttributeData> => {
+
+
+export const getProcessedAttribute = async (column: string, file: File, hidden: boolean): Promise<AttributeData> => {
   const formData = new FormData();
+  formData.append("hidden", JSON.stringify(hidden));
   formData.append("column", column);
   formData.append("file", file);
 

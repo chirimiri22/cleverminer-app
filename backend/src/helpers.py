@@ -25,9 +25,10 @@ def get_ordered_categories(ordered_category_names: List[str], df: pd.DataFrame, 
     ]
     return categories
 
-
+# todo: rason to the FE why it cannot be converted
 def is_numeric(column: str, df: pd.DataFrame) -> bool:
-    return pd.api.types.is_numeric_dtype(df[column])
+    col = df[column]
+    return pd.api.types.is_numeric_dtype(col) and not col.isnull().any()
 
 
 def get_ordered_unique_category_names(series: pd.Series) -> list[str]:

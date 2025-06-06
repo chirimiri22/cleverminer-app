@@ -5,4 +5,5 @@ export type AttributeData = {
   categories: Category[];
   hidden?: boolean;
   numeric?: string[];
+  containsNull?: Boolean
 };

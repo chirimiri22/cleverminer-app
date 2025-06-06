@@ -45,10 +45,14 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       dotTip={"Categories count"}
       isHidden={isHidden}
       shouldBePreprocessed={shouldBePreprocessed}
-
     >
       <Stack textAlign={"center"} gap={1}>
-        <Subtitle title={"Hide"} sx={{alignSelf: "start"}} />
+        {attribute.containsNull && (
+          <Typography variant={"caption"} color={"error"}>
+            {"This column contains null values"}
+          </Typography>
+        )}
+        <Subtitle title={"Hide"} sx={{ alignSelf: "start" }} />
         {shouldBePreprocessed && "Number of unique categories is large. Do you want to hide it?"}
         <BootstrapTooltip title={"Hide uncessary attribute, therefore it was hiddden."}>
           <Button
@@ -75,7 +79,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
           </Typography>
         </Stack>
         <Stack alignItems={"center"}>
-          <Subtitle title={"Preprocess"} sx={{alignSelf: "start"}} />
+          <Subtitle title={"Preprocess"} sx={{ alignSelf: "start" }} />
           {/*Do you want to preprocess this?*/}
           <BootstrapTooltip
             placement={"bottom"}

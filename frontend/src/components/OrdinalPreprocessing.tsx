@@ -70,7 +70,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
       try {
         const newFile = await sendCategorizeRequest(formValues, datafile);
         setDatafile(newFile);
-        const newProcessedData = await getProcessedAttribute(formValues.column, newFile);
+        const newProcessedData = await getProcessedAttribute(formValues.column, newFile, !!data.hidden);
         updateProcessedAttributeData(formValues.column, newProcessedData);
       } catch (error) {
         console.error("Error during categorization:", error);

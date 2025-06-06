@@ -79,7 +79,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
       try {
         const newFile = await createCustomNominalCategories(usedCategories, data.title, datafile);
         setDatafile(newFile);
-        const newProcessedData = await getProcessedAttribute(data.title, newFile);
+        const newProcessedData = await getProcessedAttribute(data.title, newFile, !!data.hidden);
         updateProcessedAttributeData(data.title, newProcessedData);
         form.reset();
       } catch (error) {

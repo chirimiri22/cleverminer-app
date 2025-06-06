@@ -35,12 +35,14 @@ app.add_middleware(
 )
 
 
+#  todo return errors what happened
 @app.post("/api/upload", response_model=DatasetProcessed)
 async def upload_csv(file: UploadFile = File(...)):
     try:
         # Read uploaded file
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
+        print(df.dtypes)
 
         # Metadata
         metadata = Metadata(
@@ -56,10 +58,14 @@ async def upload_csv(file: UploadFile = File(...)):
         # Process columns
         data = []
         for column in df.columns:
+            contains_null = df[column].isnull().any()
+
             category_names = get_ordered_unique_category_names(df[column])
             categories = get_ordered_categories(category_names, df, column)
             hidden = is_above_uniqueness_threshold(len(category_names), metadata.rows)
-            data.append(AttributeData(title=column, categories=categories, numeric=is_numeric(column, df), hidden=hidden))
+            data.append(
+                AttributeData(title=column, categories=categories, numeric=is_numeric(column, df), hidden=hidden,
+                              containsNull=contains_null))
 
         return DatasetProcessed(data=data, metadata=metadata)
 
@@ -145,7 +151,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
         ordered_target_categories = get_ordered_categories(  # make sure ordering is accordin to clm miner
             clm.get_dataset_category_list(target_attribute_name), df, target_attribute_name)
         target_attribute = AttributeData(title=target_attribute_name, categories=ordered_target_categories,
-                                         numeric=is_numeric(target_attribute_name, df))
+                                         numeric=is_numeric(target_attribute_name, df), hidden=False, containsNull=False)
 
         # LOGS
         summary_str = capture_output(clm.print_summary)
@@ -173,6 +179,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
 async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
     contents = await file.read()
     df = pd.read_csv(io.BytesIO(contents))
+    # print(df.dtypes)
 
     form_data_dict = json.loads(data)
     form_data = CategorizationFormData.model_validate(form_data_dict)
@@ -202,6 +209,7 @@ async def categorize_column(data: str = Form(...), file: UploadFile = File(...),
 @app.post("/api/attribute-data")
 async def get_attribute_data(
         column: str = Form(...),
+        hidden: bool = Form(...),
         file: UploadFile = File(...)
 ):
     contents = await file.read()
@@ -212,11 +220,14 @@ async def get_attribute_data(
 
     category_names = get_ordered_unique_category_names(df[column])
     categories = get_ordered_categories(category_names, df, column)
+    contains_null = df[column].isnull().any()
 
     return AttributeData(
         title=column,
         categories=categories,
         numeric=is_numeric(column, df),
+        hidden=False,
+        containsNull=contains_null,
     )
 
 

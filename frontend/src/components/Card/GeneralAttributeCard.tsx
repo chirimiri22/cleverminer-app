@@ -94,7 +94,7 @@ export const GeneralAttributeCard = ({
         }
         action={
           <Stack direction={"row"} alignItems={"center"} flexGrow={1} height={"100%"} alignSelf={"center"}>
-            <BootstrapTooltip title={shouldBePreprocessed ? "Attribute too many categories." : undefined}>
+            <BootstrapTooltip title={undefined}>
               <IconButton>
                 {!shouldBePreprocessed ? (
                   <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
