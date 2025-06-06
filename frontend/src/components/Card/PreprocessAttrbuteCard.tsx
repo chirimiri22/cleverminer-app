@@ -53,7 +53,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
 
   const isHidden = attribute.hidden;
 
-  const [collapsed, setCollapsed] = useState(!shouldBePreprocessed);
+  const [collapsed, setCollapsed] = useState(!shouldBePreprocessed && !attribute.containsNull);
   const handleHideAttribute = (attributeName: string) => {
     const newState = changeHiddenState(attributeName);
     setCollapsed(!!newState);
@@ -68,7 +68,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       dot={`${attribute.categories.length}`}
       dotTip={"Categories count"}
       isHidden={isHidden}
-      shouldBePreprocessed={shouldBePreprocessed}
+      shouldBePreprocessed={shouldBePreprocessed }
       collapsed={collapsed}
     >
       <Stack textAlign={"center"} gap={1}>
