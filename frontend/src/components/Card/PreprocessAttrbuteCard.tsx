@@ -12,6 +12,7 @@ import { OrdinalPreprocessing } from "../OrdinalPreprocessing";
 import { Subtitle } from "../Subtitle";
 import { SelectInput } from "../Input/SelectInput";
 import { ReplaceEmptyValues } from "../ReplaceEmptyValues";
+import { useState } from "react";
 
 type Props = {
   attribute: AttributeData;
@@ -52,8 +53,10 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
 
   const isHidden = attribute.hidden;
 
+  const [collapsed, setCollapsed] = useState(!shouldBePreprocessed);
   const handleHideAttribute = (attributeName: string) => {
-    changeHiddenState(attributeName);
+    const newState = changeHiddenState(attributeName);
+    setCollapsed(!!newState);
   };
 
   const disabledOrdinal = !attribute.numeric && isNominal;
@@ -66,15 +69,16 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       dotTip={"Categories count"}
       isHidden={isHidden}
       shouldBePreprocessed={shouldBePreprocessed}
+      collapsed={collapsed}
     >
       <Stack textAlign={"center"} gap={1}>
-        <Subtitle title={"Hide"} sx={{ alignSelf: "start" }} />
         {shouldBePreprocessed && (
           <Typography variant={"caption"} color={"error"}>
-            {" "}
-            {"Number of unique categories is large. Do you want to hide it?"}
+            {"Number of unique categories is large."}
           </Typography>
         )}
+        <Subtitle title={"Hide"} sx={{ alignSelf: "start" }} />
+
         <BootstrapTooltip title={"Hide uncessary attribute, therefore it was hiddden."}>
           <Button
             variant="outlined"

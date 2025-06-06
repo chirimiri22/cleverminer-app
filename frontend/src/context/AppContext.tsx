@@ -9,7 +9,7 @@ type AppContextType = {
   setDatasetProcessed: (dataset?: DatasetProcessed) => void;
   CFResults?: CFResults;
   setCFResults: (results?: CFResults) => void;
-  changeHiddenState: (attributeName: string) => void;
+  changeHiddenState: (attributeName: string) => boolean | undefined;
   getDatasetProcessed: (includeHidden?: boolean) => DatasetProcessed | undefined;
   updateProcessedAttributeData: (attributeName: string, data: AttributeData) => void;
 };
@@ -33,8 +33,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const changeHiddenState = (attributeName: string) => {
     const attributeData = datasetProcessed?.data.find((a) => a.title === attributeName);
     if (attributeData && datasetProcessed) {
-      updateProcessedAttributeData(attributeName, { ...attributeData, hidden: !attributeData?.hidden });
+      const newState = !attributeData.hidden;
+      updateProcessedAttributeData(attributeName, { ...attributeData, hidden: newState });
+      return newState
     }
+      return undefined
   };
 
   const getDatasetProcessed = (includeHidden = false): DatasetProcessed | undefined => {

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -42,6 +42,7 @@ type Props = {
   isHidden?: boolean;
   shouldBePreprocessed?: boolean;
   key?: string | number;
+  collapsed?: boolean;
 };
 
 // todo: think about the sctructure of the files
@@ -55,9 +56,15 @@ export const GeneralAttributeCard = ({
   isHidden,
   shouldBePreprocessed,
   key,
+  collapsed,
 }: Props) => {
   // todo: implement disabled prop
-  const [expanded, setExpanded] = useState<boolean>(!!shouldBePreprocessed);
+  const [expanded, setExpanded] = useState<boolean>(!collapsed);
+
+  useEffect(() => {
+    console.log("run");
+    setExpanded(!collapsed);
+  }, [collapsed]);
 
   const toggleExpand = (): void => setExpanded((prev) => !prev);
 
@@ -109,8 +116,6 @@ export const GeneralAttributeCard = ({
                 <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
               </BootstrapTooltip>
             )}
-
-
 
             {children && (
               <IconButton onClick={toggleExpand} size="small" sx={{ verticalAlign: "middle" }}>
