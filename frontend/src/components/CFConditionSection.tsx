@@ -4,7 +4,7 @@ import { ConditionBuilder } from "./CFConditionBuilder";
 import { SectionBox } from "./SectionBox";
 import { useState } from "react";
 import { BootstrapTooltip } from "./BootstrapTooltip";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { ArrowCircleRight, PlayArrow } from "@mui/icons-material";
 import { Colors } from "../styles/colors";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -34,7 +34,7 @@ export const CFConditionSection = ({ form }: Props) => {
   if (!datasetProcessed)
     return (
       <SectionBox title={createSectionTitle(FOUR_STEPS.condition)}>
-        <LoadDatasetFirst />
+        <Box />
       </SectionBox>
     );
 

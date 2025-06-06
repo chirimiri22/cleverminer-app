@@ -112,7 +112,7 @@ export const GeneralAttributeCard = ({
             </BootstrapTooltip>
 
             {isHidden && (
-              <BootstrapTooltip title={shouldBePreprocessed ? "Attribute is hidden." : undefined}>
+              <BootstrapTooltip placement={"top"} title={shouldBePreprocessed ? "Attribute is hidden." : undefined}>
                 <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
               </BootstrapTooltip>
             )}

@@ -1,4 +1,4 @@
-import { ArrowCircleRight, PlayCircle, Settings, Terminal } from "@mui/icons-material";
+import { ArrowCircleRight, PlayCircle, ReplayCircleFilled, Settings, Terminal } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, LinearProgress, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { mockDataset } from "../model/dataset/DatasetProcessed";
@@ -111,10 +111,11 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
         <Stack direction={"row"} gap={1} alignItems={"end"}>
           {createSectionTitle(FOUR_STEPS.results)}
           <IconButton onClick={handleStartProcedure} size={"small"} disabled={disabled}>
-            <PlayCircle color={"primary"} />
+            <ReplayCircleFilled color={"primary"} />
           </IconButton>
         </Stack>
       }
+      loading={loading}
       rightUpperTools={
         <Stack direction={"row"} gap={1} alignItems={"center"}>
           <BootstrapTooltip title={"See logs from the process"} placement={"left"}>

@@ -3,7 +3,6 @@ import { CFQuantifier } from "../constants/enums/CFQuantifier";
 import { Button, Stack } from "@mui/material";
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { QuantifierRow } from "./QuantifierRow";
-import { QuantifierValue } from "../model/cf/condition/QuantifierValue";
 import { SelectOption } from "./Input/SelectInput";
 
 // todo: i dont like this at all
