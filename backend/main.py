@@ -43,7 +43,6 @@ async def upload_csv(file: UploadFile = File(...)):
         # Read uploaded file
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
-        print(df.dtypes)
 
         # Metadata
         metadata = Metadata(
@@ -62,8 +61,7 @@ async def upload_csv(file: UploadFile = File(...)):
             contains_null = df[column].isnull().any()
 
             category_names = get_ordered_unique_category_names(df[column])
-            if contains_null:
-                print(category_names)
+
             categories = get_ordered_categories(category_names, df, column)
             hidden = is_above_uniqueness_threshold(len(category_names), metadata.rows)
             data.append(
@@ -78,7 +76,6 @@ async def upload_csv(file: UploadFile = File(...)):
 
 @app.post("/api/cf-process", response_model=CFResults)
 async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=None):
-    # print(procedure)
     try:
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
@@ -113,8 +110,6 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
                 "type": "con" if procedure.conjunction else "dis"
             }
         )
-
-        # print(clm.rulelist())
 
         count: int = clm.get_rulecount()
 
@@ -169,7 +164,6 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
         )
 
     except Exception as e:
-        print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -183,7 +177,6 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
 async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
     contents = await file.read()
     df = pd.read_csv(io.BytesIO(contents))
-    # print(df.dtypes)
 
     form_data_dict = json.loads(data)
     form_data = CategorizationFormData.model_validate(form_data_dict)
