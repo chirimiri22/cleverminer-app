@@ -6,10 +6,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "start:be": "cd ../backend && python3 main.py",
-    "start:fe": "cd ../frontend && npm start",
-    "build:fe": "cd ../frontend && npm run build",
-    "dev:electron": "tsc -p ./tsconfig.json && electron .",
-    "dev:react" : "concurrently \"npm run start:be\" \"npm run start:fe\"",
+    "start": "tsc -p ./tsconfig.json && electron .",
     "package:linux": " tsc -p ./tsconfig.json && npm run build:fe && electron-builder --linux --x64",
     "package:win": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --win --x64",
     "package:mac": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --mac --x64",
