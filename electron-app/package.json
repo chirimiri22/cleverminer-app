@@ -5,12 +5,14 @@
   "homepage": "https://www.cleverminer.org",
   "main": "./dist/main.js",
   "scripts": {
-    "start:be": "cd ../backend && python3 main.py",
-    "start": "tsc -p ./tsconfig.json && electron .",
-    "package:linux": " tsc -p ./tsconfig.json && npm run build:fe && electron-builder --linux --x64",
+    "transpile": "tsc -p ./tsconfig.json",
+    "start:fe": "cd ../frontend && npm start",
+    "start": "npm run transpile &&  electron .  --trace-warnings",
+    "build:be": "cd ../backend && pyinstaller --onefile main.py --distpath ./dist",
+    "build:fe": "cd ../frontend && npm run build",
+    "package:linux": "npm run transpile && npm run build:fe && npm run build:be && electron-builder --linux --x64",
     "package:win": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --win --x64",
     "package:mac": "tsc -p ./tsconfig.json && npm run build:fe && electron-builder --mac --x64",
-    "transpile": "tsc -p ./tsconfig.json",
     "builder": "electron-builder --linux --dir"
   },
   "devDependencies": {

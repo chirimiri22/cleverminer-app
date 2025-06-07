@@ -10,14 +10,22 @@ npm install
 
 ### Development
 
-To see the preview of the application, run:
+To see the preview of the application, make sure `IS_DEV` is set to true in `main.ts` and run first:
+
+```bash
+npm run start:fe
+```
+(start the frontend)
+
+Then, in another terminal, run:
 
 ```bash
 npm run start
 ```
+(start the electron preview)
 
 When dev mode is on, the backend is started just by running the python script, therefore
-**backend needs to be set up before running** the electron app in dev mode.
+**backend needs to be set up before running** the electron app.
 
 ### Package
 
