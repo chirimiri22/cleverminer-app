@@ -1,22 +1,24 @@
-import { app, BrowserWindow } from 'electron';
+import {app, BrowserWindow} from 'electron';
 import path from 'path';
-import { spawn } from 'child_process';
+import {spawn} from 'child_process';
 
 
 let pythonProcess: any = null;
-const isDev = false
+const isDev = true
+
+const projectRoot = app.getAppPath();
+
 
 function startPythonBackend() {
-
     const isWindows = process.platform === 'win32';
     const executableName = isWindows ? 'main.exe' : 'main';
-    console.log(process.resourcesPath)
-    const pythonPath = isDev
-        ? path.join(__dirname, '../backend/main.py')
+
+    const pythonCodePath = isDev
+        ? path.join(projectRoot, '..', 'backend', 'main.py')
         : path.join(process.resourcesPath, 'backend', 'dist', executableName);
 
-    const executable = isDev ? 'python' : pythonPath;
-    const args = isDev ? [pythonPath] : [];
+    const executable = isDev ? 'python3' : pythonCodePath;
+    const args = isDev ? [pythonCodePath] : [];
 
     try {
         console.log(`Attempting to spawn: ${executable} with args: ${args}`);
@@ -58,7 +60,7 @@ function createWindow() {
 
     const url = isDev
         ? 'http://localhost:3000'
-        : `file://${path.join(process.resourcesPath, './frontend/build/index.html')}`;
+        : `file://${path.join(process.resourcesPath, 'frontend', 'build', 'index.html')}`;
 
     win.loadURL(url).catch((err) => {
         console.error(`Failed to load URL: ${err}`);
