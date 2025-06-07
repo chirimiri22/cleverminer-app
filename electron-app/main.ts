@@ -2,23 +2,25 @@ import {app, BrowserWindow} from 'electron';
 import path from 'path';
 import {spawn} from 'child_process';
 
+// MAKE SURE TO SET THE isDev VARIABLE ACCORDINGLY
+const IS_DEV = true;
 
 let pythonProcess: any = null;
-const isDev = true
 
 const projectRoot = app.getAppPath();
 
 
 function startPythonBackend() {
+    console.log(`Starting Python backend in ${IS_DEV ? 'development' : 'production'} mode`);
     const isWindows = process.platform === 'win32';
     const executableName = isWindows ? 'main.exe' : 'main';
 
-    const pythonCodePath = isDev
+    const pythonCodePath = IS_DEV
         ? path.join(projectRoot, '..', 'backend', 'main.py')
         : path.join(process.resourcesPath, 'backend', 'dist', executableName);
 
-    const executable = isDev ? 'python3' : pythonCodePath;
-    const args = isDev ? [pythonCodePath] : [];
+    const executable = IS_DEV ? 'python3' : pythonCodePath;
+    const args = IS_DEV ? [pythonCodePath] : [];
 
     try {
         console.log(`Attempting to spawn: ${executable} with args: ${args}`);
@@ -58,7 +60,7 @@ function createWindow() {
     });
 
 
-    const url = isDev
+    const url = IS_DEV
         ? 'http://localhost:3000'
         : `file://${path.join(process.resourcesPath, 'frontend', 'build', 'index.html')}`;
 
