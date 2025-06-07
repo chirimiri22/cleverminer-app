@@ -1,21 +1,18 @@
 from datetime import datetime
 
-from cleverminer import *
+from cleverminer import cleverminer
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 
-from typing import List, Optional, Tuple
 import uvicorn
 import pandas as pd
 import json
 import io
-import os
 
-from matplotlib.pyplot import title
 from starlette.responses import StreamingResponse, JSONResponse
 
 from src.classes import DatasetProcessed, Metadata, Category, AttributeData, ResultAttribute, CFRule, CFResults, \
-    CFConditionAttribute, CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm, \
+    CFProcedure, ClmLogs, Categorization, CategorizationFormData, NominalProcessingForm, \
     ReplaceMode, ReplaceRequest
 
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
@@ -35,6 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/api/hello")
+async def hello():
+    return {"message": "Hello from FastAPI Backend!"}
 
 #  todo return errors what happened
 @app.post("/api/upload", response_model=DatasetProcessed)
@@ -154,7 +154,8 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
         ordered_target_categories = get_ordered_categories(  # make sure ordering is accordin to clm miner
             clm.get_dataset_category_list(target_attribute_name), df, target_attribute_name)
         target_attribute = AttributeData(title=target_attribute_name, categories=ordered_target_categories,
-                                         numeric=is_numeric(target_attribute_name, df), hidden=False, containsNull=False)
+                                         numeric=is_numeric(target_attribute_name, df), hidden=False,
+                                         containsNull=False)
 
         # LOGS
         summary_str = capture_output(clm.print_summary)
@@ -313,8 +314,8 @@ async def replace_categories(
 
 @app.post("/api/replace_empty_values")
 async def replace_empty_values(
-    data: str = Form(...),
-    file: UploadFile = File(...)
+        data: str = Form(...),
+        file: UploadFile = File(...)
 ):
     # Parse form data JSON
     form_data_dict = json.loads(data)
@@ -355,6 +356,7 @@ async def replace_empty_values(
         headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
     )
 
+
 # Run server
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)

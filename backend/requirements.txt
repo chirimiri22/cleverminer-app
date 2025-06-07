@@ -1,6 +1,9 @@
 uvicorn~=0.34.0
 fastapi~=0.115.10
 pydantic~=2.10.6
-pandas
-python-multipart
-cleverminer
+pandas~=2.2.3
+python-multipart~=0.0.9
+cleverminer~=1.2.3
+numpy~=2.2.6
+matplotlib~=3.10.3
+starlette~=0.46.0

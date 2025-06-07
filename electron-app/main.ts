@@ -1,51 +1,97 @@
 import { app, BrowserWindow } from 'electron';
-import { spawn, ChildProcess } from 'child_process';
-import * as path from 'path';
+import path from 'path';
+import { spawn } from 'child_process';
 
-const isDev = process.env.NODE_ENV === 'development';
 
-// TODO: path resolver for dev / prod mode
-const getUIPath = () => path.join(__dirname, '../../frontend/build/index.html');
+let pythonProcess: any = null;
+const isDev = false
 
-let mainWindow: BrowserWindow | null = null;
-let backendProcess: ChildProcess | null = null;
+function startPythonBackend() {
 
-app.on('ready', () => {
-    // Create the main window
-    mainWindow = new BrowserWindow({
+    const isWindows = process.platform === 'win32';
+    const executableName = isWindows ? 'main.exe' : 'main';
+    console.log(process.resourcesPath)
+    const pythonPath = isDev
+        ? path.join(__dirname, '../backend/main.py')
+        : path.join(process.resourcesPath, 'backend', 'dist', executableName);
+
+    const executable = isDev ? 'python' : pythonPath;
+    const args = isDev ? [pythonPath] : [];
+
+    try {
+        console.log(`Attempting to spawn: ${executable} with args: ${args}`);
+        pythonProcess = spawn(executable, args, {
+            stdio: ['ignore', 'pipe', 'pipe'],
+            windowsHide: true, // Hide console window on Windows
+        });
+
+        pythonProcess.stdout.on('data', (data: any) => {
+            console.log(`Python stdout: ${data}`);
+        });
+
+        pythonProcess.stderr.on('data', (data: any) => {
+            console.error(`Python stderr: ${data}`);
+        });
+
+        pythonProcess.on('error', (err: { message: any; }) => {
+            console.error(`Failed to start Python process: ${err.message}`);
+        });
+
+        pythonProcess.on('close', (code: any) => {
+            console.log(`Python process exited with code ${code}`);
+        });
+    } catch (err) {
+        console.error(`Error spawning Python process: ${err}`);
+    }
+}
+
+function createWindow() {
+    const win = new BrowserWindow({
         width: 800,
         height: 600,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+        },
     });
 
-    // Load the frontend
-    if (isDev) {
-        console.log("dev mode")
-        mainWindow.loadURL('http://localhost:3000'); // React dev server
-    } else {
-        console.log('Loading prod file:', getUIPath());
-        mainWindow.loadFile(getUIPath()); // Built React app
 
-        // TODO: remove this for production
-        mainWindow.webContents.openDevTools();
+    const url = isDev
+        ? 'http://localhost:3000'
+        : `file://${path.join(process.resourcesPath, './frontend/build/index.html')}`;
+
+    win.loadURL(url).catch((err) => {
+        console.error(`Failed to load URL: ${err}`);
+    });
+
+}
+
+app.whenReady().then(() => {
+    try {
+        startPythonBackend();
+        createWindow();
+    } catch (err) {
+        console.error(`Error in app.whenReady: ${err}`);
     }
 
-    // Spawn Python backend
-    // TODO: python3 works only for Ubuntu, NOT Win or Mac
-    // TODO: will the path work for packaging - resolve paths problem
-    backendProcess = spawn('python3', [path.join(__dirname, '../../backend/main.py')], {
-        stdio: 'inherit', // Forward Python logs to Electron console
-    });
-
-    backendProcess.on('error', (err) => {
-        console.error('Failed to start Python backend:', err);
-    });
-
-    // Cleanup when window closes
-    mainWindow.on('closed', () => {
-        if (backendProcess) {
-            backendProcess.kill();
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
         }
-        mainWindow = null;
-        app.quit();
     });
+});
+
+app.on('window-all-closed', () => {
+    if (pythonProcess) {
+        pythonProcess.kill();
+    }
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('quit', () => {
+    if (pythonProcess) {
+        pythonProcess.kill();
+    }
 });

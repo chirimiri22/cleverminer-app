@@ -31,7 +31,7 @@
     ],
     "extraFiles": [
       {"from": "../frontend/build", "to": "resources/frontend/build"},
-      {"from": "../backend/main.py", "to": "resources/backend/main.py"}
+      {"from": "../backend/dist/main", "to": "resources/backend/dist/main"}
     ],
     "directories": {
       "output": "release"

@@ -1,7 +1,7 @@
 from enum import Enum
 
-from pydantic import BaseModel, Field, root_validator, model_validator
-from typing import List, Optional, Dict, Any
+from pydantic import BaseModel
+from typing import List, Optional
 from datetime import datetime
 
 
@@ -131,10 +131,12 @@ class RuleImage(BaseModel):
     rule_id: int
     image_base64: str
 
+
 class ReplaceMode(str, Enum):
     none = "Empty Value (string)"
     zero = "Zero (numeric)"
     false = "False (boolean)"
+
 
 class ReplaceRequest(BaseModel):
     column: str

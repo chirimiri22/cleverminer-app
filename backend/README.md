@@ -8,5 +8,5 @@ This folder contains the backend for the Cleverminer app, built with Python and 
 
 ## Prerequisites
 - Python 3.8+
-- `pip` (Python package manager)
+- `pip install -r requirements.txt` (Python package manager)
 
