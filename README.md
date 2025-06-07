@@ -13,7 +13,7 @@ Build the application and run it:
 docker-compose up --build --force-recreate --remove-orphans 
 ```
 
-Run the app with Electron:
+Run the app:
 ```bash
 docker-compose up 
 ```
