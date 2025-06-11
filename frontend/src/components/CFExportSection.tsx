@@ -1,6 +1,6 @@
 import { Download } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, Chip, Stack } from "@mui/material";
-import { createSectionTitle } from "../pages/ProcedureCFMiner";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 import { SectionBox } from "./SectionBox";
 import { FOUR_STEPS } from "../constants/fourSteps";
 import { downloadTxtFile } from "../helpers/downloadTxtFile";

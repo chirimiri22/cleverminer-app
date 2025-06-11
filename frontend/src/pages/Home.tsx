@@ -7,8 +7,9 @@ import { menuGroups } from "../layout/SIdebarMenu";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
 import { Footer } from "../layout/Footer";
 import { Logo } from "../components/Logo";
-import { createSectionTitle } from "./ProcedureCFMiner";
+
 import { FOUR_STEPS } from "../constants/fourSteps";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 
 const BigButton = ({ onClick, title, icon }: { onClick: () => void; title: string; icon: React.ReactNode }) => {
   return (
@@ -74,7 +75,7 @@ export const Home = () => {
           <Stack>
             {Object.values(FOUR_STEPS).map((item, index) => (
               <Stack direction={"row"} gap={1} alignItems={"center"}>
-                {createSectionTitle(item)} - explanantion
+                {createSectionTitle(item)}
               </Stack>
             ))}
           </Stack>

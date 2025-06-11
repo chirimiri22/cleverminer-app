@@ -11,7 +11,7 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { BooleanInput } from "./Input/BooleanInput";
 import { QuantifierChips } from "./QuantifierChips";
 import { BootstrapTooltip } from "./BootstrapTooltip";
-import { createSectionTitle } from "../pages/ProcedureCFMiner";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 import { Subtitle } from "./Subtitle";
 import { useAppContext } from "../context/AppContext";
 import { startCFProcedure } from "../apiCalls/startCFProcedure";

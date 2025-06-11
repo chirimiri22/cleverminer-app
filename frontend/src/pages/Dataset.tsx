@@ -13,7 +13,6 @@ import { PageContainer } from "../layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 import { SectionBox } from "../components/SectionBox";
 import React, { ReactNode, useState } from "react";
-import { createSectionTitle } from "./ProcedureCFMiner";
 import { PageNames } from "../constants/pageNames";
 import { Histogram } from "../components/Histogram";
 import { AttributeData } from "../model/dataset/AttributeData";
@@ -30,6 +29,7 @@ import { PREPROCESS_STEPS } from "../constants/preprocessSteps";
 import { formatSize } from "../helpers/formatSize";
 import { formatDate } from "../helpers/formatDate";
 import { isAboveUniquenessThreshold } from "../helpers/isAboveUniquenessThreshold";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 
 export const Dataset = () => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();

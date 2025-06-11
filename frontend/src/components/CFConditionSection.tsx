@@ -10,7 +10,7 @@ import { Colors } from "../styles/colors";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { CFQuantifier } from "../constants/enums/CFQuantifier";
-import { createSectionTitle } from "../pages/ProcedureCFMiner";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 import { useAppContext } from "../context/AppContext";
 import { LoadDatasetFirst } from "./LoadDatasetFirst";
 import { FOUR_STEPS } from "../constants/fourSteps";

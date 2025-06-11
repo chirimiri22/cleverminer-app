@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { ObserveAtrributeCard } from "./Card/ObserveAtrributeCard";
 import { SectionBox } from "./SectionBox";
-import { createSectionTitle } from "../pages/ProcedureCFMiner";
+import { createSectionTitle } from "../helpers/createSectionTitle";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
