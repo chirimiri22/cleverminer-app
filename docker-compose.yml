@@ -4,8 +4,6 @@ services:
   backend:
     build:
       context: ./backend
-    volumes:
-      - ./backend:/app
     ports:
       - "8000:8000"
     environment:
@@ -14,7 +12,5 @@ services:
   frontend:
     build:
       context: ./frontend
-    volumes:
-      - ./frontend:/app
     ports:
       - "3000:3000"
