@@ -6,10 +6,9 @@ import {Colors} from "../styles/colors";
 export const LoadDatasetFirst = () => {
   const navigate = useNavigate();
   return (
-    <Stack flexGrow={1} alignItems={"center"} gap={1} bgcolor={Colors.background} p={3}>
-      Load a dataset first.
+    <Stack flexGrow={1} alignItems={"center"} gap={1}  >
       <Button variant={"contained"} onClick={() => navigate(ROUTES.DATASET)}>
-        Load Dataset
+        Load Dataset First
       </Button>
     </Stack>
   );

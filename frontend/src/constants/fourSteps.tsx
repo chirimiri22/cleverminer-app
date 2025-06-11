@@ -10,17 +10,21 @@ export const FOUR_STEPS: {
   observe: {
     name: "Observe",
     icon: <QueryStats />,
+    order: 1
   },
   condition: {
     name: "Condition",
     icon: <Construction />,
+    order: 2
   },
   results: {
     name: "Results",
     icon: <AutoGraph />,
+    order: 3
   },
   exporting: {
     name: "Export",
     icon: <Download />,
+    order: 4
   },
 };

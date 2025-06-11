@@ -22,10 +22,12 @@ import { Step } from "../model/Step";
 import { FOUR_STEPS } from "../constants/fourSteps";
 import { CFExportSection } from "../components/CFExportSection";
 import { downloadChildrenAsPNGsZip } from "../helpers/donwload";
+import { Colors } from "../styles/colors";
 
 export const createSectionTitle = (step: Step) => {
   return (
     <Stack direction={"row"} sx={{ alignItems: "center", gap: 1 }}>
+      <Typography variant={"caption"} sx={{color: Colors.textSecondary}}>{step.order} </Typography>
       {step.icon}
       <Typography variant="h6">{step.name}</Typography>
     </Stack>

@@ -80,7 +80,7 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
   if (!datasetProcessed)
     return (
       <SectionBox title={createSectionTitle(FOUR_STEPS.results)}>
-        <LoadDatasetFirst />
+        <Box />
       </SectionBox>
     );
 
