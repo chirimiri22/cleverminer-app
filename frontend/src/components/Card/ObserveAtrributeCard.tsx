@@ -31,7 +31,6 @@ const ListTab = ({ attributeData, active }: TabProps) => {
 const HistogramTab = ({ attributeData, active }: TabProps) => {
   return (
     <TabWrapper active={active}>
-      {" "}
       <Histogram categories={attributeData.categories} mode={"simple"} datalabels />
     </TabWrapper>
   );
@@ -54,7 +53,7 @@ export const ObserveAtrributeCard = ({ attributeData }: { attributeData: Attribu
       <Stack
         position={"relative"}
         pt={2}
-        maxHeight={130}
+        maxHeight={135}
         sx={{
           overflowY: "auto",
         }}
