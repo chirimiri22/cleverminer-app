@@ -1,8 +1,8 @@
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { isUrl } from "../helpers/isUrl";
-import { browserNavigate } from "../helpers/browserNavigate";
+import { isUrl } from "../../helpers/isUrl";
+import { browserNavigate } from "../../helpers/browserNavigate";
 
 type Props = MenuItemType & { selected: boolean; note?: ReactNode };
 

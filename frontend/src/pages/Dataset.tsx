@@ -9,7 +9,7 @@ import {
 } from "@mui/icons-material";
 import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 
-import { PageContainer } from "../layout/PageContainer";
+import { PageContainer } from "../components/Layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 import { SectionBox } from "../components/SectionBox";
 import React, { ReactNode, useState } from "react";

@@ -1,11 +1,11 @@
 import { Box, Chip, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
-import { CLEVERMINER_DOCS_URL } from "../constants/constants";
+import { ROUTES } from "../../constants/routes";
+import { CLEVERMINER_DOCS_URL } from "../../constants/constants";
 import { SidebarMenuItem, MenuItemType } from "./SidebarMenuItem";
-import { Colors } from "../styles/colors";
-import { PageNames } from "../constants/pageNames";
-import { useAppContext } from "../context/AppContext";
+import { Colors } from "../../styles/colors";
+import { PageNames } from "../../constants/pageNames";
+import { useAppContext } from "../../context/AppContext";
 
 type GroupType = {
   items: MenuItemType[];

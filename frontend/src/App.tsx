@@ -3,7 +3,7 @@ import { Home } from "./pages/Home";
 import { ProcedureCFMiner } from "./pages/ProcedureCFMiner";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { DatasetDetail } from "./pages/DatasetDetail";
-import { AppContainer } from "./layout/AppContainer";
+import { AppContainer } from "./components/Layout/AppContainer";
 import { ROUTES } from "./constants/routes";
 import { Dataset } from "./pages/Dataset";
 import { Procedure4ftMiner } from "./pages/Procedure4ftMiner";

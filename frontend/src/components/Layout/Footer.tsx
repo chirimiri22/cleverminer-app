@@ -1,6 +1,6 @@
 import { Box, Link, Stack, Typography } from "@mui/material";
-import { CLEVERMINER_DOCS_URL } from "../constants/constants";
-import { Colors } from "../styles/colors";
+import { CLEVERMINER_DOCS_URL } from "../../constants/constants";
+import { Colors } from "../../styles/colors";
 type Props = {
   noBg?: boolean;
 };

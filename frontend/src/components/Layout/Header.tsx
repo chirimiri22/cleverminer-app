@@ -1,9 +1,9 @@
 import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
-import { APP_NAME } from "../constants/constants";
-import { Logo } from "../components/Logo";
-import { Colors } from "../styles/colors";
+import { APP_NAME } from "../../constants/constants";
+import { Logo } from "../Logo";
+import { Colors } from "../../styles/colors";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
+import { ROUTES } from "../../constants/routes";
 
 export const Header = () => {
   const navigate = useNavigate();

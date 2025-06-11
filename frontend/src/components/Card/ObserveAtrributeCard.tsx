@@ -6,6 +6,7 @@ import { AttributeData } from "../../model/dataset/AttributeData";
 import { ReactNode, useState } from "react";
 import { Analytics, ViewList } from "@mui/icons-material";
 import { BootstrapTooltip } from "../BootstrapTooltip";
+import { Colors } from "../../styles/colors";
 
 // allows caching fo the loaded data
 const TabWrapper = ({ children, active }: { children: ReactNode; active: boolean }) => {
@@ -63,15 +64,15 @@ export const ObserveAtrributeCard = ({ attributeData }: { attributeData: Attribu
             <IconButton
               sx={{
                 p: 0,
-                opacity: 0.2,
-                transition: "opacity 0.2s ease-in-out",
-                "&:hover": {
-                  opacity: 1,
-                },
+                backgroundColor: Colors.primary,
               }}
               onClick={() => setCurrentTab(currentTab === CardTabs.Histogram ? CardTabs.List : CardTabs.Histogram)}
             >
-              {currentTab === CardTabs.Histogram ? <Analytics /> : <ViewList />}
+              {currentTab !== CardTabs.Histogram ? (
+                <Analytics sx={{ color: Colors.white }} />
+              ) : (
+                <ViewList sx={{ color: Colors.white }} />
+              )}
             </IconButton>
           </BootstrapTooltip>
         </Stack>

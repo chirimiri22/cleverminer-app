@@ -1,7 +1,7 @@
 import { Download } from "@mui/icons-material";
 import { Box, Button, Paper, Typography, Stack, IconButton } from "@mui/material";
 
-import { PageContainer } from "../layout/PageContainer";
+import { PageContainer } from "../components/Layout/PageContainer";
 import { PageHeading } from "../components/PageHeading";
 
 import { ObserveAtrributeCard } from "../components/Card/ObserveAtrributeCard";

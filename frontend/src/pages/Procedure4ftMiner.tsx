@@ -1,5 +1,5 @@
 import { PageHeading } from "../components/PageHeading";
-import { PageContainer } from "../layout/PageContainer";
+import { PageContainer } from "../components/Layout/PageContainer";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 // TODO names and Icons should be saved as a constats

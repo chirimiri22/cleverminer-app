@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import StorageIcon from "@mui/icons-material/Storage";
 import { Colors } from "../styles/colors";
 import { ROUTES } from "../constants/routes";
-import { menuGroups } from "../layout/SIdebarMenu";
+import { menuGroups } from "../components/Layout/SIdebarMenu";
 import { CLEVERMINER_DOCS_URL } from "../constants/constants";
-import { Footer } from "../layout/Footer";
+import { Footer } from "../components/Layout/Footer";
 import { Logo } from "../components/Logo";
 
 import { FOUR_STEPS } from "../constants/fourSteps";
