@@ -32,6 +32,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def hello():
+    return "Backend for CleverMiner App is running! Check if the frontend is running on http://localhost:3000/ ."
+
 @app.get("/api/hello")
 async def hello():
     return {"message": "Hello from FastAPI Backend!"}
