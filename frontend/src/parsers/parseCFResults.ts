@@ -1,4 +1,4 @@
-import { CFResults } from "../model/cf/result/CFResults";
+import { CFResults } from "../model/cf/results/CFResults";
 // import { parseRules } from "./parseRules";
 
 // export const parseCFResults = (data: any): CFResults => {

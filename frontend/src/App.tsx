@@ -1,12 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { ProcedureCFMiner } from "./pages/ProcedureCFMiner";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { DatasetDetail } from "./pages/DatasetDetail";
-import { AppContainer } from "./components/Layout/AppContainer";
+import { Home } from "./components/Home";
+import { ProcedureCFMiner } from "./components/cf/ProcedureCFMiner";
+import { NotFoundPage } from "./components/NotFoundPage";
+import { AppContainer } from "./components/app-layout/AppContainer";
 import { ROUTES } from "./constants/routes";
-import { Dataset } from "./pages/Dataset";
-import { Procedure4ftMiner } from "./pages/Procedure4ftMiner";
+import { Dataset } from "./components/preprocessing/Dataset";
+import { Procedure4ftMiner } from "./components/4ft/Procedure4ftMiner";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
   Chart as ChartJS,
@@ -52,7 +51,6 @@ const WrappedRoutes = () => {
           <Route path={ROUTES.CF_MINER} element={<ProcedureCFMiner />} />
           <Route path={ROUTES["4FT_MINER"]} element={<Procedure4ftMiner />} />
           <Route path={ROUTES.DATASET} element={<Dataset />} />
-          <Route path={ROUTES.DATASET_DETAIL()} element={<DatasetDetail />} />
           <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
         </Routes>
       </AppContainer>

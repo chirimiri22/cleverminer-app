@@ -1,4 +1,4 @@
-import { CategorizationFormData } from "../components/OrdinalPreprocessing";
+import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
 
 export const sendCategorizeRequest = async (data: CategorizationFormData, file: File): Promise<File> => {
   const formData = new FormData();

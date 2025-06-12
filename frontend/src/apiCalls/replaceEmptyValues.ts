@@ -1,5 +1,5 @@
-import { CategorizationFormData } from "../components/OrdinalPreprocessing";
-import { ReplaceEmptyFormData } from "../components/ReplaceEmptyValues";
+import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
+import { ReplaceEmptyFormData } from "../components/preprocessing/ReplaceEmptyValues";
 
 export const replaceEmptyValues = async (data: ReplaceEmptyFormData, file: File): Promise<File> => {
   const formData = new FormData();

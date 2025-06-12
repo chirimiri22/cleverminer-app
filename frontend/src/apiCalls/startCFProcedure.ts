@@ -1,5 +1,5 @@
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
-import { CFResults } from "../model/cf/result/CFResults";
+import { CFResults } from "../model/cf/results/CFResults";
 
 export const startCFProcedure = async (procedure: CFProcedure, file: File): Promise<CFResults> => {
   const formData = new FormData();

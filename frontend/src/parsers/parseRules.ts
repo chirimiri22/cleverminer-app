@@ -1,4 +1,4 @@
-import { CFRule, ResultAttribute } from "../model/cf/result/CFResults";
+import { CFRule, ResultAttribute } from "../model/cf/results/CFResults";
 import { Category } from "../model/dataset/Category";
 import { parseQuantifiers } from "./parseQuantifires";
 

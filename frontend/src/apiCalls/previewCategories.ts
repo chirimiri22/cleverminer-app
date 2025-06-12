@@ -1,4 +1,4 @@
-import { CategorizationFormData } from "../components/OrdinalPreprocessing";
+import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
 import axios from "axios";
 
 type CategoryRangeResponse = {

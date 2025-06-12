@@ -2,26 +2,29 @@ import StorageIcon from "@mui/icons-material/Storage";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { ElementType } from "react";
+
+const makeIcons = (IconComponent: ElementType) => ({
+  icon: <IconComponent />,
+  largeIcon: <IconComponent fontSize="large" />,
+});
+
 
 export const PageNames = {
   dataPreprocessing: {
     name: "Data & Preprocessing",
-    icon: <StorageIcon />,
-    largeIcon: <StorageIcon fontSize="large" />,
+    ...makeIcons(StorageIcon),
   },
   cfMiner: {
     name: "CF Miner",
-    icon: <BarChartIcon />,
-    largeIcon: <BarChartIcon fontSize="large" />,
+    ...makeIcons(BarChartIcon),
   },
   fourFtMiner: {
     name: "4ft Miner",
-    icon: <SwapHorizIcon />,
-    largeIcon: <SwapHorizIcon fontSize="large" />,
+    ...makeIcons(SwapHorizIcon),
   },
   documentation: {
     name: "Documentation",
-    icon: <HelpOutlineIcon />,
-    largeIcon: <HelpOutlineIcon fontSize="large" />,
+    ...makeIcons(HelpOutlineIcon),
   },
 };

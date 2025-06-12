@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { DatasetProcessed } from "../model/dataset/DatasetProcessed";
-import { CFResults } from "../model/cf/result/CFResults";
+import { CFResults } from "../model/cf/results/CFResults";
 import { AttributeData } from "../model/dataset/AttributeData";
 
 type AppContextType = {
