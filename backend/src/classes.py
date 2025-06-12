@@ -26,7 +26,6 @@ class Metadata(BaseModel):
     rows: int
     columns: int
     date: datetime
-    hiddenAttributes: Optional[List[str]] = None
 
 
 class DatasetProcessed(BaseModel):

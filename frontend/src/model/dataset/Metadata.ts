@@ -5,5 +5,4 @@ export type Metadata = {
   rows: number;
   columns: number;
   date: string;
-  hiddenAttributes?: string[];
 };
