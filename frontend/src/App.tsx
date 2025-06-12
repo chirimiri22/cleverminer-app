@@ -18,7 +18,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
-import { createContext, ReactNode, useContext, useState } from "react";
+
 import { AppProvider } from "./context/AppContext";
 
 // Register Chart.js components

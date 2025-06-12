@@ -1,20 +1,13 @@
 import { AttributeData } from "./AttributeData";
-import { Category } from "./Category";
+
+import { Metadata } from "./Metadata";
 
 export type DatasetProcessed = {
   data: AttributeData[];
   metadata: Metadata;
 };
 
-type Metadata = {
-  name: string;
-  format: string;
-  size: number;
-  rows: number;
-  columns: number;
-  date: string;
-  hiddenAttributes?: string[];
-};
+
 
 const mockData: AttributeData[] = [
   {
