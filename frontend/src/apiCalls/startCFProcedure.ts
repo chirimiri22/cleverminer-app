@@ -1,5 +1,6 @@
 import { CFProcedure } from "../model/cf/condition/CFProcedure";
 import { CFResults } from "../model/cf/results/CFResults";
+import { BE_URL } from "../constants/constants";
 
 export const startCFProcedure = async (procedure: CFProcedure, file: File): Promise<CFResults> => {
   const formData = new FormData();
@@ -12,7 +13,7 @@ export const startCFProcedure = async (procedure: CFProcedure, file: File): Prom
   // Append file
   formData.append("file", file);
 
-  const response = await fetch("http://localhost:8000/api/cf-process", {
+  const response = await fetch(`${BE_URL}/api/cf-process`, {
     method: "POST",
     body: formData,
   });

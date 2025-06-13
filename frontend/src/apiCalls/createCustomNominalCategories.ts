@@ -1,5 +1,6 @@
 import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
 import { NewCategory } from "../components/preprocessing/NominalPreprocessing";
+import { BE_URL } from "../constants/constants";
 
 export const createCustomNominalCategories = async (rows: NewCategory[], column: string, file: File) => {
   const formData = new FormData();
@@ -15,7 +16,7 @@ export const createCustomNominalCategories = async (rows: NewCategory[], column:
     })
   );
 
-  const response = await fetch("http://localhost:8000/api/replace_categories", {
+  const response = await fetch(`${BE_URL}api/replace_categories`, {
     method: "POST",
     body: formData,
   });

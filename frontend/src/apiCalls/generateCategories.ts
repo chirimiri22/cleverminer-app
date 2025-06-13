@@ -1,11 +1,12 @@
 import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
+import { BE_URL } from "../constants/constants";
 
 export const sendCategorizeRequest = async (data: CategorizationFormData, file: File): Promise<File> => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("data", JSON.stringify(data));
 
-  const response = await fetch("http://localhost:8000/api/generate_categories", {
+  const response = await fetch(`${BE_URL}/api/generate_categories`, {
     method: "POST",
     body: formData,
   });

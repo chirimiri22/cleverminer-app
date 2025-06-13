@@ -1,5 +1,6 @@
 import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
 import axios from "axios";
+import { BE_URL } from "../constants/constants";
 
 type CategoryRangeResponse = {
   category_ranges: [number, number][];
@@ -14,7 +15,7 @@ export const previewCategories = async (
   formData.append("file", file);
 
   const response = await axios.post<CategoryRangeResponse>(
-    "http://localhost:8000/api/preview_categories",
+    `${BE_URL}/api/preview_categories`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },

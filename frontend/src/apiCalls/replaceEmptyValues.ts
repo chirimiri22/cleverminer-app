@@ -1,12 +1,13 @@
 import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
 import { ReplaceEmptyFormData } from "../components/preprocessing/ReplaceEmptyValues";
+import { BE_URL } from "../constants/constants";
 
 export const replaceEmptyValues = async (data: ReplaceEmptyFormData, file: File): Promise<File> => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("data", JSON.stringify(data));
 
-  const response = await fetch("http://localhost:8000/api/replace_empty_values", {
+  const response = await fetch(`${BE_URL}/api/replace_empty_values`, {
     method: "POST",
     body: formData,
   });
