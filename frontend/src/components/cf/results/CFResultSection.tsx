@@ -64,8 +64,7 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
   const id = open ? "boolean-popover" : undefined;
   const max = CFResults?.targetAttributeHistogram.categories
     .map((c) => c.count)
-    .sort()
-    .reverse()[0];
+    .sort()[0];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

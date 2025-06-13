@@ -37,15 +37,12 @@ type Props = {
   children?: ReactNode;
   actions?: ReactNode;
   disabled?: boolean;
-  // stateTip?: string;
-  // state?: State;
   isHidden?: boolean;
   shouldBePreprocessed?: boolean;
   key?: string | number;
   collapsed?: boolean;
 };
 
-// todo: think about the sctructure of the files
 
 export const GeneralAttributeCard = ({
   title,

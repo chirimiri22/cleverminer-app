@@ -24,11 +24,9 @@ import { FileDropzone } from "../common/input/FileDropZone";
 import { downloadFile } from "../../helpers/downloadFile";
 import { PreprocessAttributeCard } from "./PreprocessAttrbuteCard";
 import { InfoRow } from "./InfoRow";
-import { Step } from "../../model/Step";
 import { PREPROCESS_STEPS } from "../../constants/preprocessSteps";
 import { formatSize } from "../../helpers/formatSize";
 import { formatDate } from "../../helpers/formatDate";
-import { isAboveUniquenessThreshold } from "../../helpers/isAboveUniquenessThreshold";
 import { createSectionTitle } from "../../helpers/createSectionTitle";
 
 export const Dataset = () => {
@@ -106,11 +104,7 @@ export const Dataset = () => {
           <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
             <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
               {datasetProcessedAll.data.map((attribute, index) => {
-                const shouldBePreprocessed = isAboveUniquenessThreshold(
-                  attribute.categories.length,
-                  datasetProcessed.metadata.rows
-                );
-                return <PreprocessAttributeCard attribute={attribute} shouldBePreprocessed={shouldBePreprocessed} />;
+                return <PreprocessAttributeCard attribute={attribute} shouldBePreprocessed={!!attribute.hidden} />;
               })}
             </Stack>
           </SectionBox>

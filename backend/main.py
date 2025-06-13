@@ -55,8 +55,7 @@ async def upload_csv(file: UploadFile = File(...)):
             size=len(contents),
             rows=len(df),
             columns=len(df.columns),
-            date=datetime.now(),
-            hiddenAttributes=[]  # Add logic to determine if needed
+            date=datetime.now()  # Add logic to determine if needed
         )
 
         # Process columns

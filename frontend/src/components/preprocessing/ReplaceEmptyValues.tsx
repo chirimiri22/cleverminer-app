@@ -36,7 +36,7 @@ export const ReplaceEmptyValues = (props: Props) => {
   }));
   return (
     <Stack textAlign={"start"} gap={1}>
-      <Subtitle title={"Replace empty values"} sx={{ alignSelf: "start" }} />
+      <Subtitle title={"Replace Empty Values"} sx={{ alignSelf: "start" }} />
       <Typography variant={"caption"} color={"error"} textAlign={"center"}>
         {"This column contains null values."}
       </Typography>

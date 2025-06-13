@@ -80,7 +80,6 @@ def equal_freq_bins(series: pd.Series, n_bins: int) -> pd.Series:
         return pd.Series([np.nan] * len(series), index=series.index)
 
 
-
 def count_original_values_per_bin(df: pd.DataFrame, original_col: str, bin_col: str) -> list[int]:
     return (
         df.groupby(bin_col)[original_col]
@@ -98,6 +97,7 @@ def group_counts_to_intervals(counts: list[int]) -> list[list[int]]:
         start = end + 1
     return intervals
 
+
 # def get_rule_image_base64(clm, rule_id: int) -> str:
 #     plt.close('all')  # zavře všechna předchozí otevřená okna
 #     clm.draw_rule(rule_id)  # vykreslí do aktivního figuru
@@ -113,7 +113,7 @@ def group_counts_to_intervals(counts: list[int]) -> list[list[int]]:
 def get_rule_images_base64(clm, rule_count: int) -> List[str]:
     encoded_images = []
 
-    for i in range(1, rule_count+1):
+    for i in range(1, rule_count + 1):
         plt.close('all')  # Zavře předchozí figury a uvolní paměť
 
         clm.draw_rule(i, show=False)  # Vykreslí do aktuálního plt figure
@@ -132,7 +132,9 @@ def get_rule_images_base64(clm, rule_count: int) -> List[str]:
     return encoded_images
 
 
-UNIQUENESS_THRESHOLD = 0.2  # adjust as needed
+UNIQUENESS_THRESHOLD = 0.2
 
-def is_above_uniqueness_threshold(cat_count: int, records_count: int) -> bool:
+
+def is_above_uniqueness_threshold(cat_count: int,
+                                  records_count: int) -> bool:
     return cat_count > UNIQUENESS_THRESHOLD * records_count

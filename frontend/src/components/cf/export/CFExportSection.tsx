@@ -9,7 +9,6 @@ import { downlaodZipClmImages } from "../../../helpers/downlaodZipClmImages";
 
 import { useRef } from "react";
 import { Subtitle } from "../../common/Subtitle";
-import { GeneralAttributeCard } from "../../common/GeneralAttributeCard";
 
 type Props = {
   downloadRenderedAsPNG: () => void;
