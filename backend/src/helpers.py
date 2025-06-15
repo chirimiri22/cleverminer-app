@@ -98,18 +98,6 @@ def group_counts_to_intervals(counts: list[int]) -> list[list[int]]:
     return intervals
 
 
-# def get_rule_image_base64(clm, rule_id: int) -> str:
-#     plt.close('all')  # zavře všechna předchozí otevřená okna
-#     clm.draw_rule(rule_id)  # vykreslí do aktivního figuru
-#     fig = plt.gcf()  # get current figure
-#     buf = io.BytesIO()
-#     fig.savefig(buf, format='png')
-#     buf.seek(0)
-#     encoded = base64.b64encode(buf.read()).decode('utf-8')
-#     plt.close(fig)  # zavře i aktuální figure
-#     return encoded
-
-
 def get_rule_images_base64(clm, rule_count: int) -> List[str]:
     encoded_images = []
 

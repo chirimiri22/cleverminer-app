@@ -55,7 +55,7 @@ async def upload_csv(file: UploadFile = File(...)):
             size=len(contents),
             rows=len(df),
             columns=len(df.columns),
-            date=datetime.now()  # Add logic to determine if needed
+            date=datetime.now()
         )
 
         # Process columns
@@ -78,7 +78,8 @@ async def upload_csv(file: UploadFile = File(...)):
 
 
 @app.post("/api/cf-process", response_model=CFResults)
-async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=None):
+async def process_cf(data: str = Form(...),
+                     file: UploadFile = File(...), clm=None):
     try:
         contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
@@ -91,7 +92,7 @@ async def process_cf(data: str = Form(...), file: UploadFile = File(...), clm=No
         for attr in procedure.condition.conditionAttributes:
             cond_attributes.append({
                 'name': attr.attribute,
-                'type': attr.type,  # 'seq' or 'subset'
+                'type': attr.type,
                 'minlen': attr.range.start, 'maxlen': attr.range.end,
 
             })
