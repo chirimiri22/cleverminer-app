@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+ARG REACT_APP_API_BASE_URL
+RUN echo "REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}" > .env
 RUN npm run build
 
 # You can use serve for dev preview
