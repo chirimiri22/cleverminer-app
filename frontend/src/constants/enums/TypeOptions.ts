@@ -3,5 +3,5 @@ export enum TypeOptions {
   Rcut = "rcut",
   Seq = "seq",
   Subset = "subset",
-  Oneof = "one",
+  // Oneof = "one",
 }

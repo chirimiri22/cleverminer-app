@@ -7,7 +7,7 @@ export const replaceEmptyValues = async (data: ReplaceEmptyFormData, file: File)
   formData.append("file", file);
   formData.append("data", JSON.stringify(data));
 
-  const response = await fetch(`${BE_URL}/api/replace_empty_values`, {
+  const response = await fetch(`${BE_URL}/replace_empty_values`, {
     method: "POST",
     body: formData,
   });

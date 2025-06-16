@@ -9,7 +9,7 @@ export const getProcessedAttribute = async (column: string, file: File, hidden: 
   formData.append("column", column);
   formData.append("file", file);
 
-  const res = await fetch(`${BE_URL}/api/attribute-data`, {
+  const res = await fetch(`${BE_URL}/attribute-data`, {
     method: "POST",
     body: formData,
   });

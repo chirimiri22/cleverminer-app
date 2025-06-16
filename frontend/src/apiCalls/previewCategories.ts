@@ -15,7 +15,7 @@ export const previewCategories = async (
   formData.append("file", file);
 
   const response = await axios.post<CategoryRangeResponse>(
-    `${BE_URL}/api/preview_categories`,
+    `${BE_URL}/preview_categories`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },

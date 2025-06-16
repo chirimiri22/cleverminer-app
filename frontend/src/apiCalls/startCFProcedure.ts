@@ -13,7 +13,7 @@ export const startCFProcedure = async (procedure: CFProcedure, file: File): Prom
   // Append file
   formData.append("file", file);
 
-  const response = await fetch(`${BE_URL}/api/cf-process`, {
+  const response = await fetch(`${BE_URL}/cf-process`, {
     method: "POST",
     body: formData,
   });

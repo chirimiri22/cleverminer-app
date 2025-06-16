@@ -16,7 +16,7 @@ export const createCustomNominalCategories = async (rows: NewCategory[], column:
     })
   );
 
-  const response = await fetch(`${BE_URL}api/replace_categories`, {
+  const response = await fetch(`${BE_URL}replace_categories`, {
     method: "POST",
     body: formData,
   });

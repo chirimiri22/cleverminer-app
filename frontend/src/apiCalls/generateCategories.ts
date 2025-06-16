@@ -6,7 +6,7 @@ export const sendCategorizeRequest = async (data: CategorizationFormData, file: 
   formData.append("file", file);
   formData.append("data", JSON.stringify(data));
 
-  const response = await fetch(`${BE_URL}/api/generate_categories`, {
+  const response = await fetch(`${BE_URL}/generate_categories`, {
     method: "POST",
     body: formData,
   });
