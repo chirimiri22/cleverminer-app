@@ -37,7 +37,7 @@ export const CFQuantifiersSection = ({ form }: Props) => {
         return <QuantifierRow key={field.id} form={form} index={index} options={options} onRemove={remove} />;
       })}
       {availableQuantifiers.length > 0 && (
-        <Button onClick={() => append({ quantifier: availableQuantifiers[0], value: undefined })}>Add Row</Button>
+        <Button onClick={() => append({ quantifier: availableQuantifiers[0], value: undefined })}>Add Quantifier</Button>
       )}
     </Stack>
   );

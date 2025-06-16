@@ -21,7 +21,7 @@ export const ObserveDataSection = () => {
   }
 
   return (
-    <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
+    <SectionBox >
       <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
         {datasetProcessed.data.map((data, index) => (
           <ObserveAtrributeCard key={index} attributeData={data} />

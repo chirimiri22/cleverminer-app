@@ -4,7 +4,7 @@ import { Colors } from "../../styles/colors";
 import { LoadDatasetFirst } from "./LoadDatasetFirst";
 
 type Props = {
-  title: ReactNode;
+  title?: ReactNode;
   children?: ReactNode;
   leftSection?: ReactNode;
   minHeight?: number;
@@ -15,9 +15,12 @@ type Props = {
 export const SectionBox = ({ title, children, leftSection, minHeight, rightUpperTools, loading }: Props) => {
   return (
     <Stack>
-      <Typography variant="h6" fontWeight={"bold"} mb={1}>
-        {title}
-      </Typography>
+      {!title && (
+        <Typography variant="h6" fontWeight={"bold"} mb={1}>
+          {title}
+        </Typography>
+      )}
+
       <Paper variant="outlined" sx={{ minHeight: minHeight }}>
         <Stack direction={"row"} flexGrow={1} height={"100%"} position={"relative"}>
           {leftSection && (
