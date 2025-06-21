@@ -1,11 +1,14 @@
 import base64
+import csv
 import io
 from contextlib import redirect_stdout
 from typing import List
 
 import numpy as np
 import pandas as pd
+from fastapi import UploadFile, File, HTTPException
 from matplotlib import pyplot as plt
+from pandas.core.interchange.dataframe_protocol import DataFrame
 
 from src.classes import Category
 
@@ -24,6 +27,7 @@ def get_ordered_categories(ordered_category_names: List[str], df: pd.DataFrame, 
         for name in ordered_category_names
     ]
     return categories
+
 
 # todo: rason to the FE why it cannot be converted
 def is_numeric(column: str, df: pd.DataFrame) -> bool:
@@ -126,3 +130,25 @@ UNIQUENESS_THRESHOLD = 0.2
 def is_above_uniqueness_threshold(cat_count: int,
                                   records_count: int) -> bool:
     return cat_count > UNIQUENESS_THRESHOLD * records_count
+
+
+async def load_dataset(file: UploadFile = File(...)) -> (DataFrame, int):
+    try:
+        contents = await file.read()
+
+        encoding = "utf-8"
+        try:
+            sample = contents[:2048].decode(encoding)
+        except UnicodeDecodeError:
+            encoding = "latin1"
+            sample = contents[:2048].decode(encoding)
+
+        # Detect delimiter from decoded sample
+        dialect = csv.Sniffer().sniff(sample)
+        delimiter = dialect.delimiter
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error when processing dataset: {e}")
+
+    # Load full CSV with detected encoding and delimiter
+    return pd.read_csv(io.BytesIO(contents), encoding=encoding, sep=delimiter), len(contents)

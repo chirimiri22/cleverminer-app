@@ -46,7 +46,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
 
   const form = useForm<FormValues>({
     defaultValues: {
-      nominal: true,
+      nominal: !attribute.numeric, // if numeric, default to ordinal, otherwise nominal
     },
   });
   const isNominal = form.watch("nominal");
@@ -68,7 +68,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
       dot={`${attribute.categories.length}`}
       dotTip={"Categories count"}
       isHidden={isHidden}
-      shouldBePreprocessed={shouldBePreprocessed }
+      shouldBePreprocessed={shouldBePreprocessed}
       collapsed={collapsed}
     >
       <Stack textAlign={"center"} gap={1}>

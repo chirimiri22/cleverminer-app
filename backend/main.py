@@ -18,7 +18,7 @@ from src.classes import DatasetProcessed, Metadata, Category, AttributeData, Res
 
 from src.helpers import capture_output, get_ordered_categories, equal_width_bins, equal_freq_bins, \
     get_ordered_unique_category_names, is_numeric, count_original_values_per_bin, \
-    group_counts_to_intervals, get_rule_images_base64, is_above_uniqueness_threshold
+    group_counts_to_intervals, get_rule_images_base64, is_above_uniqueness_threshold, load_dataset
 from src.parsers import parse_clm_quantifiers
 
 # Create FastAPI instance
@@ -43,35 +43,18 @@ async def hello():
 async def hello():
     return {"message": "Hello from FastAPI Backend!"}
 
+
 @app.post("/api/upload", response_model=DatasetProcessed)
 async def upload_csv(file: UploadFile = File(...)):
-    try:
-        # Read uploaded file
-        contents = await file.read()
 
-        encoding = "utf-8"
-        try:
-            sample = contents[:2048].decode(encoding)
-        except UnicodeDecodeError:
-            encoding = "latin1"
-            sample = contents[:2048].decode(encoding)
-
-        # Detect delimiter from decoded sample
-        dialect = csv.Sniffer().sniff(sample)
-        delimiter = dialect.delimiter
-
-        # Load full CSV with detected encoding and delimiter
-        df = pd.read_csv(io.BytesIO(contents), encoding=encoding, sep=delimiter)
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    df, size = await load_dataset(file)
 
     try:
         # Metadata
         metadata = Metadata(
             name=file.filename,
             format='csv',
-            size=len(contents),
+            size=size,
             rows=len(df),
             columns=len(df.columns),
             date=datetime.now()
@@ -100,8 +83,7 @@ async def upload_csv(file: UploadFile = File(...)):
 async def process_cf(data: str = Form(...),
                      file: UploadFile = File(...), clm=None):
     try:
-        contents = await file.read()
-        df = pd.read_csv(io.BytesIO(contents))
+        df, size = await load_dataset(file)
 
         # Construct cond['attributes'] from frontend input
         procedure_dict = json.loads(data)
@@ -198,8 +180,7 @@ async def process_cf(data: str = Form(...),
 # todo add try catch
 @app.post("/api/generate_categories")
 async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
-    contents = await file.read()
-    df = pd.read_csv(io.BytesIO(contents))
+    df, size = await load_dataset(file)
 
     form_data_dict = json.loads(data)
     form_data = CategorizationFormData.model_validate(form_data_dict)
@@ -232,8 +213,7 @@ async def get_attribute_data(
         hidden: bool = Form(...),
         file: UploadFile = File(...)
 ):
-    contents = await file.read()
-    df = pd.read_csv(io.BytesIO(contents))
+    df, size = await load_dataset(file)
 
     if column not in df.columns:
         return JSONResponse(status_code=400, content={"error": f"Column '{column}' not found"})
@@ -256,8 +236,7 @@ async def preview_categories(
         data: str = Form(...),
         file: UploadFile = File(...),
 ):
-    contents = await file.read()
-    df = pd.read_csv(io.BytesIO(contents))
+    df, size = await load_dataset(file)
 
     form_data_dict = json.loads(data)
     form_data = CategorizationFormData.model_validate(form_data_dict)
@@ -283,7 +262,6 @@ async def preview_categories(
 
     category_group_intervals = group_counts_to_intervals(category_group_counts)
 
-    # return {"category_ranges": [[0, 5], [6, 99]]}
     # todo use classse
     return {"category_ranges": category_group_intervals}
 
@@ -294,8 +272,7 @@ async def replace_categories(
         file: UploadFile = File(...)
 ):
     # Read CSV from uploaded file
-    contents = await file.read()
-    df = pd.read_csv(io.BytesIO(contents))
+    df, size = await load_dataset(file)
 
     # Parse JSON form data into Pydantic model
     form_data_dict = json.loads(data)
@@ -338,8 +315,7 @@ async def replace_empty_values(
     form_data = ReplaceRequest.model_validate(form_data_dict)
 
     # Read CSV from uploaded file
-    contents = await file.read()
-    df = pd.read_csv(io.BytesIO(contents))
+    df, size = await load_dataset(file)
 
     if form_data.column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{form_data.column}' not found in CSV.")
