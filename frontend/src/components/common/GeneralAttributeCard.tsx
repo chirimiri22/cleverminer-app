@@ -43,7 +43,6 @@ type Props = {
   collapsed?: boolean;
 };
 
-
 export const GeneralAttributeCard = ({
   title,
   dot,
@@ -73,10 +72,23 @@ export const GeneralAttributeCard = ({
       <CardHeader
         title={
           <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
-            {title}
+            <BootstrapTooltip
+              title={isHidden ? "Hidden attribute. Use options in card to change that." : undefined}
+              placement={"top"}
+            >
+              <Typography
+                variant={"h5"}
+                sx={{
+                  textDecoration: isHidden ? "line-through" : "none",
+                  color: isHidden ? Colors.textSecondary : "inherit",
+                }}
+              >
+                {title}
+              </Typography>
+            </BootstrapTooltip>
 
             {/* todo: style tip maybe*/}
-            <BootstrapTooltip title={dotTip}>
+            <BootstrapTooltip title={dotTip} placement={"top"}>
               <Stack
                 sx={{
                   minWidth: 20,
@@ -97,7 +109,14 @@ export const GeneralAttributeCard = ({
         }
         action={
           <Stack direction={"row"} alignItems={"center"} flexGrow={1} height={"100%"} alignSelf={"center"}>
-            <BootstrapTooltip title={undefined}>
+            <BootstrapTooltip
+              title={
+                shouldBePreprocessed
+                  ? "The number of categories is greater than 20 % of records count in the dataset."
+                  : "Attribute is perfect for CleverMiner analysis."
+              }
+              placement={"top"}
+            >
               <IconButton>
                 {!shouldBePreprocessed ? (
                   <CheckCircleOutline sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.success }} />
@@ -106,12 +125,6 @@ export const GeneralAttributeCard = ({
                 )}
               </IconButton>
             </BootstrapTooltip>
-
-            {isHidden && (
-              <BootstrapTooltip placement={"top"} title={shouldBePreprocessed ? "Attribute is hidden." : undefined}>
-                <VisibilityOff sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.textSecondary }} />
-              </BootstrapTooltip>
-            )}
 
             {children && (
               <IconButton onClick={toggleExpand} size="small" sx={{ verticalAlign: "middle" }}>

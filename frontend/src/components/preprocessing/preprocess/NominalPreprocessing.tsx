@@ -137,6 +137,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
             size={"small"}
             startIcon={<PlayArrow />}
             sx={{
+              mt: 1,
               width: "100%",
             }}
             disabled={

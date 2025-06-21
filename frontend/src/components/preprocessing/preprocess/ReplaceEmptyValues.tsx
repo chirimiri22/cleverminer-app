@@ -35,23 +35,23 @@ export const ReplaceEmptyValues = (props: Props) => {
     hidden: false,
   }));
   return (
-    <Stack textAlign={"start"} gap={1}>
-      <Subtitle title={"Replace Empty Values"} sx={{ alignSelf: "start" }} />
-      <Typography variant={"caption"} color={"error"} textAlign={"center"}>
-        {"This column contains null values."}
+    <Stack textAlign={"start"} gap={1} pt={2}>
+      <Typography variant={"caption"} textAlign={"center"}>
+        {"This attribute contains null values, it might be useful to replace them even though CleverMiner can handle them"}
       </Typography>
       <SelectInput required form={form} name={"replaceMode"} label={"Replace Empty With"} options={options} />
 
       <Button
         variant="contained"
         size={"small"}
+        sx={{ mt: 1 }}
         startIcon={<FindReplace />}
         disabled={!form.formState.isValid}
         onClick={async () => {
           if (!datafile) return;
           const newFile = await replaceEmptyValues(form.getValues(), datafile);
           setDatafile(newFile);
-          const attribute = await getProcessedAttribute(form.getValues("column"), newFile, true)
+          const attribute = await getProcessedAttribute(form.getValues("column"), newFile, true);
           updateProcessedAttributeData(form.getValues("column"), attribute);
           form.reset();
         }}

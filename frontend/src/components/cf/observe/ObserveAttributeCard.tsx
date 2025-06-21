@@ -9,8 +9,8 @@ import { BootstrapTooltip } from "../../common/BootstrapTooltip";
 import { Colors } from "../../../styles/colors";
 
 // allows caching fo the loaded data
-const TabWrapper = ({ children, active }: { children: ReactNode; active: boolean }) => {
-  return <Stack display={active ? "flex" : "none"}>{children}</Stack>;
+export const TabWrapper = ({ children, active }: { children: ReactNode; active: boolean }) => {
+  return <Stack display={active ? "flex" : "none"} >{children}</Stack>;
 };
 
 type TabProps = {
@@ -42,7 +42,7 @@ enum CardTabs {
   List = "List",
 }
 
-export const ObserveAtrributeCard = ({ attributeData }: { attributeData: AttributeData }) => {
+export const ObserveAttributeCard = ({ attributeData }: { attributeData: AttributeData }) => {
   const [currentTab, setCurrentTab] = useState<CardTabs>(CardTabs.Histogram);
 
   return (

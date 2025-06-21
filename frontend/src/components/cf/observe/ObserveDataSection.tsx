@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { ObserveAtrributeCard } from "./ObserveAtrributeCard";
+import { ObserveAttributeCard } from "./ObserveAttributeCard";
 import { SectionBox } from "../../common/SectionBox";
 import { createSectionTitle } from "../../../helpers/createSectionTitle";
 import { useAppContext } from "../../../context/AppContext";
@@ -24,7 +24,7 @@ export const ObserveDataSection = () => {
     <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
       <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
         {datasetProcessed.data.map((data, index) => (
-          <ObserveAtrributeCard key={index} attributeData={data} />
+          <ObserveAttributeCard key={index} attributeData={data} />
         ))}
       </Stack>
     </SectionBox>

@@ -117,6 +117,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
             startIcon={<PlayArrow />}
             sx={{
               width: "100%",
+              mt: 1
             }}
             onClick={handleConvert}
             disabled={!data.numeric}

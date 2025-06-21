@@ -4,7 +4,7 @@ import { Box, Button, Paper, Typography, Stack, IconButton } from "@mui/material
 import { PageContainer } from "../app-layout/PageContainer";
 import { PageHeading } from "../common/PageHeading";
 
-import { ObserveAtrributeCard } from "./observe/ObserveAtrributeCard";
+import { ObserveAttributeCard } from "./observe/ObserveAttributeCard";
 import { SectionBox } from "../common/SectionBox";
 
 import { CFResultSection } from "./results/CFResultSection";
