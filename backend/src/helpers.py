@@ -11,6 +11,8 @@ from matplotlib import pyplot as plt
 from pandas.core.interchange.dataframe_protocol import DataFrame
 
 from src.classes import Category
+MAX_MB = 10
+MAX_SIZE = MAX_MB * 1024 * 1024
 
 
 def capture_output(func, *args, **kwargs) -> str:
@@ -135,7 +137,16 @@ def is_above_uniqueness_threshold(cat_count: int,
 async def load_dataset(file: UploadFile = File(...)) -> (DataFrame, int):
     try:
         contents = await file.read()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
+    if not contents:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+
+    if len(contents) > MAX_SIZE:
+        raise HTTPException(status_code=413, detail=f'File too large. Bigger than {MAX_MB} MB.')
+
+    try:
         encoding = "utf-8"
         try:
             sample = contents[:2048].decode(encoding)
@@ -143,12 +154,14 @@ async def load_dataset(file: UploadFile = File(...)) -> (DataFrame, int):
             encoding = "latin1"
             sample = contents[:2048].decode(encoding)
 
-        # Detect delimiter from decoded sample
+            # Detect delimiter from decoded sample
         dialect = csv.Sniffer().sniff(sample)
         delimiter = dialect.delimiter
 
+        result = pd.read_csv(io.BytesIO(contents), encoding=encoding, sep=delimiter), len(contents)
+
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error when processing dataset: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
 
     # Load full CSV with detected encoding and delimiter
-    return pd.read_csv(io.BytesIO(contents), encoding=encoding, sep=delimiter), len(contents)
+    return result
