@@ -48,7 +48,9 @@ export const Dataset = () => {
       />
 
       <LoadSection />
-      {datasetProcessed && <PreviewSection datasetProcessed={datasetProcessed} />}
+      {datasetProcessed && datasetProcessedAll && (
+        <PreviewSection datasetProcessed={datasetProcessed} datasetProcessedAll={datasetProcessedAll} />
+      )}
       {datasetProcessedAll && <PreprocessSection datasetProcessedAll={datasetProcessedAll} />}
     </PageContainer>
   );

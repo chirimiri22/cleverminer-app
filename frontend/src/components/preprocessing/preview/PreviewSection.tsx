@@ -1,5 +1,5 @@
-import { ArrowCircleLeft } from "@mui/icons-material";
-import { Stack } from "@mui/material";
+import { ArrowCircleLeft, WarningAmber } from "@mui/icons-material";
+import { Stack, Typography } from "@mui/material";
 import { PREPROCESS_STEPS } from "../../../constants/preprocessSteps";
 import { createSectionTitle } from "../../../helpers/createSectionTitle";
 import { Histogram } from "../../common/charts/Histogram";
@@ -10,26 +10,38 @@ import { useAppContext } from "../../../context/AppContext";
 import { formatSize } from "../../../helpers/formatSize";
 import { formatDate } from "../../../helpers/formatDate";
 import { Colors } from "../../../styles/colors";
-import { useState } from "react";
+import React, { useState } from "react";
 import { AttributeData } from "../../../model/dataset/AttributeData";
 import { DatasetProcessed } from "../../../model/dataset/DatasetProcessed";
 
 type Props = {
   datasetProcessed: DatasetProcessed;
+  datasetProcessedAll: DatasetProcessed;
 };
 
-export const PreviewSection = ({ datasetProcessed }: Props) => {
+export const PreviewSection = ({ datasetProcessed, datasetProcessedAll }: Props) => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
+
+  console.log(datasetProcessed);
+  const hiddenAttributes = datasetProcessedAll.data.filter((d) => d.hidden).length;
 
   return (
     <SectionBox
       title={createSectionTitle(PREPROCESS_STEPS.preview)}
       leftSection={
-        <Stack  flexGrow={1} pt={2}>
+        <Stack flexGrow={1} pt={2}>
           <InfoRow label="File" value={datasetProcessed.metadata.name} />
           <InfoRow label="Format" value={datasetProcessed.metadata.format} />
-          <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows} rows`} />
-          <InfoRow label="Columns" value={`${datasetProcessed.metadata.columns} columns`} />
+          <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows}`} />
+          <InfoRow label="Attributes" value={`${datasetProcessed.metadata.columns}`} />
+          {hiddenAttributes > 0 && (
+            <Stack direction={"row"} alignItems={"start"} gap={1}>
+              <WarningAmber sx={{ fontSize: 24, verticalAlign: "middle", color: Colors.warning }} />
+              <Typography variant={"caption"} color={"warning"}>
+                {hiddenAttributes} hidden attributes - too many categories. Unhide or prep them in the next step.
+              </Typography>
+            </Stack>
+          )}
           <InfoRow label="Memory" value={formatSize(datasetProcessed.metadata.size)} />
           <InfoRow label="Loaded" value={formatDate(datasetProcessed.metadata.date)} />
         </Stack>
