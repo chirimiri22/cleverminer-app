@@ -97,44 +97,46 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
       error={error}
       loading={loading}
       rightUpperTools={
-        <Stack direction={"row"} gap={1} alignItems={"center"}>
-          <BootstrapTooltip title={"See logs from the process"} placement={"left"}>
-            <IconButton size={"small"} sx={{ color: Colors.white }} onClick={() => setLogOpen(!logOpen)}>
-              <Terminal fontSize={"small"} />
-            </IconButton>
-          </BootstrapTooltip>
+        CFResults && (
+          <Stack direction={"row"} gap={1} alignItems={"center"}>
+            <BootstrapTooltip title={"See logs from the process"} placement={"left"}>
+              <IconButton size={"small"} sx={{ color: Colors.white }} onClick={() => setLogOpen(!logOpen)}>
+                <Terminal fontSize={"small"} />
+              </IconButton>
+            </BootstrapTooltip>
 
-          <IconButton size={"small"} sx={{ color: Colors.white }} onClick={handleClick}>
-            <Settings fontSize={"small"} />
-          </IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <Box p={2} minWidth={200}>
-              <Subtitle title={"Display Quantifiers"} />
-              {Object.keys(CFQuantifier).map((key) => (
-                <BooleanInput
-                  key={key}
-                  value={false}
-                  form={form}
-                  name={key as keyof CFQuantifierDisplay}
-                  label2={CFQuantifier[key as keyof typeof CFQuantifier]}
-                />
-              ))}
-            </Box>
-          </Popover>
-        </Stack>
+            <IconButton size={"small"} sx={{ color: Colors.white }} onClick={handleClick}>
+              <Settings fontSize={"small"} />
+            </IconButton>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Box p={2} minWidth={200}>
+                <Subtitle title={"Display Quantifiers"} />
+                {Object.keys(CFQuantifier).map((key) => (
+                  <BooleanInput
+                    key={key}
+                    value={false}
+                    form={form}
+                    name={key as keyof CFQuantifierDisplay}
+                    label2={CFQuantifier[key as keyof typeof CFQuantifier]}
+                  />
+                ))}
+              </Box>
+            </Popover>
+          </Stack>
+        )
       }
       leftSection={
         !logOpen &&
