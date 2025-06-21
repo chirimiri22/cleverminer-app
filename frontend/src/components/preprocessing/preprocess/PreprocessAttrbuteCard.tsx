@@ -95,7 +95,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
         </BootstrapTooltip>
       </Tabs>
 
-      <TabWrapper active={value === TabIndex.Visibility}>
+      {value === TabIndex.Visibility && (
         <Stack pt={2} alignItems={"center"} textAlign={"center"}>
           <Typography variant={"caption"} textAlign={"center"}>
             Is this attribute useful for you? If not, hide it.
@@ -111,13 +111,11 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
             }}
           />
         </Stack>
-      </TabWrapper>
+      )}
 
-      <TabWrapper active={value === TabIndex.EmptyValues}>
-        <ReplaceEmptyValues column={attribute.title} />
-      </TabWrapper>
+      {value === TabIndex.EmptyValues && <ReplaceEmptyValues column={attribute.title} />}
 
-      <TabWrapper active={value === TabIndex.Preprocessing}>
+      {value === TabIndex.Preprocessing && (
         <Stack pt={2}>
           <Stack alignItems={"center"}>
             <Typography variant={"caption"} textAlign={"center"}>
@@ -141,7 +139,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
           </Stack>
           {isNominal ? <NominalPreprocessing data={attribute} /> : <OrdinalPreprocessing data={attribute} />}
         </Stack>
-      </TabWrapper>
+      )}
     </GeneralAttributeCard>
   );
 };

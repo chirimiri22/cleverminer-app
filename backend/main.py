@@ -237,30 +237,35 @@ async def preview_categories(
         file: UploadFile = File(...),
 ):
     df, size = await load_dataset(file)
-
-    form_data_dict = json.loads(data)
-    form_data = CategorizationFormData.model_validate(form_data_dict)
-    col = form_data.column
+    try:
+        form_data_dict = json.loads(data)
+        form_data = CategorizationFormData.model_validate(form_data_dict)
+        col = form_data.column
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
     if not pd.api.types.is_numeric_dtype(df[col]):
         raise HTTPException(status_code=400, detail="Only numeric columns are supported.")
 
-    unique_vals_count = df[col].nunique()
-    if unique_vals_count <= form_data.categoryCount:
-        return {"category_group_indices": [[0, unique_vals_count - 1]]}
+    try:
+        unique_vals_count = df[col].nunique()
+        if unique_vals_count <= form_data.categoryCount:
+            return {"category_group_indices": [[0, unique_vals_count - 1]]}
 
-    # Binning
-    if form_data.categorization == Categorization.Equidistant:
-        categorized = equal_width_bins(df[col], n_bins=form_data.categoryCount)
-    else:
-        categorized = equal_freq_bins(df[col], n_bins=form_data.categoryCount)
+        # Binning
+        if form_data.categorization == Categorization.Equidistant:
+            categorized = equal_width_bins(df[col], n_bins=form_data.categoryCount)
+        else:
+            categorized = equal_freq_bins(df[col], n_bins=form_data.categoryCount)
 
-    df["cat"] = categorized
+        df["cat"] = categorized
 
-    # Rozdělení indexů kategorií na skupiny
-    category_group_counts = count_original_values_per_bin(df, col, "cat")
+        # Rozdělení indexů kategorií na skupiny
+        category_group_counts = count_original_values_per_bin(df, col, "cat")
 
-    category_group_intervals = group_counts_to_intervals(category_group_counts)
+        category_group_intervals = group_counts_to_intervals(category_group_counts)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     # todo use classse
     return {"category_ranges": category_group_intervals}

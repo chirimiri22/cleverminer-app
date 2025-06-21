@@ -1,5 +1,5 @@
-import { PlayArrow } from "@mui/icons-material";
-import { Button, Stack } from "@mui/material";
+import { ErrorOutline, PlayArrow } from "@mui/icons-material";
+import { Button, Stack, Typography } from "@mui/material";
 import { AttributeData } from "../../../model/dataset/AttributeData";
 import { LineChart } from "../../common/charts/LineChart";
 import { useForm } from "react-hook-form";
@@ -8,13 +8,14 @@ import { NumberInput } from "../../common/input/NumberInput";
 import { Subtitle } from "../../common/Subtitle";
 import { BooleanInput } from "../../common/input/BooleanInput";
 import { Category } from "../../../model/dataset/Category";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Histogram } from "../../common/charts/Histogram";
 import { sendCategorizeRequest } from "../../../apiCalls/generateCategories";
 import { useAppContext } from "../../../context/AppContext";
 import { getProcessedAttribute } from "../../../apiCalls/getProcessedAttribute";
 import { previewCategories } from "../../../apiCalls/previewCategories";
 import { BootstrapTooltip } from "../../common/BootstrapTooltip";
+import { apiCallWrapper } from "../../../apiCalls/apiCallWrapper";
 
 type Props = {
   data: AttributeData;
@@ -33,6 +34,8 @@ export type CategorizationFormData = {
 
 export const OrdinalPreprocessing = ({ data }: Props) => {
   const { datafile, setDatafile, updateProcessedAttributeData } = useAppContext();
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [divisionRanges, setDivisionRanges] = useState<[number, number][] | undefined>();
 
   const form = useForm<CategorizationFormData>({
     defaultValues: {
@@ -44,16 +47,15 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   const formValues = form.watch();
 
-  const [divisionRanges, setDivisionRanges] = useState<[number, number][] | undefined>();
-
   const handleFormChange = useCallback(async () => {
     const formValues1 = form.getValues();
     if (!data.numeric || !datafile || formValues1.categoryCount >= data.categories.length) return;
-    const response = await previewCategories(formValues1, datafile);
+    const response = await apiCallWrapper(() => previewCategories(formValues1, datafile), setError);
 
-    setDivisionRanges(response.category_ranges);
+    setDivisionRanges(response?.category_ranges);
   }, [data.categories.length, data.numeric, datafile, form]);
 
+  //  todo: why it sends  requests
   useEffect(() => {
     handleFormChange();
   }, []);
@@ -81,7 +83,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   return (
     <Stack gap={1} alignItems={"start"} textAlign={"start"}>
       <Histogram categories={data.categories} showYAxis divisionRanges={divisionRanges} datalabels />
-      <Subtitle title={"Generate Categories"} smaller/>
+      <Subtitle title={"Generate Categories"} smaller />
       <Stack direction={"row"} gap={1}>
         <Stack flex={2}>
           <SelectInput
@@ -105,7 +107,6 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
         </Stack>
       </Stack>
 
-
       <BootstrapTooltip
         placement={"bottom"}
         title={!data.numeric && "This attribute is not numeric anymore. Cannot be converted."}
@@ -117,7 +118,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
             startIcon={<PlayArrow />}
             sx={{
               width: "100%",
-              mt: 1
+              mt: 1,
             }}
             onClick={handleConvert}
             disabled={!data.numeric}
@@ -126,6 +127,14 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
           </Button>
         </Stack>
       </BootstrapTooltip>
+      {error && (
+        <Stack direction={"row"} gap={1}>
+          <ErrorOutline fontSize={"small"} color={"error"} />
+          <Typography color="error" variant={"caption"}>
+            {error}
+          </Typography>
+        </Stack>
+      )}
     </Stack>
   );
 };

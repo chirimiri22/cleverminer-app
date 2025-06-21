@@ -55,6 +55,13 @@ class CFQuantifier(str, Enum):
     RelMin_leq = "RelMin_leq"
 
 
+class AttributeType(str, Enum):
+    Lcut = "lcut",
+    Rcut = "rcut",
+    Seq = "seq",
+    Subset = "subset"
+
+
 class QuantifierValue(BaseModel):
     quantifier: Optional[CFQuantifier]
     value: Optional[float]
@@ -62,7 +69,7 @@ class QuantifierValue(BaseModel):
 
 class CFConditionAttribute(BaseModel):
     attribute: str
-    type: str
+    type: AttributeType
     range: IntervalRange
 
 
