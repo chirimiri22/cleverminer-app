@@ -25,8 +25,8 @@ export const PreviewSection = ({ datasetProcessed }: Props) => {
     <SectionBox
       title={createSectionTitle(PREPROCESS_STEPS.preview)}
       leftSection={
-        <Stack justifyContent={"center"} flexGrow={1}>
-          <InfoRow label="File name" value={datasetProcessed.metadata.name} />
+        <Stack  flexGrow={1} pt={2}>
+          <InfoRow label="File" value={datasetProcessed.metadata.name} />
           <InfoRow label="Format" value={datasetProcessed.metadata.format} />
           <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows} rows`} />
           <InfoRow label="Columns" value={`${datasetProcessed.metadata.columns} columns`} />
@@ -37,7 +37,7 @@ export const PreviewSection = ({ datasetProcessed }: Props) => {
     >
       <Stack direction="row" sx={{ gap: 2 }}>
         <Stack width={"50%"} alignItems={"center"} gap={1}>
-          <Subtitle title={"Uniqueness histogram"} />
+          <Subtitle title={"Uniqueness Histogram"} />
           <Histogram
             mode="complex"
             color={Colors.primary}
