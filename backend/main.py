@@ -131,7 +131,7 @@ async def process_cf(data: str = Form(...),
         for i in range(1, count + 1):
             parsed_quantifiers = parse_clm_quantifiers(clm.get_quantifiers(i))
             attributes_no_cat = clm.get_rule_variables(i, 'cond')
-            histogram_data = [Category(label=label, count=count) for (label, count) in
+            histogram_data = [Category(label=str(label), count=count) for (label, count) in
                               zip(target_val_cat, clm.get_hist(i))]
 
             attributes = [

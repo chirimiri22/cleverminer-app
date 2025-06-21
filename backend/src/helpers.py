@@ -25,7 +25,7 @@ def capture_output(func, *args, **kwargs) -> str:
 def get_ordered_categories(ordered_category_names: List[str], df: pd.DataFrame, column: str) -> List[Category]:
     value_counts = df[column].astype(str).value_counts().to_dict()
     categories = [
-        Category(label=name, count=value_counts.get(name, 0))
+        Category(label=str(name), count=value_counts.get(name, 0))
         for name in ordered_category_names
     ]
     return categories
