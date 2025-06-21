@@ -22,9 +22,7 @@ export const RangeSliderInput = <TFormValues extends FieldValues>({
   const [value, setValue] = useState<[number, number]>([0, max]);
 
   const handleChange = (_event: Event, newValue: number | number[]) => {
-    console.log("newValue", newValue);
-
-    // todo: this very dangerous freestyle
+      // todo: this very dangerous freestyle
     if (Array.isArray(newValue)) {
       setValue(newValue as [number, number]);
       onChange?.();

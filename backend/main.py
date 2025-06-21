@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 
 from cleverminer import cleverminer
@@ -32,22 +33,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def hello():
     return "Backend for CleverMiner App is running! Check if the frontend is running on http://localhost:3000/ ."
+
 
 @app.get("/api/hello")
 async def hello():
     return {"message": "Hello from FastAPI Backend!"}
 
-#  todo return errors what happened
 @app.post("/api/upload", response_model=DatasetProcessed)
 async def upload_csv(file: UploadFile = File(...)):
     try:
         # Read uploaded file
         contents = await file.read()
-        df = pd.read_csv(io.BytesIO(contents))
 
+        encoding = "utf-8"
+        try:
+            sample = contents[:2048].decode(encoding)
+        except UnicodeDecodeError:
+            encoding = "latin1"
+            sample = contents[:2048].decode(encoding)
+
+        # Detect delimiter from decoded sample
+        dialect = csv.Sniffer().sniff(sample)
+        delimiter = dialect.delimiter
+
+        # Load full CSV with detected encoding and delimiter
+        df = pd.read_csv(io.BytesIO(contents), encoding=encoding, sep=delimiter)
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    try:
         # Metadata
         metadata = Metadata(
             name=file.filename,

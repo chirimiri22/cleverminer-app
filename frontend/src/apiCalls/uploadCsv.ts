@@ -13,7 +13,5 @@ export const uploadCsv = async (file: File): Promise<DatasetProcessed> => {
     },
   });
 
-  console.log(response.data);
-
   return response.data;
 };

@@ -59,7 +59,6 @@ export const GeneralAttributeCard = ({
   const [expanded, setExpanded] = useState<boolean>(!collapsed);
 
   useEffect(() => {
-    console.log("run");
     setExpanded(!collapsed);
   }, [collapsed]);
 

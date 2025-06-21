@@ -1,11 +1,6 @@
 import {
   ArrowCircleLeft,
   Download,
-  FilterAlt,
-  QueryStats,
-  Upload,
-  Visibility,
-  VisibilityOff,
 } from "@mui/icons-material";
 import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 
@@ -34,7 +29,8 @@ export const Dataset = () => {
   const { getDatasetProcessed, datafile } = useAppContext();
   const datasetProcessed = getDatasetProcessed();
   const datasetProcessedAll = getDatasetProcessed(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
 
   const handleDownload = () => {
     datafile && downloadFile(datafile, datasetProcessed?.metadata.name);
@@ -53,8 +49,8 @@ export const Dataset = () => {
           </BootstrapTooltip>
         }
       />
-      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} loading={loading}>
-        <FileDropzone onLoadingChange={(value) => setLoading(value)} />
+      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} loading={loading} error={error}>
+        <FileDropzone onLoadingChange={setLoading} setError={setError} />
       </SectionBox>
 
       {datasetProcessed && datasetProcessedAll && (

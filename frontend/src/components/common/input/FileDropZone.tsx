@@ -7,38 +7,45 @@ import { useAppContext } from "../../../context/AppContext";
 import { mockDataset } from "../../../model/dataset/DatasetProcessed";
 import { uploadCsv } from "../../../apiCalls/uploadCsv";
 import { loadMockDataset } from "../../../helpers/loadMockDataset";
+import { apiCallWrapper } from "../../../apiCalls/apiCallWrapper";
 
 type Props = {
   onLoadingChange?: (loading: boolean) => void;
+  setError: (error?: string) => void;
 };
 
-export const FileDropzone = ({ onLoadingChange }: Props) => {
+export const FileDropzone = ({ onLoadingChange, setError }: Props) => {
   const { datafile, setDatafile, setDatasetProcessed } = useAppContext();
-  const [droppedFiles, setDroppedFiles] = useState<File[]>(datafile ? [datafile] : []);
+
   const [isDragging, setIsDragging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const changeLoadingState = (loading: boolean) => {
-    setLoading(loading);
     if (onLoadingChange) {
       onLoadingChange(loading);
     }
   };
 
-  const handleChangeFiles = async (files: File[]) => {
-    if (files.length === 0) {
-      setDatafile(undefined);
-      setDroppedFiles([]);
-      setDatasetProcessed(undefined);
-      return;
-    }
-    setDroppedFiles(files);
-    setDatafile(files[0]);
-    changeLoadingState(true);
-    const res = await uploadCsv(files[0]);
+  const removeFile = () => {
+    setDatafile(undefined);
+    setDatasetProcessed(undefined);
     changeLoadingState(false);
-    setDatasetProcessed(res);
+    setError(undefined);
+  };
+
+  const handleChangeFiles = async (file: File) => {
+    changeLoadingState(true);
+    setDatafile(file);
+
+    const result = await apiCallWrapper(
+      () => uploadCsv(file),
+      (error) => {
+        setDatafile(undefined);
+        setError(error);
+      }
+    );
+    setDatasetProcessed(result);
+
+    changeLoadingState(false);
   };
 
   const isCSV = (file: File) => file.type === "text/csv" || file.name.toLowerCase().endsWith(".csv");
@@ -88,27 +95,30 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
               {Math.round(file.size / 1024)} KB
             </Typography>
           </Stack>
-          <RemoveButton onRemove={() => handleChangeFiles([])} />
+          <RemoveButton onRemove={removeFile} />
         </Stack>
       </Box>
     );
   };
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    setError(null);
+  const handleDrop = useCallback(
+    async (e: React.DragEvent<HTMLDivElement>) => {
+      removeFile();
+      e.preventDefault();
+      setIsDragging(false);
 
-    const files = Array.from(e.dataTransfer.files);
-    const csvFiles = files.filter(isCSV);
+      const files = Array.from(e.dataTransfer.files);
+      const csvFiles = files.filter(isCSV);
 
-    if (csvFiles.length === 0) {
-      setError("Only CSV files are accepted.");
-      return;
-    }
+      if (csvFiles.length === 0) {
+        setError("Only CSV files are accepted.");
+        return;
+      }
 
-    handleChangeFiles(csvFiles);
-  }, []);
+      await handleChangeFiles(csvFiles[0]);
+    },
+    [setError]
+  );
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -120,8 +130,8 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
     setIsDragging(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(null);
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    removeFile();
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const csvFiles = files.filter(isCSV);
@@ -131,7 +141,7 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
         return;
       }
 
-      handleChangeFiles(csvFiles);
+      await handleChangeFiles(csvFiles[0]);
     }
   };
 
@@ -150,7 +160,7 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
         transition: "background-color 0.3s ease",
       }}
     >
-      {droppedFiles.length === 0 && (
+      {!datafile && (
         <>
           <Typography variant="h6" gutterBottom>
             Drag & drop CSV files here, or click to select
@@ -162,7 +172,7 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
             accept=".csv,text/csv"
             id="file-upload"
             style={{ display: "none" }}
-            onChange={handleFileChange}
+            onChange={handleFileSelected}
           />
           <Stack direction={"row"} justifyContent={"center"} gap={2}>
             <label htmlFor="file-upload">
@@ -175,30 +185,22 @@ export const FileDropzone = ({ onLoadingChange }: Props) => {
               component="span"
               onClick={async () => {
                 const file = await loadMockDataset();
-                await handleChangeFiles([file]);
+                await handleChangeFiles(file);
               }}
             >
               Use Mock Dataset
             </Button>
           </Stack>
-
-          {error && (
-            <Typography color="error" mt={2}>
-              {error}
-            </Typography>
-          )}
         </>
       )}
 
-      {droppedFiles.length > 0 && (
+      {datafile && (
         <Stack direction={"row"} justifyContent={"center"} flexGrow={1}>
           <Stack>
             <Typography variant="h6" gutterBottom>
               Selected CSV File:
             </Typography>
-            {droppedFiles.map((file, i) => (
-              <FileCard key={i} file={file} />
-            ))}
+            <FileCard file={datafile} />
           </Stack>
         </Stack>
       )}

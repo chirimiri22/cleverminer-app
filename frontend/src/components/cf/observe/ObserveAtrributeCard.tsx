@@ -43,7 +43,7 @@ enum CardTabs {
 }
 
 export const ObserveAtrributeCard = ({ attributeData }: { attributeData: AttributeData }) => {
-  const [currentTab, setCurrentTab] = useState<CardTabs>(CardTabs.List);
+  const [currentTab, setCurrentTab] = useState<CardTabs>(CardTabs.Histogram);
 
   return (
     <GeneralAttributeCard

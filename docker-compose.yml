@@ -10,7 +10,7 @@ services:
     build:
       context: ./frontend
       args:
-        REACT_APP_API_BASE_URL: /api  # proxy handles it
+        REACT_APP_API_BASE_URL: /api
     container_name: frontend
     expose:
       - "3000"
@@ -19,7 +19,7 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "3000:80"  # Expose everything on localhost:3000
+      - "3000:80"  
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
