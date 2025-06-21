@@ -14,7 +14,7 @@ type Props = {
 
 export const CFConditionSettings = ({ max, form }: Props) => {
   return (
-    <Stack gap={2}>
+    <Stack gap={2} >
       <Subtitle title={"Settings"} />
       <Stack gap={1} alignItems={"center"}>
         <BooleanInput form={form} name={"conjunction"} label1={"OR"} label2={"AND"} twoStates />

@@ -29,7 +29,7 @@ export const PreviewSection = ({ datasetProcessed, datasetProcessedAll }: Props)
     <SectionBox
       title={createSectionTitle(PREPROCESS_STEPS.preview)}
       leftSection={
-        <Stack flexGrow={1} pt={2}>
+        <Stack flexGrow={1}>
           <InfoRow label="File" value={datasetProcessed.metadata.name} />
           <InfoRow label="Format" value={datasetProcessed.metadata.format} />
           <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows}`} />

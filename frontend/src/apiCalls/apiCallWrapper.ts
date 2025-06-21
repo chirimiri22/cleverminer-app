@@ -11,6 +11,7 @@ export const apiCallWrapper = async <T>(fetchFn: AsyncFn<T>, onError: SetErrorFn
     return await fetchFn();
   } catch (err: any) {
     let message = "Unknown error";
+    console.log("Caught:", err);
 
     // Handle Axios error with FastAPI-style error payload
     if (isAxiosErrorWithDetail(err)) {

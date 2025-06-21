@@ -24,7 +24,8 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
           {leftSection && (
             <Stack
               sx={{
-                padding: 2,
+                p: 2,
+                pt: 4,
                 borderBottomLeftRadius: 3,
                 borderTopLeftRadius: 3,
                 backgroundColor: Colors.background,
