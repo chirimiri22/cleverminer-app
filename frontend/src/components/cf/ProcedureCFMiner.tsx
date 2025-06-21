@@ -9,7 +9,7 @@ import { SectionBox } from "../common/SectionBox";
 
 import { CFResultSection } from "./results/CFResultSection";
 import { CFConditionSection } from "./condition/CFConditionSection";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { PageNames } from "../../constants/pageNames";
 import { BootstrapTooltip } from "../common/BootstrapTooltip";
 import { useAppContext } from "../../context/AppContext";
@@ -24,17 +24,15 @@ import { CFExportSection } from "./export/CFExportSection";
 import { downloadChildrenAsPNGsZip } from "../../helpers/donwload";
 import { Colors } from "../../styles/colors";
 
-
 export const ProcedureCFMiner = () => {
-  const { getDatasetProcessed } = useAppContext();
+  const { getDatasetProcessed, setCFProcedure, CFProcedure } = useAppContext();
   const datasetProcessed = getDatasetProcessed();
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-
   const form = useForm<CFProcedure>({
-    defaultValues: {
+    defaultValues: CFProcedure ?? {
       range: {
         start: 0,
         end: max,
@@ -64,6 +62,13 @@ export const ProcedureCFMiner = () => {
     mode: "onChange",
   });
 
+  const watchedForm = form.watch();
+
+  useEffect(() => {
+    console.log("careful");
+    setCFProcedure(watchedForm);
+  }, [JSON.stringify(watchedForm)]);
+
   return (
     <PageContainer>
       <PageHeading title={PageNames.cfMiner.name} icon={PageNames.cfMiner.largeIcon} />
@@ -74,7 +79,9 @@ export const ProcedureCFMiner = () => {
 
       <CFResultSection conditionData={form.watch()} isFormValid={form.formState.isValid} ref={containerRef} />
 
-      <CFExportSection downloadRenderedAsPNG={() => downloadChildrenAsPNGsZip(containerRef.current, null ,"rules.zip")} />
+      <CFExportSection
+        downloadRenderedAsPNG={() => downloadChildrenAsPNGsZip(containerRef.current, null, "rules.zip")}
+      />
     </PageContainer>
   );
 };

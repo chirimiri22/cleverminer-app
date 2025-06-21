@@ -2,11 +2,14 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { DatasetProcessed } from "../model/dataset/DatasetProcessed";
 import { CFResults } from "../model/cf/results/CFResults";
 import { AttributeData } from "../model/dataset/AttributeData";
+import { CFProcedure } from "../model/cf/condition/CFProcedure";
 
 type AppContextType = {
   datafile?: File;
   setDatafile: (name?: File) => void;
   setDatasetProcessed: (dataset?: DatasetProcessed) => void;
+  CFProcedure?: CFProcedure;
+  setCFProcedure: (data: CFProcedure) => void;
   CFResults?: CFResults;
   setCFResults: (results?: CFResults) => void;
   changeHiddenState: (attributeName: string) => boolean | undefined;
@@ -20,6 +23,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [datafile, setDatafile] = useState<File | undefined>();
   const [datasetProcessed, setDatasetProcessed] = useState<DatasetProcessed | undefined>();
   const [CFResults, setCFResults] = useState<CFResults | undefined>();
+  const [CFProcedure, setCFProcedure] = useState<CFProcedure | undefined>();
 
   const updateProcessedAttributeData = (attributeName: string, data: AttributeData) => {
     if (datasetProcessed) {
@@ -35,9 +39,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (attributeData && datasetProcessed) {
       const newState = !attributeData.hidden;
       updateProcessedAttributeData(attributeName, { ...attributeData, hidden: newState });
-      return newState
+      return newState;
     }
-      return undefined
+    return undefined;
   };
 
   const getDatasetProcessed = (includeHidden = false): DatasetProcessed | undefined => {
@@ -53,6 +57,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       value={{
         CFResults,
         setCFResults,
+        CFProcedure,
+        setCFProcedure,
         datafile,
         setDatafile,
         setDatasetProcessed,
