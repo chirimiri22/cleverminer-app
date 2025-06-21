@@ -1,4 +1,4 @@
-import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
+import { CategorizationFormData } from "../components/preprocessing/preprocess/OrdinalPreprocessing";
 import { BE_URL } from "../constants/constants";
 
 export const sendCategorizeRequest = async (data: CategorizationFormData, file: File): Promise<File> => {

@@ -1,5 +1,5 @@
-import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
-import { NewCategory } from "../components/preprocessing/NominalPreprocessing";
+import { CategorizationFormData } from "../components/preprocessing/preprocess/OrdinalPreprocessing";
+import { NewCategory } from "../components/preprocessing/preprocess/NominalPreprocessing";
 import { BE_URL } from "../constants/constants";
 
 export const createCustomNominalCategories = async (rows: NewCategory[], column: string, file: File) => {

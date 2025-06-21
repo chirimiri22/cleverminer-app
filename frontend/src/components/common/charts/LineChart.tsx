@@ -7,7 +7,7 @@ import { Chart as ChartJS, ChartOptions } from "chart.js";
 import { Stack, SxProps } from "@mui/material";
 import { Category } from "../../../model/dataset/Category";
 import { Colors } from "../../../styles/colors";
-import { Categorization } from "../../preprocessing/OrdinalPreprocessing";
+import { Categorization } from "../../preprocessing/preprocess/OrdinalPreprocessing";
 
 type Props = {
   categories: Category[];

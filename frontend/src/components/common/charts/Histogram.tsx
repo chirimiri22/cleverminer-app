@@ -6,7 +6,7 @@ import { Colors } from "../../../styles/colors";
 import { getCategoriesLabelsArray } from "../../../helpers/getCategoriesLabelsArray";
 import { getCategoriesCountsArray } from "../../../helpers/getCategoriesCountsArray";
 import { IconButton, Stack, SxProps } from "@mui/material";
-import { Categorization } from "../../preprocessing/OrdinalPreprocessing";
+import { Categorization } from "../../preprocessing/preprocess/OrdinalPreprocessing";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { BootstrapTooltip } from "../BootstrapTooltip";
 

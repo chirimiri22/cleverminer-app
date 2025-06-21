@@ -1,7 +1,4 @@
-import {
-  ArrowCircleLeft,
-  Download,
-} from "@mui/icons-material";
+import { ArrowCircleLeft, Download } from "@mui/icons-material";
 import { Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 
 import { PageContainer } from "../app-layout/PageContainer";
@@ -17,20 +14,20 @@ import { BootstrapTooltip } from "../common/BootstrapTooltip";
 import { useAppContext } from "../../context/AppContext";
 import { FileDropzone } from "../common/input/FileDropZone";
 import { downloadFile } from "../../helpers/downloadFile";
-import { PreprocessAttributeCard } from "./PreprocessAttrbuteCard";
-import { InfoRow } from "./InfoRow";
+import { PreprocessAttributeCard } from "./preprocess/PreprocessAttrbuteCard";
+import { InfoRow } from "./preview/InfoRow";
 import { PREPROCESS_STEPS } from "../../constants/preprocessSteps";
 import { formatSize } from "../../helpers/formatSize";
 import { formatDate } from "../../helpers/formatDate";
 import { createSectionTitle } from "../../helpers/createSectionTitle";
+import { LoadSection } from "./load/LoadSection";
+import { PreviewSection } from "./preview/PreviewSection";
+import { PreprocessSection } from "./preprocess/PreprocessSection";
 
 export const Dataset = () => {
-  const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
   const { getDatasetProcessed, datafile } = useAppContext();
   const datasetProcessed = getDatasetProcessed();
   const datasetProcessedAll = getDatasetProcessed(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>();
 
   const handleDownload = () => {
     datafile && downloadFile(datafile, datasetProcessed?.metadata.name);
@@ -49,63 +46,10 @@ export const Dataset = () => {
           </BootstrapTooltip>
         }
       />
-      <SectionBox title={createSectionTitle(PREPROCESS_STEPS.load)} loading={loading} error={error}>
-        <FileDropzone onLoadingChange={setLoading} setError={setError} />
-      </SectionBox>
 
-      {datasetProcessed && datasetProcessedAll && (
-        <>
-          <SectionBox
-            title={createSectionTitle(PREPROCESS_STEPS.preview)}
-            leftSection={
-              <Stack justifyContent={"center"} flexGrow={1}>
-                <InfoRow label="File name" value={datasetProcessed.metadata.name} />
-                <InfoRow label="Format" value={datasetProcessed.metadata.format} />
-                <InfoRow label="Rows" value={`${datasetProcessed.metadata.rows} rows`} />
-                <InfoRow label="Columns" value={`${datasetProcessed.metadata.columns} columns`} />
-                <InfoRow label="Memory" value={formatSize(datasetProcessed.metadata.size)} />
-                <InfoRow label="Loaded" value={formatDate(datasetProcessed.metadata.date)} />
-              </Stack>
-            }
-          >
-            <Stack direction="row" sx={{ gap: 2 }}>
-              <Stack width={"50%"} alignItems={"center"} gap={1}>
-                <Subtitle title={"Uniqueness histogram"} />
-                <Histogram
-                  mode="complex"
-                  color={Colors.primary}
-                  categories={datasetProcessed.data.map((d) => ({ label: d.title, count: d.categories.length }))}
-                  onClick={(categoryName) =>
-                    setCurrentAttributeName(datasetProcessed.data.find((c) => c.title === categoryName))
-                  }
-                />
-              </Stack>
-              <Stack width={"50%"} alignItems={"center"} justifyContent={"center"} textAlign={"center"} gap={1}>
-                {currentAttributeName ? (
-                  <>
-                    <Subtitle title={`Histogram of ${currentAttributeName?.title}`} />
-                    <Histogram mode="complex" categories={currentAttributeName.categories} />
-                  </>
-                ) : (
-                  <>
-                    Click on a column of the histogram to the left.
-                    <ArrowCircleLeft />
-                  </>
-                )}
-              </Stack>
-            </Stack>
-          </SectionBox>
-
-          {/* todo: right upper close all / open all*/}
-          <SectionBox title={createSectionTitle(PREPROCESS_STEPS.preprocess)}>
-            <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-              {datasetProcessedAll.data.map((attribute, index) => {
-                return <PreprocessAttributeCard attribute={attribute} shouldBePreprocessed={!!attribute.hidden} />;
-              })}
-            </Stack>
-          </SectionBox>
-        </>
-      )}
+      <LoadSection />
+      {datasetProcessed && <PreviewSection datasetProcessed={datasetProcessed} />}
+      {datasetProcessedAll && <PreprocessSection datasetProcessedAll={datasetProcessedAll} />}
     </PageContainer>
   );
 };

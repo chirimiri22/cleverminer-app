@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { Subtitle } from "../common/Subtitle";
+import { Subtitle } from "../../common/Subtitle";
 import React from "react";
 
 type Props ={

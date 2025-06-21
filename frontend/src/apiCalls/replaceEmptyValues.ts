@@ -1,5 +1,5 @@
-import { CategorizationFormData } from "../components/preprocessing/OrdinalPreprocessing";
-import { ReplaceEmptyFormData } from "../components/preprocessing/ReplaceEmptyValues";
+import { CategorizationFormData } from "../components/preprocessing/preprocess/OrdinalPreprocessing";
+import { ReplaceEmptyFormData } from "../components/preprocessing/preprocess/ReplaceEmptyValues";
 import { BE_URL } from "../constants/constants";
 
 export const replaceEmptyValues = async (data: ReplaceEmptyFormData, file: File): Promise<File> => {

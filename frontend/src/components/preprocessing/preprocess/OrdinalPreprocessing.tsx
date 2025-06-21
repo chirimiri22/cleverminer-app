@@ -1,20 +1,20 @@
 import { PlayArrow } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
-import { AttributeData } from "../../model/dataset/AttributeData";
-import { LineChart } from "../common/charts/LineChart";
+import { AttributeData } from "../../../model/dataset/AttributeData";
+import { LineChart } from "../../common/charts/LineChart";
 import { useForm } from "react-hook-form";
-import { SelectInput, SelectOption } from "../common/input/SelectInput";
-import { NumberInput } from "../common/input/NumberInput";
-import { Subtitle } from "../common/Subtitle";
-import { BooleanInput } from "../common/input/BooleanInput";
-import { Category } from "../../model/dataset/Category";
+import { SelectInput, SelectOption } from "../../common/input/SelectInput";
+import { NumberInput } from "../../common/input/NumberInput";
+import { Subtitle } from "../../common/Subtitle";
+import { BooleanInput } from "../../common/input/BooleanInput";
+import { Category } from "../../../model/dataset/Category";
 import { useCallback, useEffect, useState } from "react";
-import { Histogram } from "../common/charts/Histogram";
-import { sendCategorizeRequest } from "../../apiCalls/generateCategories";
-import { useAppContext } from "../../context/AppContext";
-import { getProcessedAttribute } from "../../apiCalls/getProcessedAttribute";
-import { previewCategories } from "../../apiCalls/previewCategories";
-import { BootstrapTooltip } from "../common/BootstrapTooltip";
+import { Histogram } from "../../common/charts/Histogram";
+import { sendCategorizeRequest } from "../../../apiCalls/generateCategories";
+import { useAppContext } from "../../../context/AppContext";
+import { getProcessedAttribute } from "../../../apiCalls/getProcessedAttribute";
+import { previewCategories } from "../../../apiCalls/previewCategories";
+import { BootstrapTooltip } from "../../common/BootstrapTooltip";
 
 type Props = {
   data: AttributeData;

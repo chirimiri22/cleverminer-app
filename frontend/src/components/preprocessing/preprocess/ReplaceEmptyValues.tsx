@@ -1,11 +1,11 @@
 import { FindReplace } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
-import { SelectInput, SelectOption } from "../common/input/SelectInput";
-import { Subtitle } from "../common/Subtitle";
+import { SelectInput, SelectOption } from "../../common/input/SelectInput";
+import { Subtitle } from "../../common/Subtitle";
 import { useForm } from "react-hook-form";
-import { replaceEmptyValues } from "../../apiCalls/replaceEmptyValues";
-import { useAppContext } from "../../context/AppContext";
-import { getProcessedAttribute } from "../../apiCalls/getProcessedAttribute";
+import { replaceEmptyValues } from "../../../apiCalls/replaceEmptyValues";
+import { useAppContext } from "../../../context/AppContext";
+import { getProcessedAttribute } from "../../../apiCalls/getProcessedAttribute";
 
 type Props = {
   column: string;

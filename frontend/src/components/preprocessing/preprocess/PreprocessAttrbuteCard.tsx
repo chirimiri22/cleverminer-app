@@ -1,16 +1,16 @@
 import { FindReplace, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { AttributeData } from "../../model/dataset/AttributeData";
-import { BootstrapTooltip } from "../common/BootstrapTooltip";
-import { GeneralAttributeCard, State } from "../common/GeneralAttributeCard";
-import { useAppContext } from "../../context/AppContext";
-import { Colors } from "../../styles/colors";
-import { BooleanInput } from "../common/input/BooleanInput";
+import { AttributeData } from "../../../model/dataset/AttributeData";
+import { BootstrapTooltip } from "../../common/BootstrapTooltip";
+import { GeneralAttributeCard, State } from "../../common/GeneralAttributeCard";
+import { useAppContext } from "../../../context/AppContext";
+import { Colors } from "../../../styles/colors";
+import { BooleanInput } from "../../common/input/BooleanInput";
 import { NominalPreprocessing } from "./NominalPreprocessing";
 import { OrdinalPreprocessing } from "./OrdinalPreprocessing";
-import { Subtitle } from "../common/Subtitle";
-import { SelectInput } from "../common/input/SelectInput";
+import { Subtitle } from "../../common/Subtitle";
+import { SelectInput } from "../../common/input/SelectInput";
 import { ReplaceEmptyValues } from "./ReplaceEmptyValues";
 import { useState } from "react";
 
