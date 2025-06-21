@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const FileDropzone = ({ onLoadingChange, setError }: Props) => {
-  const { datafile, setDatafile, setDatasetProcessed, setCFResults } = useAppContext();
+  const { datafile, setDatafile, setDatasetProcessed, setCFResults, setCFProcedure } = useAppContext();
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -31,6 +31,7 @@ export const FileDropzone = ({ onLoadingChange, setError }: Props) => {
     changeLoadingState(false);
     setError(undefined);
     setCFResults(undefined);
+    setCFProcedure(undefined)
   };
 
   const handleChangeFiles = async (file: File) => {

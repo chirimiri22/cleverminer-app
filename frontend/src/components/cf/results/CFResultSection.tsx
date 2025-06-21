@@ -1,4 +1,12 @@
-import { ArrowCircleRight, Delete, PlayCircle, ReplayCircleFilled, Settings, Terminal } from "@mui/icons-material";
+import {
+  ArrowCircleRight,
+  Delete,
+  PlayCircle,
+  ReplayCircleFilled,
+  Settings,
+  StopCircle,
+  Terminal,
+} from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, LinearProgress, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { mockDataset } from "../../../model/dataset/DatasetProcessed";
@@ -174,15 +182,28 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
           return (
             <Stack alignItems="center" flexGrow={1} justifyContent="center">
               <Subtitle title="Start the procedure" />
-              <IconButton onClick={handleStartProcedure} size="large" disabled={!isFormValid}>
-                <PlayCircle
-                  sx={{
-                    height: 50,
-                    width: 50,
-                    color: isFormValid ? Colors.primary : Colors.textSecondary,
-                  }}
-                />
-              </IconButton>
+              {!loading ? (
+                <IconButton onClick={handleStartProcedure} size="large" disabled={!isFormValid}>
+                  <PlayCircle
+                    sx={{
+                      height: 50,
+                      width: 50,
+                      color: isFormValid ? Colors.primary : Colors.textSecondary,
+                    }}
+                  />
+                </IconButton>
+              ) : (
+                <IconButton size="large">
+                  {/*todo: make it work*/}
+                  <StopCircle
+                    sx={{
+                      height: 50,
+                      width: 50,
+                      color: Colors.error,
+                    }}
+                  />
+                </IconButton>
+              )}
             </Stack>
           );
         }

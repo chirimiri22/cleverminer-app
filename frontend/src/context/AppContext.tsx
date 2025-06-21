@@ -9,7 +9,7 @@ type AppContextType = {
   setDatafile: (name?: File) => void;
   setDatasetProcessed: (dataset?: DatasetProcessed) => void;
   CFProcedure?: CFProcedure;
-  setCFProcedure: (data: CFProcedure) => void;
+  setCFProcedure: (data?: CFProcedure) => void;
   CFResults?: CFResults;
   setCFResults: (results?: CFResults) => void;
   changeHiddenState: (attributeName: string) => boolean | undefined;

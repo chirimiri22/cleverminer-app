@@ -170,12 +170,6 @@ async def process_cf(data: str = Form(...),
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# data.column
-# data.categorization
-# data.categoryCount
-# update file
-
-# todo add try catch
 @app.post("/api/generate_categories")
 async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
     df, size = await load_dataset(file)
