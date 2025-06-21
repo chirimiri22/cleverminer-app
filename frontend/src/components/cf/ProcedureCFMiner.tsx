@@ -62,12 +62,11 @@ export const ProcedureCFMiner = () => {
     mode: "onChange",
   });
 
-  const watchedForm = form.watch();
-
   useEffect(() => {
-    console.log("careful");
-    setCFProcedure(watchedForm);
-  }, [JSON.stringify(watchedForm)]);
+    return () => {
+      setCFProcedure(form.getValues());
+    };
+  }, [form, setCFProcedure]);
 
   return (
     <PageContainer>
