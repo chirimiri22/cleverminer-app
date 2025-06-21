@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, unstable_usePrompt } from "react-router-dom";
 import { Home } from "./components/Home";
 import { ProcedureCFMiner } from "./components/cf/ProcedureCFMiner";
 import { NotFoundPage } from "./components/NotFoundPage";

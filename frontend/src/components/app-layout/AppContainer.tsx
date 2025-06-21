@@ -1,13 +1,30 @@
 import { Container, Stack } from "@mui/material";
 import { SidebarMenu } from "./SIdebarMenu";
 import { Footer } from "./Footer";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Header } from "./Header";
+import { unstable_usePrompt } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 type Props = {
   children: ReactNode;
 };
 export const AppContainer = ({ children }: Props) => {
+  const { datafile } = useAppContext();
+
+  // prevent unloading of the page
+  useEffect(() => {
+    const handleBeforeUnload = (e: any) => {
+      if (datafile) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [datafile]);
+
   return (
     <Container maxWidth="xl" sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Header */}
