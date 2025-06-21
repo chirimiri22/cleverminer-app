@@ -1,5 +1,5 @@
-import { Close, PlayArrow } from "@mui/icons-material";
-import { Button, Chip, IconButton, Stack, TextField } from "@mui/material";
+import { Close, ErrorOutline, PlayArrow } from "@mui/icons-material";
+import { Button, Chip, IconButton, Stack, TextField, Typography } from "@mui/material";
 import { AttributeData } from "../../../model/dataset/AttributeData";
 import { LineChart } from "../../common/charts/LineChart";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { NumberInput } from "../../common/input/NumberInput";
 import { Subtitle } from "../../common/Subtitle";
 import { BooleanInput } from "../../common/input/BooleanInput";
 import { Category } from "../../../model/dataset/Category";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AutocompleteInput } from "../../common/input/AutocompleteInput";
 import { Colors } from "../../../styles/colors";
 import { TextInput } from "../../common/input/TextInput";
@@ -19,6 +19,8 @@ import { getProcessedAttribute } from "../../../apiCalls/getProcessedAttribute";
 import { createCustomNominalCategories } from "../../../apiCalls/createCustomNominalCategories";
 import { useAppContext } from "../../../context/AppContext";
 import { Histogram } from "../../common/charts/Histogram";
+import { apiCallWrapper } from "../../../apiCalls/apiCallWrapper";
+import { ErrorMessage } from "./ErrorMessage";
 
 type Props = {
   data: AttributeData;
@@ -46,6 +48,7 @@ const eachValueIsUnique = (values: string[]) => {
 
 export const NominalPreprocessing = ({ data }: Props) => {
   const { datafile, setDatafile, updateProcessedAttributeData, getDatasetProcessed } = useAppContext();
+  const [error, setError] = useState<string | undefined>(undefined);
   const form = useForm<NominalProcessingForm>({
     defaultValues: {
       rows: [
@@ -75,17 +78,21 @@ export const NominalPreprocessing = ({ data }: Props) => {
   const reaminitngCategoriesCount = unusedCategoriesOptions.filter((x) => !x.hidden).length;
 
   const handleConvert = async () => {
-    if (datafile) {
-      try {
-        const newFile = await createCustomNominalCategories(usedCategories, data.title, datafile);
-        setDatafile(newFile);
-        const newProcessedData = await getProcessedAttribute(data.title, newFile, !!data.hidden);
-        updateProcessedAttributeData(data.title, newProcessedData);
-        form.reset();
-      } catch (error) {
-        console.error("Error during categorization:", error);
-      }
-    }
+    setError(undefined);
+    if (!datafile) return;
+    const newFile = await apiCallWrapper(
+      () => createCustomNominalCategories(usedCategories, data.title, datafile),
+      setError
+    );
+    if (!newFile) return;
+    const newProcessedData = await apiCallWrapper(
+      () => getProcessedAttribute(data.title, newFile, !!data.hidden),
+      setError
+    );
+    if (!newProcessedData) return;
+    setDatafile(newFile);
+    updateProcessedAttributeData(data.title, newProcessedData);
+    form.reset();
   };
   return (
     <Stack gap={1} alignItems={"start"}>
@@ -96,7 +103,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
         size="small"
         variant={"outlined"}
         color={"primary"}
-        sx={{ mb: 1, alignSelf: "center"}}
+        sx={{ mb: 1, alignSelf: "center" }}
       />
 
       <Stack direction={"row"} gap={1}>
@@ -151,6 +158,7 @@ export const NominalPreprocessing = ({ data }: Props) => {
           </Button>
         </Stack>
       </BootstrapTooltip>
+      {error && <ErrorMessage error={error} />}
     </Stack>
   );
 };

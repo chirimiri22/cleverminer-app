@@ -2,6 +2,7 @@ import { ErrorOutline } from "@mui/icons-material";
 import { Button, LinearProgress, Paper, Stack, SxProps, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { Colors } from "../../styles/colors";
+import { ErrorMessage } from "../preprocessing/preprocess/ErrorMessage";
 
 type Props = {
   title: ReactNode;
@@ -47,7 +48,6 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
                 bgcolor: Colors.primary,
                 borderRadius: 5,
                 zIndex: 120,
-
               }}
             >
               {rightUpperTools}
@@ -63,14 +63,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
             }}
           >
             {children}
-            {error && (
-              <Stack direction={"row"} gap={1}>
-                <ErrorOutline fontSize={"small"} color={"error"} />
-                <Typography color="error" variant={"caption"}>
-                  {error}
-                </Typography>
-              </Stack>
-            )}
+            {error && <ErrorMessage error={error} />}
           </Stack>
         </Stack>
         {loading && <LinearProgress />}

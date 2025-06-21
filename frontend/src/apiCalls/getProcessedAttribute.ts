@@ -1,7 +1,6 @@
 import { AttributeData } from "../model/dataset/AttributeData";
 import { BE_URL } from "../constants/constants";
-
-
+import axios from "axios";
 
 export const getProcessedAttribute = async (column: string, file: File, hidden: boolean): Promise<AttributeData> => {
   const formData = new FormData();
@@ -9,21 +8,13 @@ export const getProcessedAttribute = async (column: string, file: File, hidden: 
   formData.append("column", column);
   formData.append("file", file);
 
-  const res = await fetch(`${BE_URL}/attribute-data`, {
-    method: "POST",
-    body: formData,
+  const res = await axios.post(`${BE_URL}/attribute-data`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 
-  if (!res.ok) {
-    let errMsg = `Request failed with status ${res.status}`;
-    try {
-      const errJson = await res.json();
-      errMsg = errJson.error || errMsg;
-    } catch {}
-    throw new Error(errMsg);
-  }
+  const data = res.data;
 
-  const data = await res.json();
-  console.log(data);
   return data as AttributeData;
 };

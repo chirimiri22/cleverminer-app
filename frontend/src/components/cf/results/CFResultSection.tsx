@@ -1,4 +1,4 @@
-import { ArrowCircleRight, PlayCircle, ReplayCircleFilled, Settings, Terminal } from "@mui/icons-material";
+import { ArrowCircleRight, Delete, PlayCircle, ReplayCircleFilled, Settings, Terminal } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, IconButton, LinearProgress, Popover, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { mockDataset } from "../../../model/dataset/DatasetProcessed";
@@ -135,6 +135,11 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
                 ))}
               </Box>
             </Popover>
+            <BootstrapTooltip title={"Remove results"} placement={"left"}>
+              <IconButton size={"small"} sx={{ color: Colors.white }} onClick={() => setCFResults(undefined)}>
+                <Delete fontSize={"small"} />
+              </IconButton>
+            </BootstrapTooltip>
           </Stack>
         )
       }

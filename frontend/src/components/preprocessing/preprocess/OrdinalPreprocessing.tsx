@@ -16,6 +16,7 @@ import { getProcessedAttribute } from "../../../apiCalls/getProcessedAttribute";
 import { previewCategories } from "../../../apiCalls/previewCategories";
 import { BootstrapTooltip } from "../../common/BootstrapTooltip";
 import { apiCallWrapper } from "../../../apiCalls/apiCallWrapper";
+import { ErrorMessage } from "./ErrorMessage";
 
 type Props = {
   data: AttributeData;
@@ -68,16 +69,17 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
     }));
 
   const handleConvert = async () => {
-    if (datafile) {
-      try {
-        const newFile = await sendCategorizeRequest(formValues, datafile);
-        setDatafile(newFile);
-        const newProcessedData = await getProcessedAttribute(formValues.column, newFile, !!data.hidden);
-        updateProcessedAttributeData(formValues.column, newProcessedData);
-      } catch (error) {
-        console.error("Error during categorization:", error);
-      }
-    }
+    setError(undefined);
+    if (!datafile) return;
+    const newFile = await apiCallWrapper(() => sendCategorizeRequest(formValues, datafile), setError);
+    if (!newFile) return;
+    const newProcessedData = await apiCallWrapper(
+      () => getProcessedAttribute(formValues.column, newFile, !!data.hidden),
+      setError
+    );
+    if (!newProcessedData) return;
+    setDatafile(newFile);
+    updateProcessedAttributeData(formValues.column, newProcessedData);
   };
 
   return (
@@ -127,14 +129,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
           </Button>
         </Stack>
       </BootstrapTooltip>
-      {error && (
-        <Stack direction={"row"} gap={1}>
-          <ErrorOutline fontSize={"small"} color={"error"} />
-          <Typography color="error" variant={"caption"}>
-            {error}
-          </Typography>
-        </Stack>
-      )}
+      {error && <ErrorMessage error={error} />}
     </Stack>
   );
 };

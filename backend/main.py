@@ -46,7 +46,6 @@ async def hello():
 
 @app.post("/api/upload", response_model=DatasetProcessed)
 async def upload_csv(file: UploadFile = File(...)):
-
     df, size = await load_dataset(file)
 
     try:
@@ -82,7 +81,6 @@ async def upload_csv(file: UploadFile = File(...)):
 @app.post("/api/cf-process", response_model=CFResults)
 async def process_cf(data: str = Form(...),
                      file: UploadFile = File(...), clm=None):
-
     df, size = await load_dataset(file)
     try:
         # Construct cond['attributes'] from frontend input
@@ -182,28 +180,32 @@ async def process_cf(data: str = Form(...),
 async def categorize_column(data: str = Form(...), file: UploadFile = File(...), ):
     df, size = await load_dataset(file)
 
-    form_data_dict = json.loads(data)
-    form_data = CategorizationFormData.model_validate(form_data_dict)
-    col = df[form_data.column]
+    try:
+        form_data_dict = json.loads(data)
+        form_data = CategorizationFormData.model_validate(form_data_dict)
+        col = df[form_data.column]
 
-    if form_data.categorization == Categorization.Equidistant:
-        categorized = equal_width_bins(col, n_bins=form_data.categoryCount)
-    else:  # Equifrequent
-        categorized = equal_freq_bins(col, n_bins=form_data.categoryCount)
+        if form_data.categorization == Categorization.Equidistant:
+            categorized = equal_width_bins(col, n_bins=form_data.categoryCount)
+        else:  # Equifrequent
+            categorized = equal_freq_bins(col, n_bins=form_data.categoryCount)
 
-    result_df = df.copy()
-    result_df[form_data.column] = categorized  # Overwrite column
+        result_df = df.copy()
+        result_df[form_data.column] = categorized  # Overwrite column
 
-    # Convert to CSV and return as file
-    buffer = io.StringIO()
-    result_df.to_csv(buffer, index=False)
-    buffer.seek(0)
+        # Convert to CSV and return as file
+        buffer = io.StringIO()
+        result_df.to_csv(buffer, index=False)
+        buffer.seek(0)
 
-    return StreamingResponse(
-        buffer,
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=categorized.csv"}
-    )
+        return StreamingResponse(
+            buffer,
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=categorized.csv"}
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # call this after preprocessing
@@ -217,18 +219,21 @@ async def get_attribute_data(
 
     if column not in df.columns:
         return JSONResponse(status_code=400, content={"error": f"Column '{column}' not found"})
+    try:
 
-    category_names = get_ordered_unique_category_names(df[column])
-    categories = get_ordered_categories(category_names, df, column)
-    contains_null = df[column].isnull().any()
+        category_names = get_ordered_unique_category_names(df[column])
+        categories = get_ordered_categories(category_names, df, column)
+        contains_null = df[column].isnull().any()
 
-    return AttributeData(
-        title=column,
-        categories=categories,
-        numeric=is_numeric(column, df),
-        hidden=False,
-        containsNull=contains_null,
-    )
+        return AttributeData(
+            title=column,
+            categories=categories,
+            numeric=is_numeric(column, df),
+            hidden=False,
+            containsNull=contains_null,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/preview_categories")
@@ -264,11 +269,11 @@ async def preview_categories(
         category_group_counts = count_original_values_per_bin(df, col, "cat")
 
         category_group_intervals = group_counts_to_intervals(category_group_counts)
+
+        # todo use classse
+        return {"category_ranges": category_group_intervals}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-    # todo use classse
-    return {"category_ranges": category_group_intervals}
 
 
 @app.post("/api/replace_categories")
@@ -279,35 +284,41 @@ async def replace_categories(
     # Read CSV from uploaded file
     df, size = await load_dataset(file)
 
-    # Parse JSON form data into Pydantic model
-    form_data_dict = json.loads(data)
-    form_data = NominalProcessingForm.model_validate(form_data_dict)
+    try:
+        # Parse JSON form data into Pydantic model
+        form_data_dict = json.loads(data)
+        form_data = NominalProcessingForm.model_validate(form_data_dict)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     if form_data.column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{form_data.column}' not found in CSV.")
 
-    # Build mapping dict: old_value => new_label
-    mapping = {}
-    for row in form_data.rows:
-        new_label = row.label
-        for opt in row.selectedOptions:
-            mapping[opt] = new_label
+    try:
+        # Build mapping dict: old_value => new_label
+        mapping = {}
+        for row in form_data.rows:
+            new_label = row.label
+            for opt in row.selectedOptions:
+                mapping[opt] = new_label
 
-    # Replace values in the column
-    df_copy = df.copy()
-    df_copy[form_data.column] = df_copy[form_data.column].replace(mapping)
+        # Replace values in the column
+        df_copy = df.copy()
+        df_copy[form_data.column] = df_copy[form_data.column].replace(mapping)
 
-    # Convert updated DataFrame to CSV in-memory
-    buffer = io.StringIO()
-    df_copy.to_csv(buffer, index=False)
-    buffer.seek(0)
+        # Convert updated DataFrame to CSV in-memory
+        buffer = io.StringIO()
+        df_copy.to_csv(buffer, index=False)
+        buffer.seek(0)
 
-    # Stream CSV back as attachment
-    return StreamingResponse(
-        iter([buffer.getvalue()]),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
-    )
+        # Stream CSV back as attachment
+        return StreamingResponse(
+            iter([buffer.getvalue()]),
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/replace_empty_values")
@@ -315,9 +326,12 @@ async def replace_empty_values(
         data: str = Form(...),
         file: UploadFile = File(...)
 ):
-    # Parse form data JSON
-    form_data_dict = json.loads(data)
-    form_data = ReplaceRequest.model_validate(form_data_dict)
+    try:
+        # Parse form data JSON
+        form_data_dict = json.loads(data)
+        form_data = ReplaceRequest.model_validate(form_data_dict)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     # Read CSV from uploaded file
     df, size = await load_dataset(file)
@@ -335,23 +349,26 @@ async def replace_empty_values(
     else:
         raise HTTPException(status_code=400, detail="Invalid replace_mode")
 
-    # Replace empty values (NaN or empty strings) in the column
-    df_copy = df.copy()
-    # Consider empty strings too: replace both NaN and ""
-    df_copy[form_data.column] = df_copy[form_data.column].replace("", pd.NA)
-    df_copy[form_data.column] = df_copy[form_data.column].fillna(replacement_value)
+    try:
+        # Replace empty values (NaN or empty strings) in the column
+        df_copy = df.copy()
+        # Consider empty strings too: replace both NaN and ""
+        df_copy[form_data.column] = df_copy[form_data.column].replace("", pd.NA)
+        df_copy[form_data.column] = df_copy[form_data.column].fillna(replacement_value)
 
-    # Convert updated DataFrame to CSV in-memory
-    buffer = io.StringIO()
-    df_copy.to_csv(buffer, index=False)
-    buffer.seek(0)
+        # Convert updated DataFrame to CSV in-memory
+        buffer = io.StringIO()
+        df_copy.to_csv(buffer, index=False)
+        buffer.seek(0)
 
-    # Return CSV file as response
-    return StreamingResponse(
-        iter([buffer.getvalue()]),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
-    )
+        # Return CSV file as response
+        return StreamingResponse(
+            iter([buffer.getvalue()]),
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=updated_data.csv"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Run server
