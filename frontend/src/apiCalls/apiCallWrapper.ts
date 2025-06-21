@@ -14,7 +14,7 @@ export const apiCallWrapper = async <T>(fetchFn: AsyncFn<T>, onError: SetErrorFn
 
     // Handle Axios error with FastAPI-style error payload
     if (isAxiosErrorWithDetail(err)) {
-      message = `Error: ${err.response?.data?.detail}` || message;
+      message = err.response?.data?.detail || message;
     } else if (err instanceof Error) {
       message = err.message;
     }

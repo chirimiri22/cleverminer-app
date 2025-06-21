@@ -33,6 +33,7 @@ export const FileDropzone = ({ onLoadingChange, setError }: Props) => {
   };
 
   const handleChangeFiles = async (file: File) => {
+    removeFile();
     changeLoadingState(true);
     setDatafile(file);
 
@@ -131,7 +132,6 @@ export const FileDropzone = ({ onLoadingChange, setError }: Props) => {
   };
 
   const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    removeFile();
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const csvFiles = files.filter(isCSV);

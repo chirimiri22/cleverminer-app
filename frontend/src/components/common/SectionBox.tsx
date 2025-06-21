@@ -1,7 +1,7 @@
+import { ErrorOutline } from "@mui/icons-material";
 import { Button, LinearProgress, Paper, Stack, SxProps, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { Colors } from "../../styles/colors";
-
 
 type Props = {
   title: ReactNode;
@@ -62,9 +62,10 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
           >
             {children}
             {error && (
-              <Typography color="error" mt={2}>
-                {error}
-              </Typography>
+              <Stack direction={"row"}  gap={1}>
+                <ErrorOutline fontSize={"small"} color={"error"} />
+                <Typography color="error" variant={"caption"}>{error}</Typography>
+              </Stack>
             )}
           </Stack>
         </Stack>
