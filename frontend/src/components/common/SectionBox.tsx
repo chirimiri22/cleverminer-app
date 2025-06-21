@@ -19,7 +19,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
       <Typography variant="h6" fontWeight={"bold"} mb={1}>
         {title}
       </Typography>
-      <Paper variant="outlined" sx={{ minHeight: minHeight }}>
+      <Paper variant={"outlined"} sx={{ minHeight: minHeight,}}>
         <Stack direction={"row"} flexGrow={1} height={"100%"} position={"relative"}>
           {leftSection && (
             <Stack
@@ -46,6 +46,7 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
                 bgcolor: Colors.primary,
                 borderRadius: 5,
                 zIndex: 120,
+
               }}
             >
               {rightUpperTools}
@@ -62,9 +63,11 @@ export const SectionBox = ({ title, children, leftSection, minHeight, rightUpper
           >
             {children}
             {error && (
-              <Stack direction={"row"}  gap={1}>
+              <Stack direction={"row"} gap={1}>
                 <ErrorOutline fontSize={"small"} color={"error"} />
-                <Typography color="error" variant={"caption"}>{error}</Typography>
+                <Typography color="error" variant={"caption"}>
+                  {error}
+                </Typography>
               </Stack>
             )}
           </Stack>

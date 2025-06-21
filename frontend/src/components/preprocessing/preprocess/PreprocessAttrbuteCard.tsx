@@ -27,36 +27,11 @@ type FormValues = {
   visible: boolean;
 };
 
-// enum TabIndex {
-//   Visibility = "Visibility",
-//   EmptyValues = "EmptyValues",
-//   Preprocessing = "Preprocessing",
-// }
-
 enum TabIndex {
   Visibility,
   EmptyValues,
   Preprocessing,
 }
-
-const OrDivider = () => {
-  return (
-    <Stack position={"relative"} my={2}>
-      <Divider />
-      <Typography
-        fontSize={"small"}
-        color={Colors.textSecondary}
-        bgcolor={"white"}
-        position={"absolute"}
-        left={"50%"}
-        top={-9}
-        sx={{ transform: "translateX(-50%)" }}
-      >
-        OR
-      </Typography>
-    </Stack>
-  );
-};
 
 export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Props) => {
   const { changeHiddenState } = useAppContext();
@@ -112,10 +87,7 @@ export const PreprocessAttributeCard = ({ attribute, shouldBePreprocessed }: Pro
           }
           placement={"top"}
         >
-
-
           <Tab icon={<FindReplace fontSize={"small"} />} aria-label="favorite" disabled={!attribute.containsNull} />
-
         </BootstrapTooltip>
 
         <BootstrapTooltip title={"Categorize"} placement={"top"}>

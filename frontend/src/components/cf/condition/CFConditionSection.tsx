@@ -45,7 +45,7 @@ export const CFConditionSection = ({ form }: Props) => {
       minHeight={300}
       rightUpperTools={
         <Stack direction={"row"} sx={{ alignItems: "center" }}>
-          {!targetValue && <Typography px={1}>Don't forget to add target attribute!</Typography>}
+
           <BootstrapTooltip title={"Change view "}>
             <IconButton
               onClick={() => setHorizontal(!horizontal)}

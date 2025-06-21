@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 import { LoadDatasetFirst } from "../../common/LoadDatasetFirst";
 import { FOUR_STEPS } from "../../../constants/fourSteps";
+import { Subtitle } from "../../common/Subtitle";
 
 export const ObserveDataSection = () => {
   const { getDatasetProcessed } = useAppContext();
-  const datasetProcessed = getDatasetProcessed()
+  const datasetProcessed = getDatasetProcessed();
 
   if (!datasetProcessed || !datasetProcessed.data || datasetProcessed.data.length === 0) {
     return (
@@ -21,11 +22,18 @@ export const ObserveDataSection = () => {
   }
 
   return (
-    <SectionBox title={createSectionTitle(FOUR_STEPS.observe)}>
-      <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
-        {datasetProcessed.data.map((data, index) => (
-          <ObserveAttributeCard key={index} attributeData={data} />
-        ))}
+    <SectionBox
+      title={createSectionTitle(FOUR_STEPS.observe)}
+
+    >
+      <Stack gap={2}>
+        <Subtitle title={`Total rows: ${datasetProcessed.metadata.rows}`} />
+
+        <Stack direction={"row"} sx={{ gap: 2, overflowX: "auto" }}>
+          {datasetProcessed.data.map((data, index) => (
+            <ObserveAttributeCard key={index} attributeData={data} />
+          ))}
+        </Stack>
       </Stack>
     </SectionBox>
   );

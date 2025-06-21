@@ -15,7 +15,13 @@ export const CFTargetCard = ({ form, attributeOptions }: Props) => {
   return (
     <Card
       variant="outlined"
-      sx={{ minWidth: 200, flexGrow: 0, borderRadius: 2, height: "fit-content", borderColor: Colors.success }}
+      sx={{
+        minWidth: 200,
+        flexGrow: 0,
+        borderRadius: 2,
+        height: "fit-content",
+        borderColor: form.watch("condition.targetAttribute") ? Colors.success : Colors.warning,
+      }}
     >
       <CardHeader
         sx={{

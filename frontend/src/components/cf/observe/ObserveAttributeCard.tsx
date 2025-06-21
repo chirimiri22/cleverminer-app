@@ -1,16 +1,16 @@
 import { GeneralAttributeCard } from "../../common/GeneralAttributeCard";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
 
 import { Histogram } from "../../common/charts/Histogram";
 import { AttributeData } from "../../../model/dataset/AttributeData";
-import { ReactNode, useState } from "react";
-import { Analytics, ViewList } from "@mui/icons-material";
+import { ReactNode, SyntheticEvent, useState } from "react";
+import { Analytics, ViewList, Visibility } from "@mui/icons-material";
 import { BootstrapTooltip } from "../../common/BootstrapTooltip";
 import { Colors } from "../../../styles/colors";
 
 // allows caching fo the loaded data
 export const TabWrapper = ({ children, active }: { children: ReactNode; active: boolean }) => {
-  return <Stack display={active ? "flex" : "none"} >{children}</Stack>;
+  return <Stack display={active ? "flex" : "none"} pt={2}>{children}</Stack>;
 };
 
 type TabProps = {
@@ -38,12 +38,15 @@ const HistogramTab = ({ attributeData, active }: TabProps) => {
 };
 
 enum CardTabs {
-  Histogram = "Histogram",
-  List = "List",
+  Histogram,
+  List,
 }
 
 export const ObserveAttributeCard = ({ attributeData }: { attributeData: AttributeData }) => {
   const [currentTab, setCurrentTab] = useState<CardTabs>(CardTabs.Histogram);
+  const handleChange = (event: SyntheticEvent, newValue: CardTabs) => {
+    setCurrentTab(newValue);
+  };
 
   return (
     <GeneralAttributeCard
@@ -53,29 +56,26 @@ export const ObserveAttributeCard = ({ attributeData }: { attributeData: Attribu
     >
       <Stack
         position={"relative"}
-        pt={2}
-        maxHeight={135}
+
+        maxHeight={200}
         sx={{
           overflowY: "auto",
         }}
       >
-        <Stack position={"absolute"} right={2} top={0}>
-          <BootstrapTooltip title={"Click here to change the view of the data."}>
-            <IconButton
-              sx={{
-                p: 0,
-                backgroundColor: Colors.primary,
-              }}
-              onClick={() => setCurrentTab(currentTab === CardTabs.Histogram ? CardTabs.List : CardTabs.Histogram)}
-            >
-              {currentTab !== CardTabs.Histogram ? (
-                <Analytics sx={{ color: Colors.white }} />
-              ) : (
-                <ViewList sx={{ color: Colors.white }} />
-              )}
-            </IconButton>
+        <Tabs
+          value={currentTab}
+          onChange={handleChange}
+          sx={{ backgroundColor: Colors.background, borderRadius: 2, maxHeight: 70 }}
+          centered
+        >
+          <BootstrapTooltip title={"Histogram"} placement={"top"}>
+            <Tab icon={<ViewList fontSize={"small"} />} aria-label="phone" />
           </BootstrapTooltip>
-        </Stack>
+          <BootstrapTooltip title={"List of Categories"} placement={"top"}>
+            <Tab icon={<Analytics fontSize={"small"} />} aria-label="phone" />
+          </BootstrapTooltip>
+        </Tabs>
+
         <HistogramTab attributeData={attributeData} active={currentTab === CardTabs.Histogram} />
         <ListTab attributeData={attributeData} active={currentTab === CardTabs.List} />
       </Stack>

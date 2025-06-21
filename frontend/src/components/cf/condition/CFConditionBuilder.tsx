@@ -10,7 +10,7 @@ import { Colors } from "../../../styles/colors";
 import { CFProcedure } from "../../../model/cf/condition/CFProcedure";
 
 type Props = {
-  form: UseFormReturn<CFProcedure>
+  form: UseFormReturn<CFProcedure>;
   attributeData: AttributeData[];
   conjunction: boolean;
   horizontal?: boolean;
@@ -21,7 +21,6 @@ const getFirstUnusedAttribute = (attributeData: AttributeData[], usedAttributes:
 };
 
 export const ConditionBuilder = ({ attributeData, conjunction, horizontal, form }: Props) => {
-
   const { control } = form;
   const { fields, append, remove } = useFieldArray({
     control,
@@ -106,7 +105,7 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal, form 
 
             {usedAttributes.length < attributeData.length && fields.length - 1 === index && (
               <Stack alignItems={"center"} position={"absolute"} right={-55}>
-                <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50 }}>
+                <IconButton onClick={addCondition} size="large" sx={{ height: 50, width: 50, color: Colors.primary }}>
                   <Add fontSize={"large"} />
                 </IconButton>
               </Stack>
@@ -126,8 +125,13 @@ export const ConditionBuilder = ({ attributeData, conjunction, horizontal, form 
       />
 
       {/* Right side: Target */}
-      <Stack pr={horizontal ? 4 : 0}>
+      <Stack pr={horizontal ? 4 : 0} alignItems={"center"}>
         <CFTargetCard form={form} attributeOptions={unusedAttributeOptions} />
+        {!form.watch("condition.targetAttribute") && (
+          <Typography pt={1} variant={"caption"} color={"warning"}>
+            Don't forget to add target attribute!
+          </Typography>
+        )}
       </Stack>
     </Stack>
   );
