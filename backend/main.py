@@ -1,3 +1,4 @@
+import asyncio
 import csv
 from datetime import datetime
 
@@ -100,8 +101,12 @@ async def process_cf(data: str = Form(...),
         for quantifier in procedure.quantifiers:
             cf_quantifiers[quantifier.quantifier] = quantifier.value
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    def clm_run():
         # Call cleverminer
-        clm = cleverminer(
+        clm_r = cleverminer(
             df=df,
             target=procedure.condition.targetAttribute,  # Use actual target from your dataset
             proc='CFMiner',
@@ -113,6 +118,14 @@ async def process_cf(data: str = Form(...),
                 "type": "con" if procedure.conjunction else "dis"
             }
         )
+        return clm_r
+
+    try:
+        clm = await asyncio.wait_for(asyncio.to_thread(clm_run), timeout=30)
+    except asyncio.TimeoutError:
+        raise HTTPException(504, "This task takes longer than 30 seconds - time is up!")
+
+    try:
 
         count: int = clm.get_rulecount()
 
