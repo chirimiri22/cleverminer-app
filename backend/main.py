@@ -121,7 +121,7 @@ async def process_cf(data: str = Form(...),
         return clm_r
 
     try:
-        clm = await asyncio.wait_for(asyncio.to_thread(clm_run), timeout=30)
+        clm = await asyncio.wait_for(asyncio.to_thread(clm_run), timeout=1)
     except asyncio.TimeoutError:
         raise HTTPException(504, "This task takes longer than 30 seconds - time is up!")
 

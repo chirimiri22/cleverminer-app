@@ -9,10 +9,8 @@ import { ArrowCircleRight, PlayArrow } from "@mui/icons-material";
 import { Colors } from "../../../styles/colors";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { CFProcedure } from "../../../model/cf/condition/CFProcedure";
-import { CFQuantifier } from "../../../constants/enums/CFQuantifier";
 import { createSectionTitle } from "../../../helpers/createSectionTitle";
 import { useAppContext } from "../../../context/AppContext";
-import { LoadDatasetFirst } from "../../common/LoadDatasetFirst";
 import { FOUR_STEPS } from "../../../constants/fourSteps";
 
 type Props = {
@@ -22,7 +20,7 @@ type Props = {
 export const CFConditionSection = ({ form }: Props) => {
   const [horizontal, setHorizontal] = useState(true);
   const { getDatasetProcessed } = useAppContext();
-  
+
   const datasetProcessed = getDatasetProcessed();
 
   const max = datasetProcessed ? datasetProcessed.data.length - 1 : 1;

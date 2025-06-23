@@ -21,7 +21,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
   sx,
   onChange,
   disabled,
-  required
+  required,
 }: Props<TFormValues, TValue>) => {
   return (
     <Controller
@@ -43,7 +43,7 @@ export const NumberInput = <TFormValues extends FieldValues, TValue>({
           type="number"
           size="small"
           variant={"filled"}
-          slotProps={{ htmlInput: { min: min, max: max } }}
+          slotProps={{ htmlInput: { min: min } }}
           sx={{
             "& .MuiInputBase-root": {
               backgroundColor: Colors.white,

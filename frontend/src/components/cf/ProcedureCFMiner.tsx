@@ -63,6 +63,7 @@ export const ProcedureCFMiner = () => {
   });
 
   useEffect(() => {
+
     return () => {
       setCFProcedure(form.getValues());
     };

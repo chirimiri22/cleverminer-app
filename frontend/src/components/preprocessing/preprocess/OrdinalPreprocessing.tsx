@@ -28,7 +28,7 @@ export enum Categorization {
 }
 
 export type CategorizationFormData = {
-  categoryCount: number;
+  categoryCount?: number;
   categorization: Categorization;
   column: string;
 };
@@ -40,7 +40,6 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   const form = useForm<CategorizationFormData>({
     defaultValues: {
-      categoryCount: 5,
       categorization: Categorization.Equidistant,
       column: data.title,
     },
@@ -50,7 +49,13 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   const handleFormChange = useCallback(async () => {
     const formValues1 = form.getValues();
-    if (!data.numeric || !datafile || formValues1.categoryCount >= data.categories.length) return;
+    if (
+      !data.numeric ||
+      !datafile ||
+      !formValues1.categoryCount ||
+      formValues1?.categoryCount >= data.categories.length
+    )
+      return;
     const response = await apiCallWrapper(() => previewCategories(formValues1, datafile), setError);
 
     setDivisionRanges(response?.category_ranges);
@@ -59,6 +64,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
   //  todo: why it sends  requests
   useEffect(() => {
     handleFormChange();
+    form.setValue("categoryCount", 2);
   }, []);
 
   const categorizationOptions: SelectOption[] = Object.keys(Categorization)
@@ -102,6 +108,8 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
             name={"categoryCount"}
             form={form}
             min={1}
+            max={data.categories.length}
+            required
             label={"Count"}
             onChange={handleFormChange}
             disabled={!data.numeric}
@@ -123,7 +131,7 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
               mt: 1,
             }}
             onClick={handleConvert}
-            disabled={!data.numeric}
+            disabled={!data.numeric || !form.formState.isValid}
           >
             Convert
           </Button>
