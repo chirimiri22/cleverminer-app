@@ -81,7 +81,7 @@ async def upload_csv(file: UploadFile = File(...)):
 
 @app.post("/api/cf-process", response_model=CFResults)
 async def process_cf(data: str = Form(...),
-                     file: UploadFile = File(...), clm=None):
+                     file: UploadFile = File(...)):
     df, size = await load_dataset(file)
     try:
         # Construct cond['attributes'] from frontend input
