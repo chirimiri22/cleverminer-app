@@ -378,6 +378,6 @@ async def replace_empty_values(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Run server
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+# Uncomment this or local run
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
