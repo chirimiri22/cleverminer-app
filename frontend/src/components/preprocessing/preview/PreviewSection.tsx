@@ -22,7 +22,6 @@ type Props = {
 export const PreviewSection = ({ datasetProcessed, datasetProcessedAll }: Props) => {
   const [currentAttributeName, setCurrentAttributeName] = useState<AttributeData | undefined>();
 
-  console.log(datasetProcessed);
   const hiddenAttributes = datasetProcessedAll.data.filter((d) => d.hidden).length;
 
   return (

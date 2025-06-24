@@ -78,8 +78,7 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
   const disabled = !conditionData.condition.targetAttribute;
   const open = Boolean(anchorEl);
   const id = open ? "boolean-popover" : undefined;
-  console.log(JSON.stringify(CFResults?.targetAttributeHistogram.categories));
-  const max = CFResults?.targetAttributeHistogram.categories.reduce((max, current) => Math.max(max, current.count), 0);
+ const max = CFResults?.targetAttributeHistogram.categories.reduce((max, current) => Math.max(max, current.count), 0);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -258,7 +257,6 @@ export const CFResultSection = forwardRef<HTMLDivElement, Props>(({ conditionDat
                     />
                     <Card variant="outlined" sx={{ borderRadius: 2, borderColor: Colors.success, maxWidth: 240 }}>
                       <CardContent>
-                        {max}
                         <Histogram categories={rule.histogramData} color={Colors.textSecondary} datalabels max={max} />
                       </CardContent>
                     </Card>

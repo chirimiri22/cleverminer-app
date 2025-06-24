@@ -24,7 +24,6 @@ export const QuantifierRow = ({ form, index, options, onRemove }: Props) => {
         form={form}
         name={`${fieldName}.value`}
         min={0}
-        onBlur={() => console.log(form.getValues())}
         sx={{
           maxWidth: 60,
         }}

@@ -144,13 +144,6 @@ export const Histogram = ({
     }
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     if (chartRef.current) {
-  //       chartRef.current.destroy();
-  //     }
-  //   };
-  // }, []);
 
   return (
     <Stack width={"100%"} height={"100%"} sx={{ position: "relative" }}>

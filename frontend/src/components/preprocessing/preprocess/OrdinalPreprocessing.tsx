@@ -63,8 +63,8 @@ export const OrdinalPreprocessing = ({ data }: Props) => {
 
   //  todo: why it sends  requests
   useEffect(() => {
-    handleFormChange();
     form.setValue("categoryCount", 2);
+    handleFormChange();
   }, []);
 
   const categorizationOptions: SelectOption[] = Object.keys(Categorization)
