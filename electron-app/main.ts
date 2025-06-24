@@ -3,7 +3,7 @@ import path from 'path';
 import {spawn} from 'child_process';
 
 // MAKE SURE TO SET THE isDev VARIABLE ACCORDINGLY
-const IS_DEV = true;
+const IS_DEV = false;
 
 let pythonProcess: any = null;
 

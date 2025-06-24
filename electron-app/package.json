@@ -2,7 +2,7 @@
   "name": "cleverminer-app",
   "version": "1.0.0",
   "author": "Miriam Zednickova <mitcamit@gmail.com>",
-  "homepage": "https://www.cleverminer.org",
+  "homepage": "./",
   "main": "./dist/main.js",
   "scripts": {
     "transpile": "tsc -p ./tsconfig.json",
@@ -12,7 +12,7 @@
     "build:fe": "cd ../frontend && npm run build",
     "package:linux": "npm run transpile && npm run build:fe && npm run build:be && electron-builder --linux --x64",
     "package:mac": "npm run transpile && npm run build:fe && npm run build:be && electron-builder --mac --x64",
-    "package:win": "npm run transpile && npm run build:fe && npm run build:be && electron-builder --windows --x64",
+    "package:win": "npm run transpile && npm run build:fe && electron-builder --windows --x64",
     "builder": "electron-builder --linux --dir"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     ],
     "extraFiles": [
       {"from": "../frontend/build", "to": "resources/frontend/build"},
-      {"from": "../backend/dist/main", "to": "resources/backend/dist/main"}
+      {"from": "../backend/dist/main.exe", "to": "resources/backend/dist/main.exe"}
     ],
     "directories": {
       "output": "release"
