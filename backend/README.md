@@ -21,11 +21,7 @@ With Docker:
 Check parent `README.md` and `docker-compose.yml` for more details.
 
 ## Build exec for Electron
-Generate the binary (for current OS):
-```bash
-pyinstaller --onefile main.py --distpath ./dist
-```
-Test it by running (only for Mac/Linux):
-```bash
-./dist/main 
-```
+1. Install `pyinstaller` with `pip install pyinstaller`
+2. Generate the binary (for current OS): `pyinstaller --onefile main.py --distpath ./dist`
+3. Test it by running (only for Mac/Linux): `./dist/main `
+
