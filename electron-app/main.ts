@@ -68,6 +68,24 @@ function createWindow() {
         console.error(`Failed to load URL: ${err}`);
     });
 
+
+    win.webContents.on('will-prevent-unload', (event) => {
+        const choice = require('electron').dialog.showMessageBoxSync(win, {
+            type: 'question',
+            buttons: ['Leave', 'Stay'],
+            defaultId: 1,
+            title: 'Confirm',
+            message: 'There are unsaved changes. Are you sure you want to leave?',
+        });
+        if (choice === 0) {
+            // User chose to leave anyway, so allow unload
+            event.preventDefault(); // preventDefault here means "prevent Electron from preventing unload"
+            win.webContents.reload(); // or force close somehow
+        } else {
+            // User chose to stay, do nothing, unload prevented
+        }
+    });
+
 }
 
 app.whenReady().then(() => {
