@@ -30,7 +30,7 @@
     ],
     "extraFiles": [
       {"from": "../frontend/build", "to": "resources/frontend/build"},
-      {"from": "../backend/dist/main.exe", "to": "resources/backend/dist/main.exe"}
+      {"from": "../backend/dist/main", "to": "resources/backend/dist/main"}
     ],
     "directories": {
       "output": "release"

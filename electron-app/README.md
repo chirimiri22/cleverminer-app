@@ -30,7 +30,13 @@ When dev mode is on, the backend is started just by running the python script, t
 ### Package
 To package the application for production:
 1. **change the IS_DEV to false** in `main.ts`
-2. `npm run package:linux`
+2. If you use Windows: package BE additionally to an exe and set up the correct name in `package.json`:
+```
+"extraFiles": [
+      ...
+      {"from": "../backend/dist/main.exe", "to": "resources/backend/dist/main.exe"}
+```
+3. `npm run package:linux`
 
 The only Linux was tested, other OSes may not work.
 

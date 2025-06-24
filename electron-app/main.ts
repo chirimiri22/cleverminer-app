@@ -3,7 +3,7 @@ import path from 'path';
 import {spawn} from 'child_process';
 
 // MAKE SURE TO SET THE isDev VARIABLE ACCORDINGLY
-const IS_DEV = false;
+const IS_DEV = true;
 
 let pythonProcess: any = null;
 
@@ -25,6 +25,7 @@ function startPythonBackend() {
     try {
         console.log(`Attempting to spawn: ${executable} with args: ${args}`);
         pythonProcess = spawn(executable, args, {
+            detached: true,
             stdio: ['ignore', 'pipe', 'pipe'],
             windowsHide: true, // Hide console window on Windows
         });
@@ -103,17 +104,32 @@ app.whenReady().then(() => {
     });
 });
 
-app.on('window-all-closed', () => {
+const killBackendProcess = () => {
     if (pythonProcess) {
-        pythonProcess.kill();
+        if (process.platform === 'win32') {
+            // Kill process group on Windows
+            const { exec } = require('child_process');
+            exec(`taskkill /PID ${pythonProcess.pid} /T /F`, (err: any) => {
+                if (err) {
+                    console.error(`Failed to kill backend process: ${err}`);
+                } else {
+                    console.log(`Backend process ${pythonProcess.pid} terminated`);
+                }
+            });
+        } else {
+            // Unix-like systems
+            pythonProcess.kill('SIGTERM');
+        }
     }
+};
+
+app.on('window-all-closed', () => {
+    killBackendProcess()
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
 
 app.on('quit', () => {
-    if (pythonProcess) {
-        pythonProcess.kill();
-    }
+    killBackendProcess()
 });
