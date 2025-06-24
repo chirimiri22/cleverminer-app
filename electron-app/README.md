@@ -28,15 +28,9 @@ When dev mode is on, the backend is started just by running the python script, t
 **backend needs to be set up before running** the electron app.
 
 ### Package
-Before packaging the application, make sure you have the BE is compiled into an executable file. 
-See local `README.md` in the `backend` directory for more info.
-
-
-To package the application for production, **change the IS_DEV to false** in main.ts and run:
-
-```bash
-npm run package:linux
-```
+To package the application for production:
+1. **change the IS_DEV to false** in `main.ts`
+2. `npm run package:linux`
 
 The only Linux was tested, other OSes may not work.
 

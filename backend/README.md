@@ -14,12 +14,11 @@ This folder contains the backend for the Cleverminer app, built with Python and 
 ## How to run
 For local development:
 1. Install packages with previous command (make sure you're in the correct environment)
-2. Uncomment the last lines in `main.py`
-3. Run `python main,.py`
+2. Run `python main.py`
 
 With Docker:
-`docker-compose up --build backend` and `docker-compose.yml`
-Check parent README.md for more details.
+1. `docker-compose up --build backend` 
+Check parent `README.md` and `docker-compose.yml` for more details.
 
 ## Build exec for Electron
 Generate the binary (for current OS):

@@ -8,3 +8,4 @@ numpy~=2.2.6
 matplotlib~=3.10.3
 starlette~=0.46.0
 chardet
+dotenv

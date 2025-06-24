@@ -1,12 +1,13 @@
 import asyncio
 import csv
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
 from cleverminer import cleverminer
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 
-import uvicorn
 import pandas as pd
 import json
 import io
@@ -121,9 +122,9 @@ async def process_cf(data: str = Form(...),
         return clm_r
 
     try:
-        clm = await asyncio.wait_for(asyncio.to_thread(clm_run), timeout=1)
+        clm = await asyncio.wait_for(asyncio.to_thread(clm_run), timeout=10)
     except asyncio.TimeoutError:
-        raise HTTPException(504, "This task takes longer than 30 seconds - time is up!")
+        raise HTTPException(504, "This task takes longer than 10 seconds - time is up!")
 
     try:
 
@@ -377,7 +378,10 @@ async def replace_empty_values(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+load_dotenv()
 
-# Uncomment this or local run
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+# Comment this when using Docker
+if __name__ == "__main__" and os.getenv("RUN_UVICORN", "true").lower() == "true":
+    print("local run")
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
